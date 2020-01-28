@@ -8,8 +8,6 @@ import backgroundTypes from './pokeTypesBackgrondColor.module.css'
 import { Spinner } from 'reactstrap';
 
 const Pokedex = ( { id, clickedPoke } ) => {
-    //DONE : TODO: look into using offical art work for missing sprites
-    //state.sprites.other["official-artwork"].front_default
     const [ state, setState ] = useState( [] );
     const [ type1, setType1 ] = useState( '' );
     const [ type2, setType2 ] = useState( '' );
