@@ -11,7 +11,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 
 
-const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,  clickedPoke } ) => {
+const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms, clickedPoke, backgroundColor } ) => {
     const [ modal, setModal ] = useState( false );
     const commonAbilities = [];
     const hiddenAbilities = [];
@@ -85,7 +85,7 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
             <Button className={ styles.moreInfo } outline color="info" onClick={ toggle } size='sm'>i</Button>
             <Modal isOpen={ modal } toggle={ toggle } animation='false'>
 
-                <ModalHeader toggle={ toggle } close={ closeBtn }>
+                <ModalHeader toggle={ toggle } close={ closeBtn } className={ backgroundColor }>
                     { pokeName.toUpperCase() }
                     { sprites.versions[ 'generation-viii' ].icons.front_default
                         ? <img src={ `${ sprites.versions[ 'generation-viii' ].icons.front_default }` } alt={ { name } } />
@@ -112,19 +112,19 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
                 </ModalBody>
 
                 <h5>Evolution</h5>
-                <ModalFooter>
-                    {<EvolutionChain clickedPoke={ clickedPoke } evolutionChainUrl={ evolutionChainUrl } />}
+                <ModalFooter style={{display: 'block'}}>
+                    { <EvolutionChain clickedPoke={ clickedPoke } evolutionChainUrl={ evolutionChainUrl } /> }
                 </ModalFooter>
 
                 <h5>Varieties</h5>
                 <ModalFooter>
-                    { varieties.length === 0 ? null : <Varieties varieties={ varieties } clickedPoke={clickedPoke}/> }
+                    { varieties.length === 0 ? null : <Varieties varieties={ varieties } clickedPoke={ clickedPoke } /> }
                 </ModalFooter>
 
                 <h5>Forms</h5>
                 <ModalFooter>
-                    { pokeForms.length !== 0 ? pokeForms.map( poke => <AlternateForms pokeForms={ poke }  key={ poke.url } /> ) : null }
-                    <ShinyPoke shinySprite={sprites.front_shiny}/>
+                    { pokeForms.length !== 0 ? pokeForms.map( poke => <AlternateForms pokeForms={ poke } key={ poke.url } /> ) : null }
+                    <ShinyPoke shinySprite={ sprites.front_shiny } />
                 </ModalFooter>
             </Modal>
         </div>
