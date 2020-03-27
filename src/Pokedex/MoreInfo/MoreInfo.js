@@ -97,9 +97,10 @@ const MoreInfo = ( {
 
                 try {
 
-                    let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon-species/${ name }/`, { headers: { 'X-Custom-Header': '*' } } );
+                    let pokemon = await axios.get(
+                        `https://pokeapi.co/api/v2/pokemon-species/${ name }/`
+                        , { headers: { 'X-Custom-Header': '*' } } );
                     let fetchedEvoChainURL = pokemon.data.evolution_chain.url;
-
 
                     if ( pokemon.data.gender_rate === -1 ) {
                         setGender( 'genderless' )
@@ -283,7 +284,7 @@ const MoreInfo = ( {
     return (
         <div>
             <Modal
-            centered
+                centered
                 size="lg"
                 show={ showModal }
                 onHide={ () => showModalHandler( false ) }
@@ -299,7 +300,11 @@ const MoreInfo = ( {
                 <span style={ { fontSize: '18px', textAlign: 'center' } }>
                     <Modal.Body>
                         <hr className={ `${ styles.hrGeneral } ${ styles.hrMargin }` } />
-                        { Object.keys( pekedexEntries ).length !== 0 ? <PokedexEntries pokedexData={ pekedexEntries } /> : <h5>Loading...</h5> }
+                        {
+                            Object.keys( pekedexEntries ).length !== 0
+                                ? <PokedexEntries pokedexData={ pekedexEntries } />
+                                :  null
+                        }
 
                         { showTypes }
 
