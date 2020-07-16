@@ -155,7 +155,6 @@ const MoreInfo = ( {
                         pokedexEntries: fetchedPokedexEntries
                     }
                 ) );
-
                 pokemon.data.varieties ? setVarieties( pokemon.data.varieties ) : setVarieties( '' );
             }
         }
@@ -408,6 +407,10 @@ const MoreInfo = ( {
 
                     { showBreeding }
 
+                    <div style={ { fontSize: '10px' } }>
+                        Pokeball icons made by <a href='https://www.flaticon.com/authors/darius-dan' title='Darius Dan'>Darius Dan
+                        </a> from <a href='https://www.flaticon.com/' title='Flaticon'>www.flaticon.com</a>
+                    </div>
                 </span>
             </Modal>
         </div>
