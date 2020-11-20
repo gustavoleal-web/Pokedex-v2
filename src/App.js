@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Pokedex from './Pokedex'
+import Pokedex from './Pokedex/Pokedex'
+import SelectPokedex from './SelectedPokedex/SelectPokedex'
 import styles from './App.module.css';
 
 
@@ -51,17 +52,8 @@ const App = () => {
   return (
 
     <div className={ styles.container }>
-      <div className={ styles.buttonContainer }>
-        <button name='kanto' onClick={ fetchSelectedPokedex }>Kanto</button>
-        <button name='johto' onClick={ fetchSelectedPokedex } >Johto</button>
-        <button name='hoenn' onClick={ fetchSelectedPokedex } >Hoenn</button>
-        <button name='sinnoh' onClick={ fetchSelectedPokedex } >Sinnoh</button>
-        <button name='unova' onClick={ fetchSelectedPokedex } >Unova</button>
-        <button name='kalos' onClick={ fetchSelectedPokedex } >Kalos</button>
-        <button name='alola' onClick={ fetchSelectedPokedex } >Alola</button>
-        <button name='galar' onClick={ fetchSelectedPokedex } >Galar</button>
-      </div>
-
+       <SelectPokedex fetchSelectedPokedex = {fetchSelectedPokedex}/>
+       
       <div>
         { state.length !== 0
           ? newPokedex.map( pokemon =>
