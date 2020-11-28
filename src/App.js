@@ -17,13 +17,13 @@ const App = () => {
   //set the start and end of each pokedex so on click event will slice from start to finish
   const pekedexStart = {
     kanto: [ 0, 151 ],
-    johto: [ 152, 250 ],
+    johto: [ 151, 250 ],
     hoenn: [ 251, 386 ],
-    sinnoh: [386, 493],
-    unova: [494, 649],
-    kalos: [650, 721],
-    alola: [721, 809],
-    galar: [809, 898]
+    sinnoh: [ 386, 493 ],
+    unova: [ 494, 649 ],
+    kalos: [ 649, 721 ],
+    alola: [ 721, 809 ],
+    galar: [ 809, 898 ]
   }
 
   const fetchSelectedPokedex = ( e = 'kanto' ) => {
@@ -50,8 +50,8 @@ const App = () => {
 
   return (
 
-    <div className={styles.container}>
-      <div className={styles.buttonContainer}>
+    <div className={ styles.container }>
+      <div className={ styles.buttonContainer }>
         <button name='kanto' onClick={ fetchSelectedPokedex }>Kanto</button>
         <button name='johto' onClick={ fetchSelectedPokedex } >Johto</button>
         <button name='hoenn' onClick={ fetchSelectedPokedex } >Hoenn</button>
@@ -61,9 +61,12 @@ const App = () => {
         <button name='alola' onClick={ fetchSelectedPokedex } >Alola</button>
         <button name='galar' onClick={ fetchSelectedPokedex } >Galar</button>
       </div>
+
       <div>
         { state.length !== 0
-          ? newPokedex.map( pokemon => <Pokedex key={ pokemon.pokemon_species.url } id={ pokemon.entry_number } /> )
+          ? newPokedex.map( pokemon =>
+            <Pokedex key={ pokemon.pokemon_species.url }
+              id={ pokemon.entry_number } /> )
           : <p>Loading</p> }
       </div>
 
