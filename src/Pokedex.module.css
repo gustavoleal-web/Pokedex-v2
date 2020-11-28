@@ -1,0 +1,11 @@
+.pokemonContainer {
+    border: 1px solid black;
+}
+
+.infoContainer {
+    display: flex;
+}   
+
+.stats {
+    margin-left: 50px;
+}
