@@ -1,4 +1,11 @@
 .container {
     display: grid;
-   
+
+}
+
+@media (min-width: 900px) {
+    .container {
+        max-width: 900px;
+        margin   : auto;
+    }
 }
