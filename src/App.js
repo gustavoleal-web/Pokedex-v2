@@ -2,13 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Pokedex from './Pokedex/Pokedex'
 import SelectPokedex from './SelectedPokedex/SelectPokedex'
+import Search from './Search/Search';
 import styles from './App.module.css';
-
-
-//Pokedex
-//kanto 1 -151
-//johto 151 - 251
-// hoeen 252 - 386
 
 
 const App = () => {
@@ -34,7 +29,7 @@ const App = () => {
   }
 
   useEffect( () => {
-    console.log( 'useEffect Ran' )
+
     const fetchData = async () => {
       try {
         let pokemon = await axios.get( ` https://pokeapi.co/api/v2/pokedex/national ` )
@@ -52,13 +47,15 @@ const App = () => {
   return (
 
     <div className={ styles.container }>
-       <SelectPokedex fetchSelectedPokedex = {fetchSelectedPokedex}/>
-       
+      <SelectPokedex fetchSelectedPokedex={ fetchSelectedPokedex } />
+      <Search />
       <div>
         { state.length !== 0
           ? newPokedex.map( pokemon =>
-            <Pokedex key={ pokemon.pokemon_species.url }
-              id={ pokemon.entry_number } /> )
+            <Pokedex
+              key={ pokemon.pokemon_species.url }
+              id={ pokemon.entry_number }
+            /> )
           : <p>Loading</p> }
       </div>
 
