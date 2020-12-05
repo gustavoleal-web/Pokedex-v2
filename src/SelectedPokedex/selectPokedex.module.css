@@ -5,8 +5,11 @@
 
 button {
     width: 20%;
+    margin-bottom: 20px;
 }
 
 @media (min-width: 768px) {
-   
+   .container {
+       flex-direction: row;
+   }
 }
