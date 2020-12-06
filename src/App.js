@@ -9,6 +9,9 @@ import styles from './App.module.css';
 const App = () => {
   const [ state, setState ] = useState( [] )
   const [ newPokedex, setNewPokedex ] = useState( [] )
+  const [ clicked, setClicked ] = useState( false )
+  const [ pokemonName, setpokemonName ] = useState( '' )
+
 
   //set the start and end of each pokedex so on click event will slice from start to finish
   const pekedexStart = {
@@ -44,22 +47,39 @@ const App = () => {
     fetchData()
   }, [] )
 
+  const wasClicked = ( name ) => {
+    if ( name.length === 0 ) {
+      setClicked( false );
+      return;
+    }
+    else if(name.length >= 3 && name.length < 12){
+      name = name.toLowerCase().trim();
+      setpokemonName( name );
+      setClicked( true );
+    }
+
+  }
+  console.log( pokemonName )
   return (
 
     <div className={ styles.container }>
       <SelectPokedex fetchSelectedPokedex={ fetchSelectedPokedex } />
-      <Search />
+
+      <Search clicked={ clicked } wasClicked={ wasClicked } />
+
       <div>
-        { state.length !== 0
-          ? newPokedex.map( pokemon =>
-            <Pokedex
-              key={ pokemon.pokemon_species.url }
-              id={ pokemon.entry_number }
-            /> )
-          : <p>Loading</p> }
+
+        { clicked === true ? <Pokedex id={ pokemonName } />
+
+          : state.length !== 0
+            ? newPokedex.map( pokemon =>
+              <Pokedex
+                key={ pokemon.pokemon_species.url }
+                id={ pokemon.entry_number }
+              /> )
+            : <p>Loading</p> }
+
       </div>
-
-
     </div>
   )
 
