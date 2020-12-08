@@ -14,7 +14,7 @@ const App = () => {
   const [ state, setState ] = useState( [] );
   const [ newPokedex, setNewPokedex ] = useState( [] );
   const [ clicked, setClicked ] = useState( false );
-  const [ pokemonName, setpokemonName ] = useState( '' );
+  const [ pokemonName, setPokemonName ] = useState( '' );
 
 
 
@@ -34,7 +34,6 @@ const App = () => {
     setClicked( false );
     let cutPokedex = state.slice( pekedexStart[ e.target.name ][ 0 ], pekedexStart[ e.target.name ][ 1 ] );
     setNewPokedex( cutPokedex );
-    console.log( cutPokedex )
   }
 
   useEffect( () => {
@@ -53,6 +52,8 @@ const App = () => {
     fetchData()
   }, [] )
 
+
+
   const wasClicked = ( name ) => {
     if ( name.length === 0 ) {
       setClicked( false );
@@ -60,16 +61,26 @@ const App = () => {
     }
     else if ( name.length >= 3 && name.length < 12 ) {
       name = name.toLowerCase().trim();
-      setpokemonName( name );
+
+      for ( let i = 0; i < state.length; i++ ) {
+        if ( state[ i ].pokemon_species.name.includes( name ) ) {
+          console.log( state[ i ].pokemon_species.name );
+          setPokemonName( state[ i ].pokemon_species.name );
+          break;
+        }
+      }
       setClicked( true );
     }
 
-    // for ( let i = 0; i < state.length; i++ ) {
-    //   if ( state[ i ].pokemon_species.name.includes( name ) ) {
-    //      setNewPokedex( pokemon );
-    //     break;
-    //   }
-    // }
+//this will return all pokemon that match the input value
+//this will be better to use than the loop above
+    const foundMatches = state.filter( pokemon => {
+      let found;
+      if ( pokemon.pokemon_species.name.includes( name ) ) {
+        found = pokemon;
+      }
+      return found;
+    } )
 
   }
 
