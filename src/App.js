@@ -13,9 +13,6 @@ import styles from './App.module.css';
 const App = () => {
   const [ state, setState ] = useState( [] );
   const [ newPokedex, setNewPokedex ] = useState( [] );
-  const [ clicked, setClicked ] = useState( false );
-  const [ pokemonName, setPokemonName ] = useState( '' );
-
 
 
   //set the start and end of each pokedex so on click event will slice from start to finish
@@ -31,7 +28,6 @@ const App = () => {
   }
 
   const fetchSelectedPokedex = ( e = 'kanto' ) => {
-    setClicked( false );
     let cutPokedex = state.slice( pekedexStart[ e.target.name ][ 0 ], pekedexStart[ e.target.name ][ 1 ] );
     setNewPokedex( cutPokedex );
   }
@@ -55,25 +51,12 @@ const App = () => {
 
 
   const wasClicked = ( name ) => {
-    if ( name.length === 0 ) {
-      setClicked( false );
-      return;
+    name = name.toLowerCase();
+    if(name.includes('.')) {
+      console.log(name)
     }
-    else if ( name.length >= 3 && name.length < 12 ) {
-      name = name.toLowerCase().trim();
-
-      for ( let i = 0; i < state.length; i++ ) {
-        if ( state[ i ].pokemon_species.name.includes( name ) ) {
-          console.log( state[ i ].pokemon_species.name );
-          setPokemonName( state[ i ].pokemon_species.name );
-          break;
-        }
-      }
-      setClicked( true );
-    }
-
-//this will return all pokemon that match the input value
-//this will be better to use than the loop above
+    //this will return all pokemon that match the input value
+    //this will be better to use than the loop above
     const foundMatches = state.filter( pokemon => {
       let found;
       if ( pokemon.pokemon_species.name.includes( name ) ) {
@@ -81,7 +64,8 @@ const App = () => {
       }
       return found;
     } )
-
+    setNewPokedex( foundMatches );
+    console.log( foundMatches )
   }
 
   return (
@@ -89,19 +73,16 @@ const App = () => {
     <div className={ styles.container }>
       <SelectPokedex fetchSelectedPokedex={ fetchSelectedPokedex } />
 
-      <Search clicked={ clicked } wasClicked={ wasClicked } />
-
+      <Search wasClicked={ wasClicked } />
       <div>
-
-        { clicked === true ? <Pokedex id={ pokemonName } />
-
-          : state.length !== 0
-            ? newPokedex.map( pokemon =>
-              <Pokedex
-                key={ pokemon.pokemon_species.url }
-                id={ pokemon.entry_number }
-              /> )
-            : <p>Loading</p> }
+        { state.length !== 0
+          ? newPokedex.map( pokemon =>
+            <Pokedex
+              key={ pokemon.pokemon_species.url }
+              id={ pokemon.entry_number }
+            /> )
+          : <p>Loading</p>
+        }
 
       </div>
     </div>
