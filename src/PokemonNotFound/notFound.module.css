@@ -1,0 +1,22 @@
+.container {
+    display         : flex;
+    justify-content : space-evenly;
+    background-color: #211a1a;
+    color           : #fffcfc;
+    font-family     : 'Andika New Basic', sans-serif;
+}
+
+@media (min-width: 900px) {
+    .border {
+        border-radius: 50%;
+
+    }
+
+    h1 {
+        font-size: 75px;
+    }
+
+    h3 {
+        font-size: 20px;
+    }
+}
