@@ -1,12 +1,6 @@
-body {
-    background-color: gray;
-}
 
 .container {
     display: grid;
-    background-color: white;
-   
-
 }
 
 @media (min-width: 900px) {
