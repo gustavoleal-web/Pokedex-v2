@@ -3,8 +3,10 @@ import axios from 'axios';
 import Pokedex from './Pokedex/Pokedex'
 import SelectPokedex from './SelectedPokedex/SelectPokedex'
 import Search from './Search/Search';
+import NotFound from './PokemonNotFound/notFound'
 import styles from './App.module.css';
-//object[i].pokemon_species.name
+
+
 
 //TODO: might no even need to use clicked ans setClicked
 //TODO instead check to see if the string is empty. If it is don't do anthing. 
@@ -13,7 +15,7 @@ import styles from './App.module.css';
 const App = () => {
   const [ state, setState ] = useState( [] );
   const [ newPokedex, setNewPokedex ] = useState( [] );
-
+  const [ noPkmFound, setNoPkmFound ] = useState( null )
 
   //set the start and end of each pokedex so on click event will slice from start to finish
   const pekedexStart = {
@@ -30,6 +32,7 @@ const App = () => {
   const fetchSelectedPokedex = ( e = 'kanto' ) => {
     let cutPokedex = state.slice( pekedexStart[ e.target.name ][ 0 ], pekedexStart[ e.target.name ][ 1 ] );
     setNewPokedex( cutPokedex );
+    setNoPkmFound( null );
   }
 
   useEffect( () => {
@@ -50,30 +53,32 @@ const App = () => {
 
 
 
-  const wasClicked = ( name ) => {
+  const wasClicked = (name ) => {
+    
     name = name.toLowerCase();
-    if(name.includes('.')) {
-      console.log(name)
+    if ( name.includes( '.' ) ) {
+      console.log( name )
     }
-    //this will return all pokemon that match the input value
-    //this will be better to use than the loop above
+    //this will return all pokemon that match the full inpur or part of it.
     const foundMatches = state.filter( pokemon => {
       let found;
       if ( pokemon.pokemon_species.name.includes( name ) ) {
         found = pokemon;
       }
       return found;
-    } )
+    } );
+
+    foundMatches.length === 0 ? setNoPkmFound( <NotFound /> ) : setNoPkmFound( null )
+
     setNewPokedex( foundMatches );
-    console.log( foundMatches )
   }
 
   return (
 
     <div className={ styles.container }>
-      <SelectPokedex fetchSelectedPokedex={ fetchSelectedPokedex } />
-
       <Search wasClicked={ wasClicked } />
+
+      {noPkmFound }
       <div>
         { state.length !== 0
           ? newPokedex.map( pokemon =>
@@ -85,6 +90,7 @@ const App = () => {
         }
 
       </div>
+      <SelectPokedex fetchSelectedPokedex={ fetchSelectedPokedex } />
     </div>
   )
 
