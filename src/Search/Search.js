@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styles from './search.module.css';
 
+
+
 //TODO: clear input after button is pressed
 
 const Search = ( { wasClicked } ) => {
@@ -19,21 +21,23 @@ const Search = ( { wasClicked } ) => {
         }
         else {
             setIsDisabled( true );
-            setColor(styles.disabled)
+            setColor( styles.disabled )
         }
-
 
     }
 
     return (
         <>
-            <input type="text" placeholder='bulbasaur' onChange={ updateName } />
+            <div className={styles.container}>
+                <input type="text" placeholder='bulbasaur' onChange={ updateName } />
+                <button onClick={ () => wasClicked( name ) } disabled={ isDisbled } className={`${ color } ${styles.search}`}>Search</button>
+            </div>
+
             <p>For Pokemons with a period in their name e.i Mr.Mime use a dash (-) instead.</p>
-            <button onClick={ () => wasClicked( name ) } disabled={ isDisbled } className={ color }>Search</button>
 
         </>
     )
 }
 
-export default Search;
+export default React.memo( Search );
 
