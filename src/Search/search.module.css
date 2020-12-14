@@ -1,7 +1,12 @@
-button {
+
+.search {
     border-radius: 20px;
     border: none;
     height: 24px;
+}
+
+.container {
+    margin-top: 40px;
 }
 
 .enabled {
