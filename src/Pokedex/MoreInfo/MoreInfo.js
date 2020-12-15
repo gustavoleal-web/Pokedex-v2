@@ -1,27 +1,26 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import styles from './moreInfo.module.css'
 
-const MoreInfo = () => {
+const MoreInfo = ( { name, abilities, sprites, weight, height } ) => {
     const [ modal, setModal ] = useState( false );
 
     const toggle = () => setModal( !modal );
-
     const closeBtn = <button className="close" onClick={ toggle }>&times;</button>;
 
     return (
         <div>
-            <Button color="info" onClick={ toggle }>Info</Button>
-            <Modal isOpen={ modal } toggle={ toggle } >
-                <ModalHeader toggle={ toggle } close={ closeBtn }>Modal title</ModalHeader>
+            <Button className={ styles.moreInfo } outline color="info" onClick={ toggle } size='sm'>i</Button>
+            <Modal isOpen={ modal } toggle={ toggle } animation='false'>
+                <ModalHeader toggle={ toggle } close={ closeBtn }>{name.toUpperCase()}</ModalHeader>
                 <ModalBody>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                    mollit anim id est laborum.
-        </ModalBody>
+                    <div>
+                        <p>{weight}</p>
+                        <p>{height}</p>
+                    </div>
+                </ModalBody>
                 <ModalFooter>
-                  <p>Some more info!</p>
+                    <p>Some more info!</p>
                 </ModalFooter>
             </Modal>
         </div>
