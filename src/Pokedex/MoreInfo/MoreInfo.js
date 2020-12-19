@@ -8,15 +8,20 @@ const MoreInfo = ( { name, abilities, sprites, weight, height } ) => {
     const toggle = () => setModal( !modal );
     const closeBtn = <button className="close" onClick={ toggle }>&times;</button>;
 
+    //convert the value to meeters then to ft
+    let feet = ( height / 10 ) * 3.281 ;
+    feet = feet.toFixed(2)
+    
+
     return (
         <div>
             <Button className={ styles.moreInfo } outline color="info" onClick={ toggle } size='sm'>i</Button>
             <Modal isOpen={ modal } toggle={ toggle } animation='false'>
-                <ModalHeader toggle={ toggle } close={ closeBtn }>{name.toUpperCase()}</ModalHeader>
+                <ModalHeader toggle={ toggle } close={ closeBtn }>{ name.toUpperCase() }</ModalHeader>
                 <ModalBody>
                     <div>
-                        <p>{weight}</p>
-                        <p>{height}</p>
+                        <p>Weight: { weight }</p>
+                        <p>Height: { feet } ft</p>
                     </div>
                 </ModalBody>
                 <ModalFooter>
