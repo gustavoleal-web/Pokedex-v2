@@ -56,6 +56,7 @@ const App = () => {
   const wasClicked = (name ) => {
     
     name = name.toLowerCase();
+    //checkig for pokemon like mr. mime
     if ( name.includes( '.' ) ) {
       console.log( name )
     }
