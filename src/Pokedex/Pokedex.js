@@ -16,6 +16,8 @@ const Pokedex = ( { id } ) => {
     useEffect( () => {
         const fetchData = async () => {
             try {
+                //think about switching to using https://pokeapi.co/api/v2/pokemon-species/id 
+                //it includes so much information like mega evolution and different forms
                 let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon/${ id }` )
                 let pokemonEntries = pokemon.data;
                 setState( pokemonEntries );
@@ -42,7 +44,6 @@ const Pokedex = ( { id } ) => {
     return (
 
         <>
-
             { Object.keys( state ).length === 0 ? <Spinner color="primary" style={ { display: 'flex' } } /> :
 
                 <div className={ styles.infoContainer }>
@@ -50,6 +51,7 @@ const Pokedex = ( { id } ) => {
                         <p>No.{ state.id }:  { state.name.toUpperCase() }</p>
                         <img src={ `${ state.sprites.front_default }` } alt={ state.name } />
 
+                       { /* For pokemons that have 2 types it will render both otherwise just the one type */}
                         { state.types.length === 2
                             ? <div style={ { display: 'flex' } }>
                                 <p className={ `${ type1 } ${ styles.fill }` }>{ state.types[ 0 ].type.name }</p>
