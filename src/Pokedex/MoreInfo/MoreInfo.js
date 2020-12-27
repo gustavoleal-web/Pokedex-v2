@@ -7,7 +7,6 @@ const MoreInfo = ( { name, abilities, sprites, weight, height } ) => {
     const [ modal, setModal ] = useState( false );
     const commonAbilities = [];
     const hiddenAbilities = [];
-    console.log(abilities)
 
     //from reactstrap
     const toggle = () => setModal( !modal );
@@ -21,10 +20,10 @@ const MoreInfo = ( { name, abilities, sprites, weight, height } ) => {
 
     for ( let i = 0; i < abilities.length; i++ ) {
         if ( abilities[ i ].is_hidden ) {
-            hiddenAbilities.push( abilities[ i ].ability.name )
+            hiddenAbilities.push( abilities[ i ].ability )
         }
         else {
-            commonAbilities.push( abilities[ i ].ability.name )
+            commonAbilities.push( abilities[ i ].ability )
         }
     }
 
