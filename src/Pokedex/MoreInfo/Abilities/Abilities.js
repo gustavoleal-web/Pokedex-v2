@@ -1,46 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import { Button, UncontrolledPopover, PopoverHeader, PopoverBody } from 'reactstrap';
+import { Button } from 'reactstrap';
 
 const Abilities = ( { abilities } ) => {
     const [ state, setState ] = useState( '' );
 
-    useEffect( () => {
-        const fetchData = async () => {
-            try {
-                let pokemon = await axios.get( `https://pokeapi.co/api/v2/ability/${ abilities[ 0 ] }/` )
-                let pokemonEntries = pokemon.data;
-                setState( pokemonEntries )
+    const fetchAbilityData = async ( url ) => {
+        try {
+            let pokemon = await axios.get( url )
+            let pokemonEntries = pokemon.data;
 
+            for ( let i = 0; i < pokemonEntries.effect_entries.length; i++ ) {
+                if ( pokemonEntries.effect_entries[ i ].language.name === 'en' ) {
+                    setState( pokemonEntries.effect_entries[ i ] )
+                }
             }
-            catch ( e ) {
-                console.log( e );
-            }
+
         }
-        fetchData();
+        catch ( e ) {
+            console.log( e );
+        }
 
-    }, [] );
-    //state is an object so it doesnt have length---DUH
+
+    }
     return (
         <div>
-            {console.log( state ) }
-            <span style={ { display: 'flex' } } >
-                {
-                    abilities.map( ability => <Button key={ ability } id="PopoverFocus" type="button" style={ {
-                        width: '51%',
-                        height: '22px',
-                        margin: '0',
-                        padding: '0'
-                    } }>{ ability }</Button> )
-                }
-            </span>
-            {Object.keys( state ).length !== 0
-                ? <UncontrolledPopover trigger="focus" placement="bottom" target="PopoverFocus">
-                    <PopoverHeader>Focus Trigger</PopoverHeader>
-                    <PopoverBody>{ state.effect_entries[ 1 ].short_effect }</PopoverBody>
-                </UncontrolledPopover>
-                : null
+
+
+            {
+                abilities.map( ability => <Button onClick={ () => fetchAbilityData( ability.url ) } key={ ability.name } id="PopoverFocus" type="button" style={ {
+                    width: '51%',
+                    height: '22px',
+                    margin: '0',
+                    padding: '0'
+                } }>{ ability.name }</Button> )
             }
+            { state ? <p>{ state.short_effect }</p> : <p>...</p> }
+
 
         </div>
 
