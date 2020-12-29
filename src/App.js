@@ -39,7 +39,7 @@ const App = () => {
 
     const fetchData = async () => {
       try {
-        let pokemon = await axios.get( ` https://pokeapi.co/api/v2/pokedex/national ` );
+        let pokemon = await axios.get( ` https://pokeapi.co/api/v2/pokedex/national/ ` );
         let pokemonEntries = pokemon.data.pokemon_entries;
         setState( pokemonEntries );
         setNewPokedex( pokemonEntries.slice( 0, 151 ) );
@@ -72,7 +72,7 @@ const App = () => {
     foundMatches.length === 0 ? setNoPkmFound( <NotFound /> ) : setNoPkmFound( null )
 
     setNewPokedex( foundMatches );
-  }
+  }  
 
   return (
 
@@ -80,12 +80,14 @@ const App = () => {
       <Search wasClicked={ wasClicked } />
 
       {noPkmFound }
+      
       <div>
         { state.length !== 0
           ? newPokedex.map( pokemon =>
             <Pokedex
               key={ pokemon.pokemon_species.url }
               id={ pokemon.entry_number }
+              clickedPoke={wasClicked}
             /> )
           : <p>Loading</p>
         }
