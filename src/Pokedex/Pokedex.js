@@ -6,7 +6,7 @@ import styles from './Pokedex.module.css';
 import stylesTypes from './pokeTypes.module.css'
 import { Spinner } from 'reactstrap';
 
-const Pokedex = ( { id } ) => {
+const Pokedex = ( { id, clickedPoke } ) => {
 
     const [ state, setState ] = useState( [] );
     const [ type1, setType1 ] = useState( '' )
@@ -65,6 +65,8 @@ const Pokedex = ( { id } ) => {
                             sprites={ state.sprites }
                             weight={ state.weight }
                             height={ state.height }
+                            moves={state.moves}
+                            clickedPoke={clickedPoke}
                         />
 
                     </div>
