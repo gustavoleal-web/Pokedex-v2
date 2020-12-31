@@ -44,4 +44,4 @@ const Abilities = ( { abilities } ) => {
     )
 }
 
-export default React.memo( Abilities );
+export default Abilities;
