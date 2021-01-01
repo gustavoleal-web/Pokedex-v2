@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import Abilities from './Abilities/Abilities'
+import EvolutionChain from './EvolutionChain/EvolutionChain'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import styles from './moreInfo.module.css'
 
-const MoreInfo = ( { name, abilities, sprites, weight, height } ) => {
+
+const MoreInfo = ( { name, abilities, sprites, weight, height, moves, clickedPoke } ) => {
     const [ modal, setModal ] = useState( false );
     const commonAbilities = [];
     const hiddenAbilities = [];
@@ -12,7 +14,7 @@ const MoreInfo = ( { name, abilities, sprites, weight, height } ) => {
     const toggle = () => setModal( !modal );
     const closeBtn = <button className="close" onClick={ toggle }>&times;</button>;
 
-    //convert the value to meeters then to ft
+    //converted the value to meeters then to ft
     let feet = ( height / 10 ) * 3.281;
     feet = feet.toFixed( 2 )
 
@@ -49,7 +51,11 @@ const MoreInfo = ( { name, abilities, sprites, weight, height } ) => {
                     </div>
                 </ModalBody>
                 <ModalFooter>
+
+                    <EvolutionChain name={ name } clickedPoke={ clickedPoke } />
+
                     <img src={ `${ sprites.versions[ 'generation-viii' ].icons.front_default }` } alt="" />
+
                 </ModalFooter>
             </Modal>
         </div>
