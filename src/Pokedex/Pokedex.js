@@ -11,7 +11,7 @@ const Pokedex = ( { id, clickedPoke } ) => {
     const [ state, setState ] = useState( [] );
     const [ type1, setType1 ] = useState( '' )
     const [ type2, setType2 ] = useState( '' )
-
+    const [pokeForms, setPokeForms] = useState('')
 
     useEffect( () => {
         const fetchData = async () => {
@@ -21,6 +21,11 @@ const Pokedex = ( { id, clickedPoke } ) => {
                 let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon/${ id }` )
                 let pokemonEntries = pokemon.data;
                 setState( pokemonEntries );
+                
+                if(pokemonEntries.forms.length >= 2) {
+                     setPokeForms(pokemonEntries.forms)
+                }
+               
 
                 if ( pokemonEntries.types.length === 2 ) {
                     setType1( stylesTypes[ pokemonEntries.types[ 0 ].type.name ] )
@@ -66,6 +71,7 @@ const Pokedex = ( { id, clickedPoke } ) => {
                             weight={ state.weight }
                             height={ state.height }
                             moves={state.moves}
+                            pokeForms={pokeForms}
                             clickedPoke={clickedPoke}
                         />
 
