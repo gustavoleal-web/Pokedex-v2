@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import Abilities from './Abilities/Abilities'
-import EvolutionChain from './EvolutionChain/EvolutionChain'
+import Abilities from './Abilities/Abilities';
+import EvolutionChain from './EvolutionChain/EvolutionChain';
+import AlternateForms from './AlternateForms/alternateForms';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import styles from './moreInfo.module.css'
 
 
-const MoreInfo = ( { name, abilities, sprites, weight, height, moves, clickedPoke } ) => {
+
+const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms, clickedPoke } ) => {
     const [ modal, setModal ] = useState( false );
     const commonAbilities = [];
     const hiddenAbilities = [];
@@ -55,7 +57,8 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, clickedPok
                     <EvolutionChain name={ name } clickedPoke={ clickedPoke } />
 
                     <img src={ `${ sprites.versions[ 'generation-viii' ].icons.front_default }` } alt="" />
-
+                    
+                    <AlternateForms forms={pokeForms}/>
                 </ModalFooter>
             </Modal>
         </div>
