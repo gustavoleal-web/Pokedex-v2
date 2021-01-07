@@ -28,12 +28,18 @@ const Abilities = ( { abilities } ) => {
 
 
             {
-                abilities.map( ability => <Button onClick={ () => fetchAbilityData( ability.url ) } key={ ability.name } id="PopoverFocus" type="button" style={ {
-                    width: '51%',
-                    height: '22px',
-                    margin: '0',
-                    padding: '0'
-                } }>{ ability.name }</Button> )
+                abilities.map( ability =>
+                    <Button onClick={ () => fetchAbilityData( ability.url ) }
+                        key={ ability.name }
+                        id="PopoverFocus"
+                        type="button"
+                        style={ {
+                            width: '51%',
+                            height: '22px',
+                            margin: '0',
+                            padding: '0'
+                        } }>{ ability.name }
+                    </Button> )
             }
             { state ? <p>{ state.short_effect }</p> : <p>...</p> }
 
