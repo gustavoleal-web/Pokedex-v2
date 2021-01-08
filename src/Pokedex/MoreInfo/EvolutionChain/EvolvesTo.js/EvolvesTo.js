@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const EvolvesTo = ( { url, clickedPoke } ) => {
-
+const EvolvesTo = ( { evolutionChainUrl, clickedPoke } ) => {
     const [ state, setState ] = useState( [] );
-
     useEffect( () => {
         const fetchData = async () => {
             const pokeEvoLine = [];
             try {
-                let pokemon = await axios.get( url )
+                let pokemon = await axios.get( evolutionChainUrl )
                 let pokemonEntries = pokemon.data.chain;
-               
                 pokeEvoLine.push( pokemonEntries.species.name );
 
                 //first evolution
@@ -30,12 +27,12 @@ const EvolvesTo = ( { url, clickedPoke } ) => {
         }
         fetchData();
 
-    }, [ url ] );
+    }, [ evolutionChainUrl ] );
 
     return (
         <div>
-            {state.length === 0 
-                ? null 
+            {state.length === 0
+                ? null
                 : state.map( pokemon => <p onClick={ () => clickedPoke( pokemon ) } style={ { display: 'flex', color: 'blue' } } key={ pokemon }>{ pokemon }</p> ) }
         </div>
     )
