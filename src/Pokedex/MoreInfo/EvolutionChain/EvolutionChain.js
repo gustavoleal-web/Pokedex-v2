@@ -1,17 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import EvolvesTo from './EvolvesTo.js/EvolvesTo'
-
+import Varieties from './Varieties/Varieties';
 import axios from 'axios';
 
 const EvolutionChain = ( { name, clickedPoke } ) => {
-    const [ url, setUrl ] = useState( '' );
+    const [ evolutionChainUrl, setUrl ] = useState( '' );
+    const [ varieties, setVarieties ] = useState( '' );
 
+    switch ( name ) {
+        case 'deoxys-normal':
+            name = 'deoxys';
+            break;
+        case 'keldeo-ordinary':
+            name = 'keldeo';
+            break;
+        case 'keldeo-resolute':
+            name = 'keldeo';
+            break;
+        case 'shaymin-land':
+            name = 'shaymin';
+            break;
+        case 'giratina-altered':
+            name = 'giratina'
+            break;
+        default:
+            break;
+       
+    }
+   
     useEffect( () => {
         const fetchData = async () => {
             try {
                 let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon-species/${ name }` )
                 let pokemonEntries = pokemon.data.evolution_chain;
-                setUrl( pokemonEntries );
+                pokemon.data.varieties ? setVarieties( pokemon.data.varieties ) : setVarieties('')
+                setUrl( pokemonEntries.url );
+               
             }
             catch ( e ) {
                 console.log( e );
@@ -24,7 +48,8 @@ const EvolutionChain = ( { name, clickedPoke } ) => {
 
     return (
         <div>
-            {url ? <EvolvesTo url={ url.url } clickedPoke={clickedPoke}/> : null }
+            {evolutionChainUrl ? <EvolvesTo evolutionChainUrl={ evolutionChainUrl } clickedPoke={ clickedPoke } /> : null }
+            {varieties.length === 0 ? null : <Varieties otherForms={ varieties } /> }
         </div>
     )
 }
