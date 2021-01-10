@@ -23,19 +23,23 @@ const EvolutionChain = ( { name, clickedPoke } ) => {
         case 'giratina-altered':
             name = 'giratina'
             break;
+        case 'wormadam-plant':
+            name = 'wormadam';
+            break;
         default:
             break;
-       
+
     }
-   
+
     useEffect( () => {
         const fetchData = async () => {
             try {
                 let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon-species/${ name }` )
                 let pokemonEntries = pokemon.data.evolution_chain;
-                pokemon.data.varieties ? setVarieties( pokemon.data.varieties ) : setVarieties('')
+                pokemon.data.varieties ? setVarieties( pokemon.data.varieties ) : setVarieties( '' )
                 setUrl( pokemonEntries.url );
-               
+                console.log(pokemon.data.varieties)
+
             }
             catch ( e ) {
                 console.log( e );
