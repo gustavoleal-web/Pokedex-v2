@@ -35,7 +35,12 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
         <div>
             <Button className={ styles.moreInfo } outline color="info" onClick={ toggle } size='sm'>i</Button>
             <Modal isOpen={ modal } toggle={ toggle } animation='false'>
-                <ModalHeader toggle={ toggle } close={ closeBtn }>{ name.toUpperCase() }</ModalHeader>
+
+                <ModalHeader toggle={ toggle } close={ closeBtn }>
+                    { name.toUpperCase() }
+                    <img src={ `${ sprites.versions[ 'generation-viii' ].icons.front_default }` } alt="" />
+                </ModalHeader>
+
                 <ModalBody>
                     <div>
                         <h6>Common</h6>
@@ -52,13 +57,15 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
 
                     </div>
                 </ModalBody>
+                
+                <h5>Evolution</h5>
                 <ModalFooter>
-
                     <EvolutionChain name={ name } clickedPoke={ clickedPoke } />
+                </ModalFooter>
 
-                    <img src={ `${ sprites.versions[ 'generation-viii' ].icons.front_default }` } alt="" />
-                    
-                    <AlternateForms forms={pokeForms}/>
+                <h5>Forms</h5>
+                <ModalFooter>
+                    { pokeForms.length !== 0 ? pokeForms.map( poke => <AlternateForms forms={ poke.url } /> ) : null }
                 </ModalFooter>
             </Modal>
         </div>
