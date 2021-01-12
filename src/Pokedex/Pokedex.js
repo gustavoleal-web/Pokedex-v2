@@ -4,33 +4,36 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import styles from './Pokedex.module.css';
 import stylesTypes from './pokeTypes.module.css'
+import backgroundTypes from './pokeTypesBackgrondColor.module.css'
 import { Spinner } from 'reactstrap';
 
 const Pokedex = ( { id, clickedPoke } ) => {
-    //TODO: look into using offical art work for missing sprites
+    //DONE : TODO: look into using offical art work for missing sprites
     //state.sprites.other["official-artwork"].front_default
     const [ state, setState ] = useState( [] );
-    const [ type1, setType1 ] = useState( '' )
-    const [ type2, setType2 ] = useState( '' )
+    const [ type1, setType1 ] = useState( '' );
+    const [ type2, setType2 ] = useState( '' );
+    const [ typeColorBackground, setBackground ] = useState( '' );
     const [ pokeForms, setPokeForms ] = useState( '' )
 
     useEffect( () => {
         const fetchData = async () => {
             try {
                 let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon/${ id }` )
-                let pokemonEntries = pokemon.data;
-                setState( pokemonEntries );
+                let fetchedPokemon = pokemon.data;
+                setState( fetchedPokemon );
+                setBackground( backgroundTypes[ fetchedPokemon.types[ 0 ].type.name ] );
 
-                if ( pokemonEntries.forms.length >= 1 ) {
-                    setPokeForms( pokemonEntries.forms );
+                if ( fetchedPokemon.forms.length >= 1 ) {
+                    setPokeForms( fetchedPokemon.forms );
                 }
 
-                if ( pokemonEntries.types.length === 2 ) {
-                    setType1( stylesTypes[ pokemonEntries.types[ 0 ].type.name ] )
-                    setType2( stylesTypes[ pokemonEntries.types[ 1 ].type.name ] )
+                if ( fetchedPokemon.types.length === 2 ) {
+                    setType1( stylesTypes[ fetchedPokemon.types[ 0 ].type.name ] )
+                    setType2( stylesTypes[ fetchedPokemon.types[ 1 ].type.name ] )
                 }
                 else {
-                    setType1( stylesTypes[ pokemonEntries.types[ 0 ].type.name ] )
+                    setType1( stylesTypes[ fetchedPokemon.types[ 0 ].type.name ] )
                 }
 
             }
@@ -49,7 +52,7 @@ const Pokedex = ( { id, clickedPoke } ) => {
         <>
             { Object.keys( state ).length === 0 ? <Spinner color="primary" style={ { display: 'flex' } } /> :
 
-                <div className={ styles.infoContainer }>
+                <div className={ `${ styles.infoContainer } ${ typeColorBackground }` }>
                     <div>
                         <p>No.{ state.id }:  { state.name.toUpperCase() }</p>
 
@@ -89,7 +92,11 @@ const Pokedex = ( { id, clickedPoke } ) => {
                     <div className={ styles.stats }>
                         {
                             state.stats.map( ( stat ) =>
-                                <p key={ uuidv4() }>{ stat.stat.name }: { stat.base_stat }</p>
+                                <div key={ uuidv4() }>
+                                    <p >{ stat.stat.name }: { stat.base_stat }</p>
+                                    {/*<div className={styles.statsBar}></div>*/}
+                                </div>
+
                             )
 
                         }
