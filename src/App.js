@@ -55,10 +55,7 @@ const App = () => {
 
   const wasClicked = (name ) => {
     name = name.toLowerCase();
-    //checkig for pokemon like mr. mime
-    if ( name.includes( '.' ) ) {
-      console.log( name )
-    }
+    
     //this will return all pokemon that match the full input or part of it.
     const foundMatches = state.filter( pokemon => {
       let found;
