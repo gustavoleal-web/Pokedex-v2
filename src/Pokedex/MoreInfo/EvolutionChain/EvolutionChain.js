@@ -1,45 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import EvolvesTo from './EvolvesTo.js/EvolvesTo'
-import Varieties from './Varieties/Varieties';
 import axios from 'axios';
 
-const EvolutionChain = ( { name, clickedPoke } ) => {
-    const [ evolutionChainUrl, setUrl ] = useState( '' );
-    const [ varieties, setVarieties ] = useState( '' );
-
-    switch ( name ) {
-        case 'deoxys-normal':
-            name = 'deoxys';
-            break;
-        case 'keldeo-ordinary':
-            name = 'keldeo';
-            break;
-        case 'keldeo-resolute':
-            name = 'keldeo';
-            break;
-        case 'shaymin-land':
-            name = 'shaymin';
-            break;
-        case 'giratina-altered':
-            name = 'giratina'
-            break;
-        case 'wormadam-plant':
-            name = 'wormadam';
-            break;
-        default:
-            break;
-
-    }
-
+const EvolutionChain = ( { evolutionChainUrl, clickedPoke } ) => {
+    const [ state, setState ] = useState( [] );
     useEffect( () => {
         const fetchData = async () => {
+            const pokeEvoLine = [];
             try {
-                let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon-species/${ name }` )
-                let pokemonEntries = pokemon.data.evolution_chain;
-                pokemon.data.varieties ? setVarieties( pokemon.data.varieties ) : setVarieties( '' )
-                setUrl( pokemonEntries.url );
-                console.log(pokemon.data.varieties)
+                let pokemon = await axios.get( evolutionChainUrl )
+                let pokemonEntries = pokemon.data.chain;
 
+                //first evolution
+                if ( pokemonEntries.evolves_to.length !== 0 ) {
+                    pokeEvoLine.push( pokemonEntries.species.name );
+                    pokeEvoLine.push( pokemonEntries.evolves_to[ 0 ].species.name );
+                    //second evolution
+                    if ( pokemonEntries.evolves_to[ 0 ].evolves_to.length !== 0 ) {
+                        pokeEvoLine.push( pokemonEntries.evolves_to[ 0 ].evolves_to[ 0 ].species.name )
+                    }
+                }
+                setState( pokeEvoLine )
             }
             catch ( e ) {
                 console.log( e );
@@ -47,15 +27,22 @@ const EvolutionChain = ( { name, clickedPoke } ) => {
         }
         fetchData();
 
-    }, [ name ] );
-
+    }, [ evolutionChainUrl ] );
 
     return (
         <div>
-            {evolutionChainUrl ? <EvolvesTo evolutionChainUrl={ evolutionChainUrl } clickedPoke={ clickedPoke } /> : null }
-            {varieties.length === 0 ? null : <Varieties otherForms={ varieties } /> }
+       
+            {state.length === 0
+                ? <p>This Pokemon does not evolve.</p>
+                : state.map( pokemonEvo =>
+                    <p onClick={ () => clickedPoke( pokemonEvo ) }
+                        style={ { display: 'flex', color: 'blue' } }
+                        key={ pokemonEvo }>
+                        { pokemonEvo }
+                    </p> )
+            }
         </div>
     )
 }
 
-export default React.memo( EvolutionChain );
+export default EvolutionChain;
