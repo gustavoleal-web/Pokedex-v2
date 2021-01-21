@@ -85,16 +85,18 @@ const Pokedex = ( { id, clickedPoke } ) => {
                             height={ state.height }
                             moves={ state.moves }
                             pokeForms={ pokeForms }
+                            backgroundColor={ typeColorBackground }
                             clickedPoke={ clickedPoke }
                         />
 
                     </div>
+
                     <div className={ styles.stats }>
                         {
                             state.stats.map( ( stat ) =>
                                 <div key={ uuidv4() }>
                                     <p >{ stat.stat.name }: { stat.base_stat }</p>
-                                    {/*<div className={styles.statsBar}></div>*/}
+                                    {/*<div className={styles.statsBar}></div>*/ }
                                 </div>
 
                             )
