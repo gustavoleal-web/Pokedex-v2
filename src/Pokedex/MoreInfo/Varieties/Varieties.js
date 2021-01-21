@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import Pokedex from '../../Pokedex';
 
-const Varieties = ( { varieties } ) => {
+const Varieties = ( { varieties, clickedPoke } ) => {
     const [ form, setForms ] = useState( null );
-    const test = ( url ) => {
+
+    const retrieveById = ( url ) => {
         //extracted only the id from the url b/c using the Pokemon doesn't always work
         let id = url.slice( 34, url.length - 1 );
-        //will have to add the prop clickedPoke b/c the other Pokedex has is
-        setForms( <Pokedex id={ id } /> )
+        setForms( <Pokedex id={ id } clickedPoke={clickedPoke}/> )
     }
 
     return (
@@ -17,7 +17,7 @@ const Varieties = ( { varieties } ) => {
                     if ( form.is_default === false ) {
                         return (
                             <p key={ form.pokemon.name }
-                                onClick={ () => test( form.pokemon.url ) }>
+                                onClick={ () => retrieveById( form.pokemon.url ) }>
                                 { form.pokemon.name }
                             </p>
                         )
