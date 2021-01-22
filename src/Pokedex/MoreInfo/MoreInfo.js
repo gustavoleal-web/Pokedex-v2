@@ -3,6 +3,7 @@ import Abilities from './Abilities/Abilities';
 import EvolutionChain from './EvolutionChain/EvolutionChain';
 import AlternateForms from './AlternateForms/alternateForms';
 import Varieties from './Varieties/Varieties';
+import ShinyPoke from './ShinyPoke/ShinyPoke';
 import styles from './moreInfo.module.css';
 import axios from 'axios';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
@@ -10,7 +11,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
 
 
-const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms, clickedPoke, image } ) => {
+const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,  clickedPoke } ) => {
     const [ modal, setModal ] = useState( false );
     const commonAbilities = [];
     const hiddenAbilities = [];
@@ -64,11 +65,11 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
         const fetchData = async () => {
             try {
 
-                let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon-species/${ name }` )
-                let pokemonEntries = pokemon.data.evolution_chain;
-                pokemon.data.varieties ? setVarieties( pokemon.data.varieties ) : setVarieties( '' );
+                let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon-species/${ name }` );
+                let fetchedEvoChainURL = pokemon.data.evolution_chain.url;
+                setUrl( fetchedEvoChainURL );
 
-                setUrl( pokemonEntries.url );
+                pokemon.data.varieties ? setVarieties( pokemon.data.varieties ) : setVarieties( '' );
             }
             catch ( e ) {
                 console.log( e );
@@ -112,17 +113,18 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
 
                 <h5>Evolution</h5>
                 <ModalFooter>
-                    <EvolutionChain clickedPoke={ clickedPoke } evolutionChainUrl={ evolutionChainUrl } />
+                    {<EvolutionChain clickedPoke={ clickedPoke } evolutionChainUrl={ evolutionChainUrl } />}
                 </ModalFooter>
 
                 <h5>Varieties</h5>
                 <ModalFooter>
-                    { varieties.length === 0 ? null : <Varieties varieties={ varieties } /> }
+                    { varieties.length === 0 ? null : <Varieties varieties={ varieties } clickedPoke={clickedPoke}/> }
                 </ModalFooter>
 
                 <h5>Forms</h5>
                 <ModalFooter>
-                    { pokeForms.length !== 0 ? pokeForms.map( poke => <AlternateForms pokeForms={ poke } shinySprite={sprites.front_shiny} key={ poke.url } /> ) : null }
+                    { pokeForms.length !== 0 ? pokeForms.map( poke => <AlternateForms pokeForms={ poke }  key={ poke.url } /> ) : null }
+                    <ShinyPoke shinySprite={sprites.front_shiny}/>
                 </ModalFooter>
             </Modal>
         </div>
