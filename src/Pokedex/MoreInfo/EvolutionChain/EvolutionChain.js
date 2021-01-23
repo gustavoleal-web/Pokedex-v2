@@ -1,29 +1,32 @@
 import React, { useEffect, useState } from 'react';
+import setEvoChain from './setEvoChain';
+import testingAllEvos from './testingAllEvos';
+import EvosMethods from './evosMethods';
 import axios from 'axios';
 
 const EvolutionChain = ( { evolutionChainUrl, clickedPoke } ) => {
     const [ state, setState ] = useState( [] );
+    const [ methods, setMethods ] = useState( [] );
+
     useEffect( () => {
         const fetchData = async () => {
-            const pokeEvoLine = [];
+            let pokeEvoLine;
+            let evosAndAlternative;
             try {
-                let pokemon = await axios.get( evolutionChainUrl )
-                let pokemonEntries = pokemon.data.chain;
+                let pokemon = await axios.get( evolutionChainUrl );
+                let fetchedEvoChain = pokemon.data.chain;
 
-                //first evolution
-                if ( pokemonEntries.evolves_to.length !== 0 ) {
-                    pokeEvoLine.push( pokemonEntries.species.name );
-                    pokeEvoLine.push( pokemonEntries.evolves_to[ 0 ].species.name );
-                    //second evolution
-                    if ( pokemonEntries.evolves_to[ 0 ].evolves_to.length !== 0 ) {
-                        pokeEvoLine.push( pokemonEntries.evolves_to[ 0 ].evolves_to[ 0 ].species.name )
-                    }
-                }
-                setState( pokeEvoLine )
+                pokeEvoLine = setEvoChain( fetchedEvoChain );
+                setState( pokeEvoLine );
+
+                //testing all evolutions and alternative evolutions
+                evosAndAlternative = testingAllEvos( fetchedEvoChain );
+                setMethods( evosAndAlternative );
             }
             catch ( e ) {
                 console.log( e );
             }
+
         }
         fetchData();
 
@@ -31,8 +34,8 @@ const EvolutionChain = ( { evolutionChainUrl, clickedPoke } ) => {
 
     return (
         <div>
-       
-            {state.length === 0
+
+            {/*state.length === 0
                 ? <p>This Pokemon does not evolve.</p>
                 : state.map( pokemonEvo =>
                     <p onClick={ () => clickedPoke( pokemonEvo ) }
@@ -40,7 +43,9 @@ const EvolutionChain = ( { evolutionChainUrl, clickedPoke } ) => {
                         key={ pokemonEvo }>
                         { pokemonEvo }
                     </p> )
-            }
+                */ }
+
+            <EvosMethods methods={ methods }/>
         </div>
     )
 }
