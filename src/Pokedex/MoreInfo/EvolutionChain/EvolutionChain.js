@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import setEvoChain from './setEvoChain';
-import evolutionsTriggers from './evolutionsTriggers';
-import EvosMethods from './evosMethods';
+import filterEvolutionsTriggers from './filterEvolutionsTriggers';
+import EvosMethods from './EvosMethods';
 import axios from 'axios';
 
 const EvolutionChain = ( { evolutionChainUrl, clickedPoke } ) => {
@@ -20,7 +20,7 @@ const EvolutionChain = ( { evolutionChainUrl, clickedPoke } ) => {
                 setState( pokeEvoLine );
 
                 //testing all evolutions and alternative evolutions
-                evosAndAlternative = evolutionsTriggers( fetchedEvoChain );
+                evosAndAlternative = filterEvolutionsTriggers( fetchedEvoChain );
                 setMethods( evosAndAlternative );
             }
             catch ( e ) {
@@ -45,7 +45,7 @@ const EvolutionChain = ( { evolutionChainUrl, clickedPoke } ) => {
                     </p> )
                 */ }
 
-            <EvosMethods methods={ methods }/>
+            <EvosMethods methods={ methods } clickedPoke={clickedPoke}/>
         </div>
     )
 }
