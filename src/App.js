@@ -6,12 +6,6 @@ import Search from './Search/Search';
 import NotFound from './PokemonNotFound/notFound'
 import styles from './App.module.css';
 
-
-
-//TODO: might no even need to use clicked ans setClicked
-//TODO instead check to see if the string is empty. If it is don't do anthing. 
-//TODO: option 2: disable the button until user enters a valid pokemon name. 
-
 const App = () => {
   const [ state, setState ] = useState( [] );
   const [ newPokedex, setNewPokedex ] = useState( [] );
