@@ -1,8 +1,15 @@
 const filterEvolutionsTriggers = ( fetchedEvoChain ) => {
-    let evosAndMethods = []
-
+    let evosAndMethods = [];
+    let numberOfEvolutions = fetchedEvoChain.evolves_to.length;
+   
+    //phione is a special case b/c it does not evolve but can be bred from manaphy.
+    //they are the same species
+    if ( numberOfEvolutions === 0 || fetchedEvoChain.species.name === 'phione' ) {
+        return evosAndMethods;
+    }
+    
     //this works for pokemon whose second evo is split
-    if ( fetchedEvoChain.evolves_to.length === 1 ) {
+    if ( numberOfEvolutions === 1 ) {
         evosAndMethods.push( {
             name: fetchedEvoChain.species.name,
             evolutionDetails: {
@@ -28,7 +35,7 @@ const filterEvolutionsTriggers = ( fetchedEvoChain ) => {
     }
 
     //this for pokemons whose first evo is split ex: wurmple can evolve into 2 different kinds
-    else if ( fetchedEvoChain.evolves_to.length === 2 ) {
+    else if ( numberOfEvolutions === 2 ) {
         for ( let i = 0; i < fetchedEvoChain.evolves_to.length; i++ ) {
             evosAndMethods.push( {
                 name: fetchedEvoChain.species.name,
@@ -50,7 +57,7 @@ const filterEvolutionsTriggers = ( fetchedEvoChain ) => {
         }
     }
     //pokemon that can evolve into more than 3 different pokemon from the very beginning. ex: eevee
-    else if ( fetchedEvoChain.evolves_to.length > 2 ) {
+    else if ( numberOfEvolutions > 2 ) {
 
         for ( let i = 0; i < fetchedEvoChain.evolves_to.length; i++ ) {
             //to retrive the current (which is the last in the array) evolution method
@@ -66,7 +73,7 @@ const filterEvolutionsTriggers = ( fetchedEvoChain ) => {
             } );
         }
     }
-    
+
     return evosAndMethods;
 }
 
