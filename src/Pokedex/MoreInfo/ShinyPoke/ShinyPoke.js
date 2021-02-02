@@ -11,7 +11,7 @@ const ShinyPoke = ( { shinySprite } ) => {
     }
     return (
         <div>
-            <p style={{textAlign: 'center'}}>shiny</p>
+            <p style={ { textAlign: 'center' } }>shiny</p>
             { shiny }
         </div>
     )
