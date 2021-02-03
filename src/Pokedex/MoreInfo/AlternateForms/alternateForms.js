@@ -3,7 +3,8 @@ import axios from 'axios';
 
 const AlternateForms = ( { pokeForms } ) => {
     const [ alternatives, setAlternatives ] = useState( '' );
-    
+    let formName = 'normal';
+
     useEffect( () => {
         const fetchData = async () => {
             try {
@@ -19,12 +20,16 @@ const AlternateForms = ( { pokeForms } ) => {
 
     }, [ pokeForms ] )
 
+    if(alternatives.form_name) {
+        formName = alternatives.form_name;
+    }
+
     return (
         <>
             {
                 alternatives
                     ? <div>
-                        <p style={ { textAlign: 'center' } }>{ alternatives.form_name }</p>
+                        <p style={ { textAlign: 'center' } }>{ formName }</p>
                         <img src={ `${ alternatives.sprites.front_default }` } alt={ `${ alternatives.form_name }` } />
                     </div>
                     : null
