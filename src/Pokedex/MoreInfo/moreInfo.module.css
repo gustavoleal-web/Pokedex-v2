@@ -1,5 +1,52 @@
 .moreInfo {
     border-radius: 50%;
-    width: 100px;
-    
+    width        : 100px;
+
+}
+
+/* Text between <hr> tag */
+
+hr {
+    padding   : 0;
+    border    : none;
+    border-top: medium double #333;
+    color     : #333;
+    text-align: center;
+}
+
+hr:after {
+    display   : inline-block;
+    position  : relative;
+    top       : -0.7em;
+    font-size : 1.5em;
+    padding   : 0 0.25em;
+    background: white;
+}
+
+
+.hrStyleOne:after {
+    content: 'Abilities';
+
+}
+
+.hrStyleTwo:after {
+    content: 'Training';
+}
+
+.hrStyleThree:after {
+    content: 'Evolution';
+}
+
+.hrStyleFour:after {
+    content: 'Varieties';
+}
+
+.hrStyleFive:after {
+    content: 'Forms & Shiny';
+}
+
+.formsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
