@@ -1,21 +1,25 @@
-
 .search {
     border-radius: 20px;
-    border: none;
-    height: 24px;
+    border       : none;
 }
 
 .container {
-    margin-top: 40px;
+    display    : flex;
+    margin-left: 5px;
+    margin-top : 40px;
 }
 
-.enabled {
-    background-color:  rgba(96, 230, 96, 0.8);
+
+
+.button {
+    /* formula borrowed from an ele used by reactstrap */
+    height      : calc(1.5em + .75rem + 2px);
+    margin-left : 5px;
+    margin-right: 5px;
+    width       : 15%;
 }
 
-.disabled {
-    background-color: none;
+.searchIcon {
+    height: 100%;
 }
-/* background-color: rgba(96, 230, 96, 0.8);
-color: black;
-font-weight: bold; */
+
