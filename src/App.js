@@ -47,9 +47,9 @@ const App = () => {
 
 
 
-  const wasClicked = (name ) => {
+  const wasClicked = ( name ) => {
     name = name.toLowerCase();
-    
+
     //this will return all pokemon that match the full input or part of it.
     const foundMatches = state.filter( pokemon => {
       let found;
@@ -62,7 +62,7 @@ const App = () => {
     foundMatches.length === 0 ? setNoPkmFound( <NotFound /> ) : setNoPkmFound( null )
 
     setNewPokedex( foundMatches );
-  }  
+  }
 
   return (
 
@@ -70,20 +70,25 @@ const App = () => {
       <Search wasClicked={ wasClicked } />
 
       {noPkmFound }
-      
+
       <div>
         { state.length !== 0
           ? newPokedex.map( pokemon =>
             <Pokedex
               key={ pokemon.pokemon_species.url }
               id={ pokemon.entry_number }
-              clickedPoke={wasClicked}
+              clickedPoke={ wasClicked }
             /> )
           : <p>Loading</p>
         }
 
       </div>
       <SelectPokedex fetchSelectedPokedex={ fetchSelectedPokedex } />
+
+      <div>
+        Icons made by <a href='https://www.freepik.com' title='Freepik'>Freepik
+        </a> from <a href='https://www.flaticon.com/' title='Flaticon'>www.flaticon.com</a>
+      </div>
     </div>
   )
 
