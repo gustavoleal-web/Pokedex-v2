@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PokedexEntries from './PokedexEntries/PokedexEntries'
 import Abilities from './Abilities/Abilities';
 import Training from './Training/Training';
 import EvolutionChain from './EvolutionChain/EvolutionChain';
@@ -7,14 +8,14 @@ import Varieties from './Varieties/Varieties';
 import ShinyPoke from './ShinyPoke/ShinyPoke';
 import styles from './moreInfo.module.css';
 import axios from 'axios';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import filterDexEntries from './filterDexEntries';
+import { Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
 
 const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms, clickedPoke, backgroundColor } ) => {
     const [ modal, setModal ] = useState( false );
     const [ evolutionChainUrl, setUrl ] = useState( '' );
     const [ varieties, setVarieties ] = useState( '' );
     const [ trainingData, setTrainigData ] = useState( {} );
+    const [ pekedexEntries, setPokedexEntries ] = useState( {} )
     const commonAbilities = [];
     const hiddenAbilities = [];
 
@@ -72,11 +73,18 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
                     capture_rate: fetechedTraining.captureRate,
                     growth_rate: fetechedTraining.grouthRate
                 } = pokemon.data );
-                setTrainigData( fetechedTraining )
 
 
+                let fetchedPokedEntries = {};
+                ( {
+                    flavor_text_entries: fetchedPokedEntries.pokedexTextEntries,
+                    genera: fetchedPokedEntries.genus,
+                    generation: fetchedPokedEntries.generation
+                } = pokemon.data );
 
-                filterDexEntries( pokemon.data.flavor_text_entries )
+
+                setTrainigData( fetechedTraining );
+                setPokedexEntries( fetchedPokedEntries );
                 setUrl( fetchedEvoChainURL );
 
                 pokemon.data.varieties ? setVarieties( pokemon.data.varieties ) : setVarieties( '' );
@@ -105,21 +113,23 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
                 </ModalHeader>
 
                 <ModalBody>
+                    <hr className={ styles.hrStyleZero } />
                     <div>
-                        <hr className={ styles.hrStyleOne } />
-                        <h6>Common</h6>
-                        <Abilities abilities={ commonAbilities } />
-
-                        <h6>Hidden</h6>
-                        <Abilities abilities={ hiddenAbilities } />
-
-
-                        <div>
-                            <p>Weight: { weightInKg } kg</p>
-                            <p>Height: { feet } ft</p>
-                        </div>
-
+                        <PokedexEntries pokedexData={ pekedexEntries } />
+                        <p>Weight: { weightInKg } kg</p>
+                        <p>Height: { feet } ft</p>
                     </div>
+                </ModalBody>
+
+                <ModalBody>
+
+                    <hr className={ styles.hrStyleOne } />
+                    <h6>Common</h6>
+                    <Abilities abilities={ commonAbilities } />
+
+                    <h6>Hidden</h6>
+                    <Abilities abilities={ hiddenAbilities } />
+
                 </ModalBody>
 
 
@@ -143,7 +153,7 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
 
                 <ModalBody>
                     <hr className={ styles.hrStyleFive } />
-                    <div className={styles.formsContainer}>
+                    <div className={ styles.formsContainer }>
                         { pokeForms.length !== 0 ? pokeForms.map( poke => <AlternateForms pokeForms={ poke } key={ poke.url } /> ) : null }
                         <ShinyPoke shinySprite={ sprites.front_shiny } />
                     </div>
