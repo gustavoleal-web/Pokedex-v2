@@ -23,6 +23,10 @@ hr:after {
     background: white;
 }
 
+.hrStyleZero:after {
+    content: 'General Data';
+
+}
 
 .hrStyleOne:after {
     content: 'Abilities';
