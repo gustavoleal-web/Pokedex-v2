@@ -12,6 +12,8 @@ hr {
     border-top: medium double #333;
     color     : #333;
     text-align: center;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
 }
 
 hr:after {
@@ -23,34 +25,36 @@ hr:after {
     background: white;
 }
 
-.hrStyleZero:after {
+.hrGeneral:after {
     content: 'General Data';
-
 }
 
-.hrStyleOne:after {
+.hrAbilities:after {
     content: 'Abilities';
-
 }
 
-.hrStyleTwo:after {
+.hrTraining:after {
     content: 'Training';
 }
 
-.hrStyleThree:after {
+.hrBreeding:after {
+    content: 'Breeding';
+}
+
+.hrEvolution:after {
     content: 'Evolution';
 }
 
-.hrStyleFour:after {
+.hrVarieties:after {
     content: 'Varieties';
 }
 
-.hrStyleFive:after {
+.hrForms:after {
     content: 'Forms & Shiny';
 }
 
 .formsContainer {
-    display: flex;
-    flex-wrap: wrap;
+    display        : flex;
+    flex-wrap      : wrap;
     justify-content: space-around;
 }
