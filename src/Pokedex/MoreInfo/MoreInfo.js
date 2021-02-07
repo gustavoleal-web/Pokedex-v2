@@ -3,6 +3,7 @@ import PokedexEntries from './PokedexEntries/PokedexEntries'
 import Abilities from './Abilities/Abilities';
 import Training from './Training/Training';
 import EvolutionChain from './EvolutionChain/EvolutionChain';
+import Breeding from './Breeding/Breeding.js'
 import AlternateForms from './AlternateForms/alternateForms';
 import Varieties from './Varieties/Varieties';
 import ShinyPoke from './ShinyPoke/ShinyPoke';
@@ -16,6 +17,7 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
     const [ varieties, setVarieties ] = useState( '' );
     const [ trainingData, setTrainigData ] = useState( {} );
     const [ pekedexEntries, setPokedexEntries ] = useState( {} )
+    const [ eggData, setEggData ] = useState( {} );
     const commonAbilities = [];
     const hiddenAbilities = [];
 
@@ -54,6 +56,9 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
         && name !== 'tapu-koko'
         && name !== 'tapu-lele'
         && name !== 'tapu-fini'
+        && name !== 'jangmo-o'
+        && name !== 'hakamo-o'
+        && name !== 'kommo-o'
         && name.includes( '-' ) ) {
 
         let end = name.indexOf( '-' );
@@ -82,9 +87,16 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
                     generation: fetchedPokedEntries.generation
                 } = pokemon.data );
 
+                let fetchedEggData = {};
+
+                ( {
+                    egg_groups: fetchedEggData.eggGroups,
+                    hatch_counter: fetchedEggData.hatchCounter
+                } = pokemon.data )
 
                 setTrainigData( fetechedTraining );
                 setPokedexEntries( fetchedPokedEntries );
+                setEggData( fetchedEggData );
                 setUrl( fetchedEvoChainURL );
 
                 pokemon.data.varieties ? setVarieties( pokemon.data.varieties ) : setVarieties( '' );
@@ -112,53 +124,60 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
 
                 </ModalHeader>
 
-                <ModalBody>
-                    <hr className={ styles.hrStyleZero } />
-                    <div>
-                        <PokedexEntries pokedexData={ pekedexEntries } />
-                        <p>Weight: { weightInKg } kg</p>
-                        <p>Height: { feet } ft</p>
-                    </div>
-                </ModalBody>
+                <span style={ { fontSize: '18px' } }>
+                    <ModalBody>
+                        <hr className={ styles.hrGeneral } />
+                        <div>
+                            { Object.keys( pekedexEntries ).length !== 0 ? <PokedexEntries pokedexData={ pekedexEntries } /> : null }
+                            <p>Weight: { weightInKg } kg</p>
+                            <p>Height: { feet } ft</p>
+                        </div>
+                    </ModalBody>
 
-                <ModalBody>
+                    <ModalBody>
 
-                    <hr className={ styles.hrStyleOne } />
-                    <h6>Common</h6>
-                    <Abilities abilities={ commonAbilities } />
+                        <hr className={ styles.hrAbilities } />
+                        <h6>Common</h6>
+                        <Abilities abilities={ commonAbilities } />
 
-                    <h6>Hidden</h6>
-                    <Abilities abilities={ hiddenAbilities } />
+                        <h6>Hidden</h6>
+                        <Abilities abilities={ hiddenAbilities } />
 
-                </ModalBody>
-
-
-                <ModalBody>
-                    <hr className={ styles.hrStyleTwo } />
-                    { Object.keys( trainingData ).length !== 0 ? <Training data={ trainingData } /> : null }
-                </ModalBody>
+                    </ModalBody>
 
 
-                <ModalBody style={ { display: 'block' } }>
-                    <hr className={ styles.hrStyleThree } />
-                    { <EvolutionChain clickedPoke={ clickedPoke } evolutionChainUrl={ evolutionChainUrl } /> }
-                </ModalBody>
+                    <ModalBody>
+                        <hr className={ styles.hrTraining } />
+                        { Object.keys( trainingData ).length !== 0 ? <Training data={ trainingData } /> : null }
+                    </ModalBody>
 
 
-                <ModalBody>
-                    <hr className={ styles.hrStyleFour } />
-                    { varieties.length === 0 ? null : <Varieties varieties={ varieties } clickedPoke={ clickedPoke } /> }
-                </ModalBody>
+                    <ModalBody style={ { display: 'block' } }>
+                        <hr className={ styles.hrEvolution } />
+                        { <EvolutionChain clickedPoke={ clickedPoke } evolutionChainUrl={ evolutionChainUrl } /> }
+                    </ModalBody>
 
 
-                <ModalBody>
-                    <hr className={ styles.hrStyleFive } />
-                    <div className={ styles.formsContainer }>
-                        { pokeForms.length !== 0 ? pokeForms.map( poke => <AlternateForms pokeForms={ poke } key={ poke.url } /> ) : null }
-                        <ShinyPoke shinySprite={ sprites.front_shiny } />
-                    </div>
+                    <ModalBody>
+                        <hr className={ styles.hrBreeding } />
+                        { eggData ? <Breeding eggData={ eggData } /> : null }
+                    </ModalBody>
 
-                </ModalBody>
+                    <ModalBody>
+                        <hr className={ styles.hrVarieties } />
+                        { varieties.length === 0 ? null : <Varieties varieties={ varieties } clickedPoke={ clickedPoke } /> }
+                    </ModalBody>
+
+
+                    <ModalBody>
+                        <hr className={ styles.hrForms } />
+                        <div className={ styles.formsContainer }>
+                            { pokeForms.length !== 0 ? pokeForms.map( poke => <AlternateForms pokeForms={ poke } key={ poke.url } /> ) : null }
+                            <ShinyPoke shinySprite={ sprites.front_shiny } />
+                        </div>
+
+                    </ModalBody>
+                </span>
             </Modal>
         </div>
     );
