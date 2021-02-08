@@ -135,13 +135,14 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
                     </ModalBody>
 
                     <ModalBody>
+                        <div style={ { marginTop: '40px' } }>
+                            <hr className={ styles.hrAbilities } />
+                            <h6>Common</h6>
+                            <Abilities abilities={ commonAbilities } />
 
-                        <hr className={ styles.hrAbilities } />
-                        <h6>Common</h6>
-                        <Abilities abilities={ commonAbilities } />
-
-                        <h6>Hidden</h6>
-                        <Abilities abilities={ hiddenAbilities } />
+                            <h6>Hidden</h6>
+                            <Abilities abilities={ hiddenAbilities } />
+                        </div>
 
                     </ModalBody>
 
@@ -159,8 +160,10 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
 
 
                     <ModalBody>
-                        <hr className={ styles.hrBreeding } />
-                        { eggData ? <Breeding eggData={ eggData } /> : null }
+                        <div style={ { marginTop: '40px' } }>
+                            <hr className={ styles.hrBreeding } />
+                            { Object.keys( eggData ).length !== 0 ? <Breeding eggData={ eggData } /> : null }
+                        </div>
                     </ModalBody>
 
                     <ModalBody>
