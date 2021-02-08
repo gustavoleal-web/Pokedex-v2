@@ -12,8 +12,6 @@ hr {
     border-top: medium double #333;
     color     : #333;
     text-align: center;
-    margin-top: 3rem;
-    margin-bottom: 3rem;
 }
 
 hr:after {
