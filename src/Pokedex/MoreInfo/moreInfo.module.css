@@ -4,7 +4,10 @@
 
 }
 
-/* Text between <hr> tag */
+.hrMargin {
+    margin-top: 40px; 
+    margin-bottom: 40px;
+}
 
 hr {
     padding   : 0;
@@ -23,8 +26,9 @@ hr:after {
     background: white;
 }
 
+/* Text between <hr> tag */
 .hrGeneral:after {
-    content: 'General Data';
+    content: 'Pokedex Entry';
 }
 
 .hrAbilities:after {
