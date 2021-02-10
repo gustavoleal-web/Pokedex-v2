@@ -4,6 +4,12 @@ import { Button } from 'reactstrap';
 
 const Abilities = ( { abilities } ) => {
     const [ state, setState ] = useState( '' );
+    const cssStyles = {
+        width: '51%',
+        height: '27px',
+        margin: '0',
+        padding: '0',
+    }
 
     const fetchAbilityData = async ( url ) => {
         try {
@@ -24,27 +30,18 @@ const Abilities = ( { abilities } ) => {
 
     }
     return (
-        <div>
-
-
+        <>
             {
                 abilities.map( ability =>
                     <Button onClick={ () => fetchAbilityData( ability.url ) }
                         key={ ability.name }
                         id="PopoverFocus"
                         type="button"
-                        style={ {
-                            width: '51%',
-                            height: '22px',
-                            margin: '0',
-                            padding: '0'
-                        } }>{ ability.name }
+                        style={ cssStyles }>{ ability.name }
                     </Button> )
             }
             { state ? <p>{ state.short_effect }</p> : <p>...</p> }
-
-
-        </div>
+        </>
 
 
     )
