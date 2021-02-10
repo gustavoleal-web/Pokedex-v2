@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import filterEvolutionsTriggers from './filterEvolutionsTriggers';
-import EvosMethods from './EvosMethods';
+import EvosMethods from './EvosMethods/EvosMethods';
 import axios from 'axios';
 
 const EvolutionChain = ( { evolutionChainUrl, clickedPoke } ) => {
