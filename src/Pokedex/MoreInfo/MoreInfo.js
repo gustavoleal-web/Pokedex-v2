@@ -117,16 +117,17 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
 
                 <ModalHeader toggle={ toggle } close={ closeBtn } className={ backgroundColor }>
                     { pokeName.toUpperCase() }
-                    { sprites.versions[ 'generation-viii' ].icons.front_default
-                        ? <img src={ `${ sprites.versions[ 'generation-viii' ].icons.front_default }` } alt={ { name } } />
-                        : null
+                    {
+                        sprites.versions[ 'generation-viii' ].icons.front_default
+                            ? <img src={ `${ sprites.versions[ 'generation-viii' ].icons.front_default }` } alt={ { name } } />
+                            : null
                     }
 
                 </ModalHeader>
 
-                <span style={ { fontSize: '18px' } }>
+                <span style={ { fontSize: '18px', textAlign: 'center' } }>
                     <ModalBody>
-                        <hr className={ styles.hrGeneral } />
+                        <hr className={ `${ styles.hrGeneral } ${ styles.hrMargin }` } />
                         <div>
                             { Object.keys( pekedexEntries ).length !== 0 ? <PokedexEntries pokedexData={ pekedexEntries } /> : null }
                             <p>Weight: { weightInKg } kg</p>
@@ -134,46 +135,41 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
                         </div>
                     </ModalBody>
 
-                    <ModalBody>
-                        <div style={ { marginTop: '40px' } }>
-                            <hr className={ styles.hrAbilities } />
-                            <h6>Common</h6>
-                            <Abilities abilities={ commonAbilities } />
+                    <ModalBody >
+                        <hr className={ `${ styles.hrAbilities } ${ styles.hrMargin }` } style={ { marginTop: '40px', marginBottom: '40px' } } />
+                        <h5>Common</h5>
+                        <Abilities abilities={ commonAbilities } />
 
-                            <h6>Hidden</h6>
-                            <Abilities abilities={ hiddenAbilities } />
-                        </div>
-
+                        <h5>Hidden</h5>
+                        <Abilities abilities={ hiddenAbilities } />
                     </ModalBody>
 
 
                     <ModalBody>
-                        <hr className={ styles.hrTraining } />
+                        <hr className={ `${ styles.hrTraining } ${ styles.hrMargin }` } />
                         { Object.keys( trainingData ).length !== 0 ? <Training data={ trainingData } /> : null }
                     </ModalBody>
 
 
                     <ModalBody style={ { display: 'block' } }>
-                        <hr className={ styles.hrEvolution } />
+                        <hr className={ `${ styles.hrEvolution } ${ styles.hrMargin }` } />
                         { <EvolutionChain clickedPoke={ clickedPoke } evolutionChainUrl={ evolutionChainUrl } /> }
                     </ModalBody>
 
 
                     <ModalBody>
-                        <div style={ { marginTop: '40px' } }>
-                            <hr className={ styles.hrBreeding } />
-                            { Object.keys( eggData ).length !== 0 ? <Breeding eggData={ eggData } /> : null }
-                        </div>
+                        <hr className={ `${ styles.hrBreeding } ${ styles.hrMargin }` } />
+                        { Object.keys( eggData ).length !== 0 ? <Breeding eggData={ eggData } /> : null }
                     </ModalBody>
 
                     <ModalBody>
-                        <hr className={ styles.hrVarieties } />
+                        <hr className={ `${ styles.hrVarieties } ${ styles.hrMargin }` } />
                         { varieties.length === 0 ? null : <Varieties varieties={ varieties } clickedPoke={ clickedPoke } /> }
                     </ModalBody>
 
 
                     <ModalBody>
-                        <hr className={ styles.hrForms } />
+                        <hr className={ `${ styles.hrForms } ${ styles.hrMargin }` } />
                         <div className={ styles.formsContainer }>
                             { pokeForms.length !== 0 ? pokeForms.map( poke => <AlternateForms pokeForms={ poke } key={ poke.url } /> ) : null }
                             <ShinyPoke shinySprite={ sprites.front_shiny } />
