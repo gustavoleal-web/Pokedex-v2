@@ -1,0 +1,15 @@
+.container {
+    display              : grid;
+    grid-template-columns: 2fr 1.5fr;
+    column-gap           : 20px;
+
+    margin-top: 40px;
+}
+
+.container p {
+    justify-self: end;
+}
+
+.container span {
+    justify-self: start;
+}

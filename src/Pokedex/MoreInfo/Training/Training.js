@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import styles from './Training.module.css';
 import axios from 'axios';
 
 const Training = ( { data } ) => {
@@ -27,12 +28,16 @@ const Training = ( { data } ) => {
     }
 
     return (
-        <div>
-            <h4>Training Data</h4>
-            <p>Base Happiness: { data.baseHappiness }</p>
-            <p>Capture Rate: { data.captureRate }</p>
-            <p>Growth Rate: { data.grouthRate.name }</p>
-            <p>Experience to reach Lv { maxExperience.level }: { experience }</p>
+        <div className={ styles.container }>
+            <p>Base Happiness: </p>
+            <span>{ data.baseHappiness }</span>
+            <p>Capture Rate: </p>
+            <span>{ data.captureRate }</span>
+            <p>Growth Rate: </p>
+            <span>{ data.grouthRate.name }</span>
+            <p>Experience to reach Lv { maxExperience.level }: </p>
+            <span>{ experience }</span>
+
         </div>
     )
 }
