@@ -11,7 +11,7 @@ const Varieties = ( { varieties, clickedPoke } ) => {
     }
 
     return (
-        <div>
+        <>
             {
                 varieties.map( form => {
                     if ( form.is_default === false ) {
@@ -26,7 +26,7 @@ const Varieties = ( { varieties, clickedPoke } ) => {
                 } )
             }
             {form }
-        </div>
+        </>
     )
 }
 

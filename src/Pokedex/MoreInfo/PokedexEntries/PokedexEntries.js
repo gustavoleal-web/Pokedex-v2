@@ -50,11 +50,11 @@ const PokedexEntries = ( { pokedexData } ) => {
         }
     }
     return (
-        <div style={ { marginTop: '40px' } }>
+        <>
             <p>This Pokemon was introduced in { generation }.</p>
             <p>It is known as the {englishGenus.genus}</p>
             <p>{ englishEntry }</p>
-        </div>
+        </>
     )
 }
 
