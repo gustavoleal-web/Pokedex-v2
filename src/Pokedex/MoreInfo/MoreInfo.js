@@ -11,9 +11,10 @@ import styles from './moreInfo.module.css';
 import maleIcon from '../../img/icons/male-gender.png'
 import femaleIcon from '../../img/icons/female-gender.png'
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 import { Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
 
-const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms, clickedPoke, backgroundColor } ) => {
+const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms, stats, clickedPoke, backgroundColor } ) => {
     const [ modal, setModal ] = useState( false );
     const [ evolutionChainUrl, setUrl ] = useState( '' );
     const [ varieties, setVarieties ] = useState( '' );
@@ -199,6 +200,21 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
                             { pokeForms.length !== 0 ? pokeForms.map( poke => <AlternateForms pokeForms={ poke } key={ poke.url } /> ) : null }
                             <ShinyPoke shinySprite={ sprites.front_shiny } />
                         </div>
+
+                    </ModalBody>
+
+                    <ModalBody>
+                        <hr className={ `${ styles.hrForms } ${ styles.hrMargin }` } />
+                        {
+                            stats.map( ( stat ) =>
+                                <div key={ uuidv4() }>
+                                    <p >{ stat.stat.name }: { stat.base_stat }</p>
+                                    {/*<div className={styles.statsBar}></div>*/ }
+                                </div>
+
+                            )
+
+                        }
 
                     </ModalBody>
                 </span>
