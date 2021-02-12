@@ -71,7 +71,7 @@ const App = () => {
 
       {noPkmFound }
 
-      <div>
+      <div className={styles.pokemonsContainer}>
         { state.length !== 0
           ? newPokedex.map( pokemon =>
             <Pokedex
