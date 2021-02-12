@@ -8,6 +8,8 @@ import AlternateForms from './AlternateForms/alternateForms';
 import Varieties from './Varieties/Varieties';
 import ShinyPoke from './ShinyPoke/ShinyPoke';
 import styles from './moreInfo.module.css';
+import maleIcon from '../../img/icons/male-gender.png'
+import femaleIcon from '../../img/icons/female-gender.png'
 import axios from 'axios';
 import { Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
 
@@ -16,7 +18,8 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
     const [ evolutionChainUrl, setUrl ] = useState( '' );
     const [ varieties, setVarieties ] = useState( '' );
     const [ trainingData, setTrainigData ] = useState( {} );
-    const [ pekedexEntries, setPokedexEntries ] = useState( {} )
+    const [ pekedexEntries, setPokedexEntries ] = useState( {} );
+    const [ gender, setGender ] = useState( {} );
     const [ eggData, setEggData ] = useState( {} );
     const commonAbilities = [];
     const hiddenAbilities = [];
@@ -71,6 +74,19 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
 
                 let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon-species/${ name }` );
                 let fetchedEvoChainURL = pokemon.data.evolution_chain.url;
+
+
+                if ( pokemon.data.gender_rate === -1 ) {
+                    setGender( 'genderless' )
+                }
+                else {
+                    let genderRate = {};
+                    let female = ( 12.5 * pokemon.data.gender_rate );
+                    let male = 100 - female;
+                    genderRate.male = male;
+                    genderRate.female = female;
+                    setGender( genderRate );
+                }
 
                 let fetechedTraining = {};
                 ( {
@@ -132,6 +148,15 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
                             { Object.keys( pekedexEntries ).length !== 0 ? <PokedexEntries pokedexData={ pekedexEntries } /> : null }
                             <p>Weight: { weightInKg } kg</p>
                             <p>Height: { feet } ft</p>
+
+                            <h5>Gender</h5>
+                            { gender === 'genderless'
+                                ? <p>Genderless</p>
+                                : <div>
+                                    <p><img src={ maleIcon } alt='male' /> { gender.male }%</p>
+                                    <p><img src={ femaleIcon } alt='female' /> { gender.female }%</p>
+                                </div> }
+
                         </div>
                     </ModalBody>
 
