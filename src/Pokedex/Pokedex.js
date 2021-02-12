@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import MoreInfo from './MoreInfo/MoreInfo'
 import axios from 'axios';
-import { v4 as uuidv4 } from 'uuid';
+
 import styles from './Pokedex.module.css';
 import stylesTypes from './pokeTypes.module.css'
 import backgroundTypes from './pokeTypesBackgrondColor.module.css'
@@ -83,25 +83,12 @@ const Pokedex = ( { id, clickedPoke } ) => {
                             height={ state.height }
                             moves={ state.moves }
                             pokeForms={ pokeForms }
+                            stats={state.stats}
                             backgroundColor={ typeColorBackground }
                             clickedPoke={ clickedPoke }
                         />
 
                     </div>
-
-                    <div className={ styles.stats }>
-                        {
-                            state.stats.map( ( stat ) =>
-                                <div key={ uuidv4() }>
-                                    <p >{ stat.stat.name }: { stat.base_stat }</p>
-                                    {/*<div className={styles.statsBar}></div>*/ }
-                                </div>
-
-                            )
-
-                        }
-                    </div>
-
                 </div>
             }
         </>
