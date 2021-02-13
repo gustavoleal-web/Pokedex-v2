@@ -7,6 +7,7 @@ import Breeding from './Breeding/Breeding.js'
 import AlternateForms from './AlternateForms/alternateForms';
 import Varieties from './Varieties/Varieties';
 import ShinyPoke from './ShinyPoke/ShinyPoke';
+import Stats from './Stats/Stats';
 import styles from './moreInfo.module.css';
 import maleIcon from '../../img/icons/male-gender.png'
 import femaleIcon from '../../img/icons/female-gender.png'
@@ -28,6 +29,7 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
     //from reactstrap
     const toggle = () => setModal( !modal );
     const closeBtn = <button className="close" onClick={ toggle }>&times;</button>;
+
 
     //converted the value to meeters then to ft
     let feet = ( height / 10 ) * 3.281;
@@ -204,18 +206,24 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
                     </ModalBody>
 
                     <ModalBody>
-                        <hr className={ `${ styles.hrForms } ${ styles.hrMargin }` } />
-                        {
-                            stats.map( ( stat ) =>
-                                <div key={ uuidv4() }>
-                                    <p >{ stat.stat.name }: { stat.base_stat }</p>
-                                    {/*<div className={styles.statsBar}></div>*/ }
-                                </div>
+                        <hr className={ `${ styles.hrStats } ${ styles.hrMargin }` } />
+                        <div >
+                            {
+                                stats.map( ( stat ) =>
+                                    <span key={ uuidv4() } className={styles.statsContainer}>
+                                        <p className={styles.statsName}>{ stat.stat.name }: </p>
+                                        <p className={styles.statsValue}>{ stat.base_stat } </p>
+                                    </span>
 
-                            )
+                                )
+                            }
+                        </div>
 
-                        }
 
+                    </ModalBody>
+
+                    <ModalBody>
+                       {stats.length !== 0 ? <Stats stats={stats}/> : null}
                     </ModalBody>
                 </span>
             </Modal>
