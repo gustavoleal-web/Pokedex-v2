@@ -6,17 +6,26 @@
     font-family     : 'Andika New Basic', sans-serif;
 }
 
-@media (min-width: 900px) {
-    .border {
-        border-radius: 50%;
+.container img {
+    width: 50%;
+}
 
-    }
+.border {
+    border-radius: 50%;
+}
 
-    h1 {
-        font-size: 75px;
-    }
+h1 {
+    font-size: 75px;
+}
 
-    h3 {
-        font-size: 20px;
+h3 {
+    font-size: 20px;
+}
+
+@media(min-width: 900px) {
+
+    .container img {
+        width: auto;
     }
 }
+
