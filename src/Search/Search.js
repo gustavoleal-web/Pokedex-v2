@@ -36,7 +36,7 @@ const Search = ( { wasClicked } ) => {
                 </Button>
             </div>
 
-            <p>For Pokemons with a period in their name e.i Mr.Mime use a dash (-) instead.</p>
+            <p style={{textAlign: 'center'}}>For Pokemons with a period in their name e.i Mr.Mime use a dash (-) instead.</p>
 
         </>
     )
