@@ -1,23 +1,11 @@
 import React from 'react';
+import MinAndMaxStats from './MinAndMaxStats/MinAndMaxStats'
 import { v4 as uuidv4 } from 'uuid';
 
 const Stats = ( { stats } ) => {
-    // Natures:
-    //Highest	1.1
-    // High	1.05
-    // Neutral	1
-    // Low	0.95
-    // Lowest	0.9
 
-    //     Hit Points:
-    //     ( (IV + 2 * BaseStat + (EV/4) ) * Level/100 ) + 10 + Level
 
-    // Attack, Defense, Speed, Sp. Attack, Sp. Defense:
-    //     (((IV + 2 * BaseStat + (EV/4) ) * Level/100 ) + 5) * Nature Value
-
-    let ex = ( ( ( 0 + 2 * 55 + ( 0 / 4 ) ) * 100 / 100 ) + 5 ) * 0.9
-    console.log( ex )
-    //This creates a different linear gradiant for each stat 
+    //This creates a different linear gradiant bar for each stat 
     let gradientWStatsAsValue = {}
     let totalStats = 0;
     for ( let i = 0; i < stats.length; i++ ) {
@@ -40,15 +28,31 @@ const Stats = ( { stats } ) => {
 
                         <div style={ { height: '10px', background: `${ gradientWStatsAsValue[ stat.stat.name ] }` } }></div>
 
-
                     </span>
 
                 )
-
             }
             <p style={ { marginTop: '20px', fontWeight: 'bold' } }>Total: { totalStats }</p>
+
+
+            <span style={ { display: 'flex', justifyContent: 'space-evenly', marginTop: '35px' } }>
+                <p>Min</p>
+                <p>Max</p>
+            </span>
+            {
+                stats.map( stat => <MinAndMaxStats stat={ stat.base_stat } name={ stat.stat.name } /> )
+            }
+
+            <p style={ { fontSize: '14px', padding: '0px 0px', margin: '0px 0px' } }>
+                The range are for LV 100 Pokemon.
+                Min stats are based on hindering nature with 0 IVs and 0 EVs.
+                Max stats are based on beneficial nature with 31 IVs and 252 EVs.
+            </p>
+
+
+
         </>
     )
 }
 
-export default Stats
+export default React.memo( Stats );
