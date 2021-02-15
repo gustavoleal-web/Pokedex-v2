@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './MinAndMax.module.css';
 
 const MinAndMaxStats = ( { stat, name } ) => {
 
@@ -52,7 +53,7 @@ const MinAndMaxStats = ( { stat, name } ) => {
 
     if ( minHp !== 0 && maxHp !== 0 ) {
         displayStat = (
-            <div style={ { display: 'grid', gridTemplateColumns: '1fr 1fr 1fr' } }>
+            <div className={styles.container}>
                 <p>{ name }</p>
                 <p>{ minHp }</p>
                 <p>{ maxHp }</p>
@@ -62,7 +63,7 @@ const MinAndMaxStats = ( { stat, name } ) => {
 
     else if ( minStat !== 0 && maxStat !== 0 ) {
         displayStat = (
-            <div style={ { display: 'grid', gridTemplateColumns: '1fr 1fr 1fr' } }>
+            <div className={styles.container}>
                 <p>{ name }</p>
                 <p>{ minStat }</p>
                 <p>{ maxStat }</p>
