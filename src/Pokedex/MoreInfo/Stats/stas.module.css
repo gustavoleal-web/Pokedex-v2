@@ -1,0 +1,26 @@
+.statsValues {
+    display        : flex;
+    justify-content: space-evenly;
+    margin-top     : 30px;
+}
+
+.statsValues p {
+    width: 200px;
+}
+
+.totalStats {
+    margin-top : 20px;
+    margin-bottom: 50px;
+    font-weight: bold;
+}
+
+.minMaxTitles {
+    display              : grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.minMaxStatement {
+    font-size: 14px;
+    padding  : 0%;
+    margin   : 0%;
+}
