@@ -5,7 +5,7 @@
 }
 
 .hrMargin {
-    margin-top: 40px; 
+    margin-top   : 40px;
     margin-bottom: 40px;
 }
 
@@ -55,8 +55,32 @@ hr:after {
     content: 'Forms & Shiny';
 }
 
+.hrStats:after {
+    content: 'Stats';
+}
+
 .formsContainer {
     display        : flex;
     flex-wrap      : wrap;
     justify-content: space-around;
 }
+
+.statsContainer {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    column-gap: 15px;
+    margin-left: 20%;
+
+}
+
+
+.statsName {
+    justify-self: start;
+    text-transform: capitalize;
+  
+}
+
+.statsValue {
+    justify-self: start;
+}
+
