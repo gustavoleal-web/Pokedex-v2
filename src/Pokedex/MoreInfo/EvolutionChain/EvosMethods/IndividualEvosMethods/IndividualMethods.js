@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
 const IndividualMethods = ( { obj, clickedPoke } ) => {
+    const [ sprite, setSprite ] = useState( '' );
+
     function renameKeys( obj, newKeys ) {
         const keyValues = Object.keys( obj ).map( key => {
             const newKey = newKeys[ key ] || key;
@@ -21,13 +24,29 @@ const IndividualMethods = ( { obj, clickedPoke } ) => {
     const renamedObj = renameKeys( obj, newKeys );
 
 
+    useEffect( () => {
+        const fetchData = async () => {
+            try {
+                let pokemon = await axios.get( ` https://pokeapi.co/api/v2/pokemon-form/${ renamedObj.evolution }` );
+                setSprite( pokemon.data.sprites.front_default )
+            }
+            catch ( e ) {
+                console.log( e );
+            }
+        }
+        fetchData();
+
+    }, [ renamedObj.evolution ] );
+
+
+
     return (
         <div style={ { border: '1px solid black' } }>
             {
                 Object.keys( renamedObj ).map( key => {
                     let evolutionInfo;
-                    
-                  //  too many if statements refactor
+
+                    //  too many if statements refactor
                     if ( renamedObj[ key ] === true ) {
                         evolutionInfo = <p>{ key }</p>
                     }
@@ -50,11 +69,11 @@ const IndividualMethods = ( { obj, clickedPoke } ) => {
                     else {
                         evolutionInfo = <p key={ uuidv4() }>{ `${ key.replaceAll( '_', ' ' ) }: ${ renamedObj[ key ] }` }</p>
                     }
-
-
                     return evolutionInfo;
                 } )
             }
+            {sprite ? <img src={ `${ sprite }` } alt="" onClick={ () => clickedPoke( renamedObj.evolution ) } /> : null }
+
         </div>
     )
 }
