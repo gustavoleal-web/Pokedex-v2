@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import styles from './individualMethos.module.css'
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -72,7 +73,7 @@ const IndividualMethods = ( { obj, clickedPoke } ) => {
                     return evolutionInfo;
                 } )
             }
-            {sprite ? <img src={ `${ sprite }` } alt="" onClick={ () => clickedPoke( renamedObj.evolution ) } /> : null }
+            {sprite ? <img src={ `${ sprite }` } alt="" onClick={ () => clickedPoke( renamedObj.evolution ) } className={styles.pokeSprite}/> : null }
 
         </div>
     )
