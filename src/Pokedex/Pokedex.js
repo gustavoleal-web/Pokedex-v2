@@ -42,9 +42,6 @@ const Pokedex = ( { id, clickedPoke } ) => {
         fetchData();
 
     }, [ id ] );
-
-
-
     return (
 
         <>
@@ -74,6 +71,7 @@ const Pokedex = ( { id, clickedPoke } ) => {
                             </div>
                             : <p className={ `${ type1 } ${ styles.fill }` }>{ state.types[ 0 ].type.name }</p>
                         }
+
                         <MoreInfo
                             id={ id }
                             name={ state.name }
@@ -83,9 +81,11 @@ const Pokedex = ( { id, clickedPoke } ) => {
                             height={ state.height }
                             moves={ state.moves }
                             pokeForms={ pokeForms }
-                            stats={state.stats}
+                            stats={ state.stats }
+                            types={ state.types }
                             backgroundColor={ typeColorBackground }
                             clickedPoke={ clickedPoke }
+
                         />
 
                     </div>
