@@ -8,6 +8,7 @@ import AlternateForms from './AlternateForms/alternateForms';
 import Varieties from './Varieties/Varieties';
 import ShinyPoke from './ShinyPoke/ShinyPoke';
 import Stats from './Stats/Stats';
+import ResistanceWeakness from './ResistanceWeakness/ResistanceWeakness'
 import styles from './moreInfo.module.css';
 import maleIcon from '../../img/icons/male-gender.png'
 import femaleIcon from '../../img/icons/female-gender.png'
@@ -15,7 +16,7 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import { Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
 
-const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms, stats, clickedPoke, backgroundColor } ) => {
+const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms, stats, types, clickedPoke, backgroundColor } ) => {
     const [ modal, setModal ] = useState( false );
     const [ evolutionChainUrl, setUrl ] = useState( '' );
     const [ varieties, setVarieties ] = useState( '' );
@@ -141,7 +142,6 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
                             ? <img src={ `${ sprites.versions[ 'generation-viii' ].icons.front_default }` } alt={ { name } } />
                             : null
                     }
-
                 </ModalHeader>
 
                 <span style={ { fontSize: '18px', textAlign: 'center' } }>
@@ -153,12 +153,14 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
                             <p>Height: { feet } ft</p>
 
                             <h5>Gender</h5>
-                            { gender === 'genderless'
-                                ? <p>Genderless</p>
-                                : <div>
-                                    <p><img src={ maleIcon } alt='male' /> { gender.male }%</p>
-                                    <p><img src={ femaleIcon } alt='female' /> { gender.female }%</p>
-                                </div> }
+                            {
+                                gender === 'genderless'
+                                    ? <p>Genderless</p>
+                                    : <div>
+                                        <p><img src={ maleIcon } alt='male' /> { gender.male }%</p>
+                                        <p><img src={ femaleIcon } alt='female' /> { gender.female }%</p>
+                                    </div>
+                            }
 
                         </div>
                     </ModalBody>
@@ -202,7 +204,6 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
                             { pokeForms.length !== 0 ? pokeForms.map( poke => <AlternateForms pokeForms={ poke } key={ poke.url } /> ) : null }
                             <ShinyPoke shinySprite={ sprites.front_shiny } />
                         </div>
-
                     </ModalBody>
 
                     <ModalBody>
@@ -210,21 +211,26 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
                         <div >
                             {
                                 stats.map( ( stat ) =>
-                                    <span key={ uuidv4() } className={styles.statsContainer}>
-                                        <p className={styles.statsName}>{ stat.stat.name }: </p>
-                                        <p className={styles.statsValue}>{ stat.base_stat } </p>
+                                    <span key={ uuidv4() } className={ styles.statsContainer }>
+                                        <p className={ styles.statsName }>{ stat.stat.name }: </p>
+                                        <p className={ styles.statsValue }>{ stat.base_stat } </p>
                                     </span>
 
                                 )
                             }
                         </div>
-
-
                     </ModalBody>
 
                     <ModalBody>
-                       {stats.length !== 0 ? <Stats stats={stats}/> : null}
+                        { stats.length !== 0 ? <Stats stats={ stats } /> : null }
                     </ModalBody>
+
+                    <ModalBody>
+                        { types.map( type => <ResistanceWeakness type={type} key={uuidv4()}/> ) }
+                    </ModalBody>
+
+
+
                 </span>
             </Modal>
         </div>
