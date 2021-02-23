@@ -73,7 +73,11 @@ const IndividualMethods = ( { obj, clickedPoke } ) => {
                     return evolutionInfo;
                 } )
             }
-            {sprite ? <img src={ `${ sprite }` } alt="" onClick={ () => clickedPoke( renamedObj.evolution ) } className={styles.pokeSprite}/> : null }
+            {
+                sprite
+                    ? <img src={ `${ sprite }` } alt='pokemon sprite' onClick={ () => clickedPoke( renamedObj.evolution ) } className={ styles.pokeSprite } />
+                    : null
+            }
 
         </div>
     )
