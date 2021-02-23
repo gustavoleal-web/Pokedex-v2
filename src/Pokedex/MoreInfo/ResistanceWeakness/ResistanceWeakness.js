@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const ResistanceWeakness = ( { type } ) => {
-    console.log( type )
     const [ state, setState ] = useState( [] );
-    const [ damageRelations, setDamageRelations ] = useState( {} );
+    let renamedObj;
+    let twoTypes = [];
 
     function renameKeys( tempObj, newKeys ) {
         const keyValues = Object.keys( tempObj ).map( key => {
@@ -28,13 +28,8 @@ const ResistanceWeakness = ( { type } ) => {
             if ( type.length === 1 ) {
                 try {
                     let pokemon = await axios.get( `${ type[ 0 ].type.url }` )
-                    setState( pokemon.data )
-
-                    let tempObj = { ...pokemon.data.damage_relations }
-                    const renamedObj = renameKeys( tempObj, newKeys );
-                    renamedObj.name = pokemon.data.name;
-                    setDamageRelations( renamedObj );
-
+                    let arr = [ pokemon.data ]
+                    setState( arr )
                 }
                 catch ( e ) {
                     console.log( e );
@@ -47,17 +42,8 @@ const ResistanceWeakness = ( { type } ) => {
 
                     let p1 = await promise1;
                     let p2 = await promise2;
-
-                    let tempObj1 = { ...p1.data.damage_relations }
-                    let tempObj2 = { ...p2.data.damage_relations }
-                    const renamedObj1 = renameKeys( tempObj1, newKeys );
-                    const renamedObj2 = renameKeys( tempObj2, newKeys );
-                    renamedObj1.name = p1.data.name;
-                    renamedObj2.name = p2.data.name;
-
-                    let arr = [ renamedObj1, renamedObj2 ]
-                    setDamageRelations( arr )
-
+                    let arr = [ p1.data, p2.data ];
+                    setState( arr )
                 }
                 catch ( e ) {
                     console.log( e );
@@ -68,9 +54,25 @@ const ResistanceWeakness = ( { type } ) => {
 
     }, [ type ] );
 
-    if ( damageRelations.length !== 0 ) {
-        console.log( damageRelations )
+    if ( state.length === 1 ) {
+        let tempObj = { ...state[ 0 ].damage_relations }
+        renamedObj = [ renameKeys( tempObj, newKeys ) ]
+        renamedObj.name = state[ 0 ].name;
     }
+    else if ( state.length === 2 ) {
+        let tempObj1 = { ...state[ 0 ].damage_relations }
+        let tempObj2 = { ...state[ 1 ].damage_relations }
+        const renamedObj1 = renameKeys( tempObj1, newKeys );
+        const renamedObj2 = renameKeys( tempObj2, newKeys );
+        renamedObj1.name = state[ 0 ].name;
+        renamedObj2.name = state[ 1 ].name;
+
+        twoTypes = [ renamedObj1, renamedObj2 ];
+        console.log( twoTypes )
+    }
+
+    //if a halfDamage type in index 0 is present in doubleDamage in index 1 that type cancels out and the pokemon is not affected
+    //vise versa for doubleDamege in 0 and halfDamage in 1
 
     return (
         <>
