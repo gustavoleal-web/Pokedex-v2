@@ -226,7 +226,7 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
                     </ModalBody>
 
                     <ModalBody>
-                        { types.map( type => <ResistanceWeakness type={type} key={uuidv4()}/> ) }
+                       <ResistanceWeakness type={types} key={uuidv4()}/> 
                     </ModalBody>
 
 
