@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const ResistanceWeakness = ( { type } ) => {
     const [ state, setState ] = useState( [] );
-    let renamedObj;
+    let oneType;
     let twoTypes = [];
 
     function renameKeys( tempObj, newKeys ) {
@@ -30,6 +30,7 @@ const ResistanceWeakness = ( { type } ) => {
                     let pokemon = await axios.get( `${ type[ 0 ].type.url }` )
                     let arr = [ pokemon.data ]
                     setState( arr )
+
                 }
                 catch ( e ) {
                     console.log( e );
@@ -54,34 +55,53 @@ const ResistanceWeakness = ( { type } ) => {
 
     }, [ type ] );
 
-    if ( state.length === 1 ) {
-        let tempObj = { ...state[ 0 ].damage_relations }
-        renamedObj = [ renameKeys( tempObj, newKeys ) ]
-        renamedObj.name = state[ 0 ].name;
-    }
-    else if ( state.length === 2 ) {
-        let tempObj1 = { ...state[ 0 ].damage_relations }
-        let tempObj2 = { ...state[ 1 ].damage_relations }
-        const renamedObj1 = renameKeys( tempObj1, newKeys );
-        const renamedObj2 = renameKeys( tempObj2, newKeys );
-        renamedObj1.name = state[ 0 ].name;
-        renamedObj2.name = state[ 1 ].name;
+    // if ( state.length === 1 ) {
+    //     let tempObj = { ...state[ 0 ].damage_relations }
+    //     let renamedObj = [ renameKeys( tempObj, newKeys ) ]
+    //     renamedObj.name = state[ 0 ].name;
+    //     oneType = [ ...renamedObj ];
+    // }
+    // else if ( state.length === 2 ) {
+    //     let tempObj1 = { ...state[ 0 ].damage_relations }
+    //     let tempObj2 = { ...state[ 1 ].damage_relations }
+    //     const renamedObj1 = renameKeys( tempObj1, newKeys );
+    //     const renamedObj2 = renameKeys( tempObj2, newKeys );
+    //     renamedObj1.name = state[ 0 ].name;
+    //     renamedObj2.name = state[ 1 ].name;
 
-        twoTypes = [ renamedObj1, renamedObj2 ];
-        console.log( twoTypes )
-    }
+    //     twoTypes = [ renamedObj1, renamedObj2 ];
+
+
+    // }
 
     //if a halfDamage type in index 0 is present in doubleDamage in index 1 that type cancels out and the pokemon is not affected
     //vise versa for doubleDamege in 0 and halfDamage in 1
-
-    return (
-        <>
-
+    if ( state.length === 1 ) {
+        return (
             <div>
+                <h4>Weakness</h4>
+                {
+                    state[ 0 ].damage_relations.double_damage_from.map( weakness =>
+                        <p key={ weakness.name }>{ weakness.name }</p> )
+                }
 
+                <h4>Resistance</h4>
+                {
+                    state[ 0 ].damage_relations.half_damage_from.map( resistance =>
+                        <p key={ resistance.name }>{ resistance.name }</p> )
+                }
             </div>
-        </>
-    )
+
+        )
+
+    }
+    else {
+        return (
+            <>
+            </>
+        )
+    }
+
 }
 
 export default ResistanceWeakness;
