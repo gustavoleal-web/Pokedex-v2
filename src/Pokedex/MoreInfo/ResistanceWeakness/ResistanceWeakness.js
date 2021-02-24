@@ -1,27 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
 
 const ResistanceWeakness = ( { type } ) => {
     const [ state, setState ] = useState( [] );
-    let oneType;
-    let twoTypes = [];
-
-    function renameKeys( tempObj, newKeys ) {
-        const keyValues = Object.keys( tempObj ).map( key => {
-            const newKey = newKeys[ key ] || key;
-            return { [ newKey ]: tempObj[ key ] };
-        } );
-        return Object.assign( {}, ...keyValues );
-    }
-
-    const newKeys = {
-        double_damage_from: 'doubleDamageFrom',
-        double_damage_to: 'doubleDamageTo',
-        half_damage_from: 'halfDamageFrom',
-        half_damage_to: 'haldDamageTo',
-        no_damage_from: 'noDamageFrom',
-        no_damage_to: 'noDamageTo'
-    };
 
     useEffect( () => {
         const fetchData = async () => {
@@ -55,27 +37,35 @@ const ResistanceWeakness = ( { type } ) => {
 
     }, [ type ] );
 
-    // if ( state.length === 1 ) {
-    //     let tempObj = { ...state[ 0 ].damage_relations }
-    //     let renamedObj = [ renameKeys( tempObj, newKeys ) ]
-    //     renamedObj.name = state[ 0 ].name;
-    //     oneType = [ ...renamedObj ];
-    // }
-    // else if ( state.length === 2 ) {
-    //     let tempObj1 = { ...state[ 0 ].damage_relations }
-    //     let tempObj2 = { ...state[ 1 ].damage_relations }
-    //     const renamedObj1 = renameKeys( tempObj1, newKeys );
-    //     const renamedObj2 = renameKeys( tempObj2, newKeys );
-    //     renamedObj1.name = state[ 0 ].name;
-    //     renamedObj2.name = state[ 1 ].name;
-
-    //     twoTypes = [ renamedObj1, renamedObj2 ];
-
-
-    // }
 
     //if a halfDamage type in index 0 is present in doubleDamage in index 1 that type cancels out and the pokemon is not affected
     //vise versa for doubleDamege in 0 and halfDamage in 1
+
+    const getAllWeakness = ( doubleDamage, halfDamage ) => {
+        let double = [];
+        let half = [];
+
+        for ( let i = 0; i < doubleDamage.length; i++ ) {
+            double.push( doubleDamage[ i ].name )
+        }
+        for ( let i = 0; i < halfDamage.length; i++ ) {
+            half.push( halfDamage[ i ].name )
+        }
+
+        let noDoublesWeakness = double.map( type => {
+            if ( half.includes( type ) ) {
+                return null
+            }
+            else {
+                return type
+            }
+        } );
+        return noDoublesWeakness;
+    }
+
+
+
+
     if ( state.length === 1 ) {
         return (
             <div>
@@ -91,6 +81,27 @@ const ResistanceWeakness = ( { type } ) => {
                         <p key={ resistance.name }>{ resistance.name }</p> )
                 }
             </div>
+
+        )
+
+    }
+    else if ( state.length === 2 ) {
+        let doubleDamageTypeOne = state[ 0 ].damage_relations.double_damage_from;
+        let halfDamageTypeTwo = state[ 1 ].damage_relations.half_damage_from;
+
+        let doubleDamageTypeTwo = state[ 1 ].damage_relations.double_damage_from;
+        let halfDamageTypeOne = state[ 0 ].damage_relations.half_damage_from;
+
+        let type1Weakness = getAllWeakness( doubleDamageTypeOne, halfDamageTypeTwo )
+        let type2Weakness = getAllWeakness( doubleDamageTypeTwo, halfDamageTypeOne )
+        let allWeakNesses = [ ...type1Weakness, ...type2Weakness ];
+        let noDuplicateWeaknesses = [ ...new Set( allWeakNesses ) ]
+
+        return (
+            <>
+                <h4>Weakness</h4>
+                { noDuplicateWeaknesses.map( weakness => <p key={ uuidv4() }>{ weakness }</p> ) }
+            </>
 
         )
 
