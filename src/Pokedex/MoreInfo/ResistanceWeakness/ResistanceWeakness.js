@@ -92,6 +92,11 @@ const ResistanceWeakness = ( { type } ) => {
         let doubleDamageTypeTwo = state[ 1 ].damage_relations.double_damage_from;
         let halfDamageTypeOne = state[ 0 ].damage_relations.half_damage_from;
 
+        //some pokemon have weaknesses that contradict with their other type
+        //type1 might be weak to type2 but that pokemon is not b/c it has both types
+        //so the type weakness must be removed to prevent confusion
+        //ex: bulbasaur is grass/poison
+        //grass is weak against poison but bulbasaur is both so it is not considered a weakness
         let type1Weakness = getAllWeakness( doubleDamageTypeOne, halfDamageTypeTwo )
         let type2Weakness = getAllWeakness( doubleDamageTypeTwo, halfDamageTypeOne )
         let allWeakNesses = [ ...type1Weakness, ...type2Weakness ];
