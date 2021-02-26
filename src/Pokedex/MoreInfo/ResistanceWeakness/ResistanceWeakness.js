@@ -5,6 +5,13 @@ import { v4 as uuidv4 } from 'uuid';
 const ResistanceWeakness = ( { type } ) => {
     const [ state, setState ] = useState( [] );
 
+    const damage = {
+        double: [],
+        quadruple: [],
+        half: 0.5,
+        zero: 0
+    }
+
     useEffect( () => {
         const fetchData = async () => {
             if ( type.length === 1 ) {
@@ -46,7 +53,7 @@ const ResistanceWeakness = ( { type } ) => {
         let half = [];
 
         for ( let i = 0; i < doubleDamage.length; i++ ) {
-            double.push( doubleDamage[ i ].name )
+            double.push( doubleDamage[ i ].name );
         }
         for ( let i = 0; i < halfDamage.length; i++ ) {
             half.push( halfDamage[ i ].name )
@@ -60,6 +67,7 @@ const ResistanceWeakness = ( { type } ) => {
                 return type
             }
         } );
+
         return noDoublesWeakness;
     }
 
@@ -72,7 +80,6 @@ const ResistanceWeakness = ( { type } ) => {
             }
             return true;
         } );
-
         return true;
     }
 
@@ -120,6 +127,7 @@ const ResistanceWeakness = ( { type } ) => {
         //grass is weak against poison but bulbasaur is both so it is not considered a weakness
         let type1Weakness = getAllWeakness( doubleDamageTypeOne, halfDamageTypeTwo );
         let type2Weakness = getAllWeakness( doubleDamageTypeTwo, halfDamageTypeOne );
+
         let allWeakNesses = [ ...type1Weakness, ...type2Weakness ];
         let noDuplicateWeaknesses = [ ...new Set( allWeakNesses ) ];
 
@@ -130,6 +138,32 @@ const ResistanceWeakness = ( { type } ) => {
         //so elec must be removed as a weakness
         removeResistanceFromWeakness( noDamageFromTypeTwo, noDuplicateWeaknesses );
         removeResistanceFromWeakness( noDamageFromTypeOne, noDuplicateWeaknesses );
+
+        const quadrupleDamage = type1Weakness.filter( value => type2Weakness.includes( value ) );
+        damage.quadruple = quadrupleDamage;
+
+        //removes quadruple type from the weaknesses array and the remaining are the types that cause double damage
+        const doubleDamage = noDuplicateWeaknesses.filter( value => !quadrupleDamage.includes( value ) );
+        damage.double = doubleDamage;
+
+        let resis1 = state[ 0 ].damage_relations.half_damage_from.map( value => value.name );
+        let resis2 = state[ 1 ].damage_relations.half_damage_from.map( value => value.name );
+
+        // console.log(resis2, resis1)
+
+        let oneFourth = resis1.filter( value => resis2.includes( value ) );
+        let test = resis1.filter( value => !resis2.includes( value ) )
+
+        resis1.map( value => {
+            if ( resis2.indexOf( value ) !== -1 ) {
+                resis2.splice( resis2.indexOf( value ), 1 )
+            }
+        } );
+
+        let half = [...test, ...resis2];
+        console.log(half)
+
+
 
         return (
             <>
