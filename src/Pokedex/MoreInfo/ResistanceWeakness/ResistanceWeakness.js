@@ -80,19 +80,25 @@ const ResistanceWeakness = ( { type } ) => {
 
     if ( state.length === 1 ) {
         return (
-            <div>
+            <span>
                 <h4>Weakness</h4>
-                {
-                    state[ 0 ].damage_relations.double_damage_from.map( weakness =>
-                        <p key={ weakness.name }>{ weakness.name }</p> )
-                }
+                <div>
+                    {
+                        state[ 0 ].damage_relations.double_damage_from.map( weakness =>
+                            <p key={ weakness.name }>{ weakness.name }</p> )
+                    }
+                </div>
+
 
                 <h4>Resistance</h4>
-                {
-                    state[ 0 ].damage_relations.half_damage_from.map( resistance =>
-                        <p key={ resistance.name }>{ resistance.name }</p> )
-                }
-            </div>
+                <div>
+                    {
+                        state[ 0 ].damage_relations.half_damage_from.map( resistance =>
+                            <p key={ resistance.name }>{ resistance.name }</p> )
+                    }
+                </div>
+
+            </span>
 
         )
 
