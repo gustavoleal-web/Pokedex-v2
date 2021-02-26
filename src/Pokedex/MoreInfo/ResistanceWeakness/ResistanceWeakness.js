@@ -64,6 +64,18 @@ const ResistanceWeakness = ( { type } ) => {
     }
 
 
+    const removeResistanceFromWeakness = ( noDamage, noDuplicateWeaknesses ) => {
+        noDamage.map( type => {
+            if ( noDuplicateWeaknesses.includes( type.name ) ) {
+                noDuplicateWeaknesses.splice( noDuplicateWeaknesses.indexOf( type.name ), 1 )
+
+            }
+            return true;
+        } );
+
+        return true;
+    }
+
 
 
     if ( state.length === 1 ) {
@@ -92,15 +104,26 @@ const ResistanceWeakness = ( { type } ) => {
         let doubleDamageTypeTwo = state[ 1 ].damage_relations.double_damage_from;
         let halfDamageTypeOne = state[ 0 ].damage_relations.half_damage_from;
 
+        let noDamageFromTypeOne = state[ 0 ].damage_relations.no_damage_from;
+        let noDamageFromTypeTwo = state[ 1 ].damage_relations.no_damage_from;
+
         //some pokemon have weaknesses that contradict with their other type
         //type1 might be weak to type2 but that pokemon is not b/c it has both types
         //so the type weakness must be removed to prevent confusion
         //ex: bulbasaur is grass/poison
         //grass is weak against poison but bulbasaur is both so it is not considered a weakness
-        let type1Weakness = getAllWeakness( doubleDamageTypeOne, halfDamageTypeTwo )
-        let type2Weakness = getAllWeakness( doubleDamageTypeTwo, halfDamageTypeOne )
+        let type1Weakness = getAllWeakness( doubleDamageTypeOne, halfDamageTypeTwo );
+        let type2Weakness = getAllWeakness( doubleDamageTypeTwo, halfDamageTypeOne );
         let allWeakNesses = [ ...type1Weakness, ...type2Weakness ];
-        let noDuplicateWeaknesses = [ ...new Set( allWeakNesses ) ]
+        let noDuplicateWeaknesses = [ ...new Set( allWeakNesses ) ];
+
+        //a dual type pokemon may have a type that is resistant to the other
+        //removing it from the array so it doesn't include the resistant type as a weakness
+        //ex) barvoach is water/ground
+        //water is weak against elect but ground is not affected
+        //so elec must be removed as a weakness
+        removeResistanceFromWeakness( noDamageFromTypeTwo, noDuplicateWeaknesses );
+        removeResistanceFromWeakness( noDamageFromTypeOne, noDuplicateWeaknesses );
 
         return (
             <>
