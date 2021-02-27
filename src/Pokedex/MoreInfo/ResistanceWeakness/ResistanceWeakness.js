@@ -146,21 +146,19 @@ const ResistanceWeakness = ( { type } ) => {
         const doubleDamage = noDuplicateWeaknesses.filter( value => !quadrupleDamage.includes( value ) );
         damage.double = doubleDamage;
 
-        let resis1 = state[ 0 ].damage_relations.half_damage_from.map( value => value.name );
-        let resis2 = state[ 1 ].damage_relations.half_damage_from.map( value => value.name );
+        let resistanceOne = state[ 0 ].damage_relations.half_damage_from.map( value => value.name );
+        let resistanceTwo = state[ 1 ].damage_relations.half_damage_from.map( value => value.name );
 
-        // console.log(resis2, resis1)
+        let oneFourth = resistanceOne.filter( value => resistanceTwo.includes( value ) );
+        let test = resistanceOne.filter( value => !resistanceTwo.includes( value ) )
 
-        let oneFourth = resis1.filter( value => resis2.includes( value ) );
-        let test = resis1.filter( value => !resis2.includes( value ) )
-
-        resis1.map( value => {
-            if ( resis2.indexOf( value ) !== -1 ) {
-                resis2.splice( resis2.indexOf( value ), 1 )
+        resistanceOne.map( value => {
+            if ( resistanceTwo.indexOf( value ) !== -1 ) {
+                resistanceTwo.splice( resistanceTwo.indexOf( value ), 1 )
             }
         } );
 
-        let half = [...test, ...resis2];
+        let half = [...test, ...resistanceTwo];
         console.log(half)
 
 
