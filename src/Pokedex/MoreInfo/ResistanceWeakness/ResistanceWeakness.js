@@ -164,21 +164,27 @@ const ResistanceWeakness = ( { type } ) => {
         let type2Weakness = getAllWeakness( doubleDamageTypeTwo, halfDamageTypeOne );
 
         let allWeakNesses = [ ...type1Weakness.weakness, ...type2Weakness.weakness ];
-        let test = {};
+        let fourTimesWeakness = {};
 
 
         for ( let i = 0; i < allWeakNesses.length; i++ ) {
-
-            if ( test[ allWeakNesses[ i ] ] === undefined ) {
-                test[ allWeakNesses[ i ] ] = 0
+            if ( fourTimesWeakness[ allWeakNesses[ i ] ] === undefined ) {
+                fourTimesWeakness[ allWeakNesses[ i ] ] = 0
             }
             else {
-                test[ allWeakNesses[ i ] ] += 1;
+                fourTimesWeakness[ allWeakNesses[ i ] ] += 1;
             }
         }
-        console.log( test )
+
+        //if a type is present one or more times then it does 4x damage
+        for ( let key in fourTimesWeakness ) {
+            if ( fourTimesWeakness[ key ] >= 1 && allWeakNesses.includes( key ) ) {
+                damage.quadruple.push( key )
+            }
+        }
 
         let noDuplicateWeaknesses = [ ...new Set( allWeakNesses ) ];
+
 
 
         //a dual type pokemon may have a type that is resistant to the other
@@ -189,12 +195,12 @@ const ResistanceWeakness = ( { type } ) => {
         removeResistanceFromWeakness( noDamageFromTypeTwo, noDuplicateWeaknesses );
         removeResistanceFromWeakness( noDamageFromTypeOne, noDuplicateWeaknesses );
 
-        let frac = oneFourthAndHalfDamage( state[ 0 ].damage_relations.half_damage_from, state[ 1 ].damage_relations.half_damage_from );
+        let frac = oneFourthAndHalfDamage( halfDamageTypeOne, halfDamageTypeTwo );
 
         damage.normal = [ ...type1Weakness.normal, ...type1Weakness.normal ]
         damage.oneHalf = [ ...frac.half ];
         damage.oneFourth = [ ...frac.fourth ];
-
+        console.log( damage )
         return (
             <>
                 <h4>Weakness</h4>
