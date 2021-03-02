@@ -76,13 +76,17 @@ const ResistanceWeakness = ( { type } ) => {
     }
 
 
-    const removeResistanceFromWeakness = ( noDamage, noDuplicateWeaknesses ) => {
-        noDamage.map( type => {
-            if ( noDuplicateWeaknesses.includes( type.name ) ) {
-                noDuplicateWeaknesses.splice( noDuplicateWeaknesses.indexOf( type.name ), 1 )
+    const removeDuplicateType = ( typeToRemove, arrToRemoveFrom ) => {
+        typeToRemove.forEach( type => {
+            if ( arrToRemoveFrom.includes( type.name ) && type.name !== undefined ) {
+                arrToRemoveFrom.splice( arrToRemoveFrom.indexOf( type.name ), 1 )
+            }
+            else if ( arrToRemoveFrom.includes( type ) ) {
+                arrToRemoveFrom.splice( arrToRemoveFrom.indexOf( type ), 1 )
             }
             return true;
         } );
+
         return true;
     }
 
@@ -109,7 +113,6 @@ const ResistanceWeakness = ( { type } ) => {
         fractionalDamage.half = [ ...oneHalfDamage ];
 
         return fractionalDamage;
-
     }
 
     if ( state.length === 1 ) {
@@ -138,13 +141,13 @@ const ResistanceWeakness = ( { type } ) => {
     }
     else if ( state.length === 2 ) {
         let damage = {
+            zero: [],
             oneHalf: [],
             oneFourth: [],
             normal: [],
             double: [],
             quadruple: []
         }
-
 
         let doubleDamageTypeOne = state[ 0 ].damage_relations.double_damage_from;
         let halfDamageTypeTwo = state[ 1 ].damage_relations.half_damage_from;
@@ -160,12 +163,11 @@ const ResistanceWeakness = ( { type } ) => {
         //so the type weakness must be removed to prevent confusion
         //ex: bulbasaur is grass/poison
         //grass is weak against poison but bulbasaur is both so it is not considered a weakness
-        let type1Weakness = getAllWeakness( doubleDamageTypeOne, halfDamageTypeTwo );
-        let type2Weakness = getAllWeakness( doubleDamageTypeTwo, halfDamageTypeOne );
+        let dmgReceivedType1 = getAllWeakness( doubleDamageTypeOne, halfDamageTypeTwo );
+        let dmgReceivedType2 = getAllWeakness( doubleDamageTypeTwo, halfDamageTypeOne );
+        let allWeakNesses = [ ...dmgReceivedType1.weakness, ...dmgReceivedType2.weakness ];
 
-        let allWeakNesses = [ ...type1Weakness.weakness, ...type2Weakness.weakness ];
         let fourTimesWeakness = {};
-
 
         for ( let i = 0; i < allWeakNesses.length; i++ ) {
             if ( fourTimesWeakness[ allWeakNesses[ i ] ] === undefined ) {
@@ -179,28 +181,43 @@ const ResistanceWeakness = ( { type } ) => {
         //if a type is present one or more times then it does 4x damage
         for ( let key in fourTimesWeakness ) {
             if ( fourTimesWeakness[ key ] >= 1 && allWeakNesses.includes( key ) ) {
-                damage.quadruple.push( key )
+                damage.quadruple.push( key );
             }
         }
 
         let noDuplicateWeaknesses = [ ...new Set( allWeakNesses ) ];
-
-
+        let quadrupleDamage = [ ...damage.quadruple ];
+        removeDuplicateType( quadrupleDamage, noDuplicateWeaknesses );
 
         //a dual type pokemon may have a type that is resistant to the other
         //removing it from the array so it doesn't include the resistant type as a weakness
         //ex) barvoach is water/ground
         //water is weak against elect but ground is not affected
         //so elec must be removed as a weakness
-        removeResistanceFromWeakness( noDamageFromTypeTwo, noDuplicateWeaknesses );
-        removeResistanceFromWeakness( noDamageFromTypeOne, noDuplicateWeaknesses );
+        removeDuplicateType( noDamageFromTypeTwo, noDuplicateWeaknesses );
+        removeDuplicateType( noDamageFromTypeOne, noDuplicateWeaknesses );
 
-        let frac = oneFourthAndHalfDamage( halfDamageTypeOne, halfDamageTypeTwo );
+        let resistance = oneFourthAndHalfDamage( halfDamageTypeOne, halfDamageTypeTwo );
 
-        damage.normal = [ ...type1Weakness.normal, ...type1Weakness.normal ]
-        damage.oneHalf = [ ...frac.half ];
-        damage.oneFourth = [ ...frac.fourth ];
-        console.log( damage )
+        if ( noDamageFromTypeOne.length !== 0 ) {
+            removeDuplicateType( noDamageFromTypeOne, resistance.half );
+            removeDuplicateType( noDamageFromTypeOne, resistance.fourth );
+        }
+        else if ( noDamageFromTypeTwo.length !== 0 ) {
+            removeDuplicateType( noDamageFromTypeTwo, resistance.half );
+            removeDuplicateType( noDamageFromTypeTwo, resistance.fourth );
+        }
+
+        removeDuplicateType( dmgReceivedType1.normal, resistance.half );
+        removeDuplicateType( dmgReceivedType1.normal, resistance.fourth );
+        removeDuplicateType( dmgReceivedType2.normal, resistance.half );
+        removeDuplicateType( dmgReceivedType2.normal, resistance.fourth );
+
+        damage.normal = [ ...dmgReceivedType1.normal, ...dmgReceivedType2.normal ]
+        damage.oneHalf = [ ...resistance.half ];
+        damage.oneFourth = [ ...resistance.fourth ];
+        damage.double = [ ...noDuplicateWeaknesses ];
+        console.log(damage)
         return (
             <>
                 <h4>Weakness</h4>
