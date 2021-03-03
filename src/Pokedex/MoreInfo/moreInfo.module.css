@@ -59,6 +59,10 @@ hr:after {
     content: 'Stats';
 }
 
+.hrDamagegit:after {
+    content: 'Types Damage';
+}
+
 .formsContainer {
     display        : flex;
     flex-wrap      : wrap;
