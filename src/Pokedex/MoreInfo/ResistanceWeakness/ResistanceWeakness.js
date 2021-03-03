@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getAllWeakness, removeDuplicateType, oneFourthAndHalfDamage } from './filterTypeDamageFuncs';
+import styles from './ResistanceWeakness.module.css';
 import axios from 'axios';
 
 const ResistanceWeakness = ( { type } ) => {
@@ -11,8 +12,9 @@ const ResistanceWeakness = ( { type } ) => {
         const fetchData = async () => {
             if ( type.length === 1 ) {
                 try {
-
-                    let pokemon = await axios.get( `${ type[ 0 ].type.url }` )
+                    //the api can't fetched the url if it has a '/' at the end to it is removed
+                    const editedUrl = type[ 0 ].type.url.slice( 0, -1 )
+                    let pokemon = await axios.get( editedUrl )
                     let arr = [ pokemon.data ]
                     setState( arr )
 
@@ -45,25 +47,33 @@ const ResistanceWeakness = ( { type } ) => {
     }, [ type ] );
 
     if ( state.length === 1 ) {
+        let damageRelations = state[ 0 ].damage_relations;
+
         oneType = (
-            <span>
-                <h4>Weakness</h4>
-                <div>
-                    {
-                        state[ 0 ].damage_relations.double_damage_from.map( weakness =>
-                            <p key={ weakness.name }>{ weakness.name }</p> )
-                    }
-                </div>
+            <div>
+                <h6>Resistance/Damage</h6>
 
-                <h4>Resistance</h4>
-                <div>
+                <span className={ styles.container }>
+                    <h6>0x</h6>
                     {
-                        state[ 0 ].damage_relations.half_damage_from.map( resistance =>
-                            <p key={ resistance.name }>{ resistance.name }</p> )
+                        damageRelations.no_damage_from.length !== 0
+                            ? damageRelations.no_damage_from.map( type => <p>{ type.name }</p> )
+                            : null
                     }
-                </div>
+                </span>
+                <hr />
 
-            </span>
+                <span className={ styles.container }>
+                    <h6>1/2x</h6>
+                    { damageRelations.half_damage_from.map( type => <p key={ type.name }>{ type.name }</p> ) }
+                </span>
+                <hr />
+
+                <span className={ styles.container }>
+                    <h6>2x</h6>
+                    { damageRelations.double_damage_from.map( type => <p key={ type.name }>{ type.name }</p> ) }
+                </span>
+            </div>
 
         )
 
@@ -142,24 +152,48 @@ const ResistanceWeakness = ( { type } ) => {
         removeDuplicateType( dmgReceivedType2.normal, resistance.half );
         removeDuplicateType( dmgReceivedType2.normal, resistance.fourth );
 
+        if ( noDamageFromTypeOne.length !== 0 ) {
+            noDamageFromTypeOne.forEach( type => {
+                damage.zero.push( type.name )
+            } );
+        }
+        if ( noDamageFromTypeTwo.length !== 0 ) {
+            noDamageFromTypeTwo.forEach( type => {
+                damage.zero.push( type.name )
+            } );
+        }
+
+
+
         damage.normal = [ ...dmgReceivedType1.normal, ...dmgReceivedType2.normal ]
         damage.oneHalf = [ ...resistance.half ];
         damage.oneFourth = [ ...resistance.fourth ];
         damage.double = [ ...noDuplicateWeaknesses ];
         twoTypes = (
             <div>
-                <span>
+                <h6>Resistance/Damage</h6>
+
+                <span className={ styles.container }>
+                    <h6>1/4x</h6>
                     { damage.oneHalf.length !== 0 ? damage.oneHalf.map( type => <p key={ type }>{ type }</p> ) : null }
                 </span>
 
-                <span>
+                <hr />
+                <span className={ styles.container }>
+                    <h6>1/2x</h6>
                     { damage.oneFourth.length !== 0 ? damage.oneFourth.map( type => <p key={ type }>{ type }</p> ) : null }
                 </span>
 
-                <span>
+                <hr />
+
+                <span className={ styles.container }>
+                    <h6>2x</h6>
                     { damage.double.length !== 0 ? damage.double.map( type => <p key={ type }>{ type }</p> ) : null }
                 </span>
-                <span>
+
+                <hr />
+                <span className={ styles.container }>
+                    <h6>4x</h6>
                     { damage.quadruple.length !== 0 ? damage.quadruple.map( type => <p key={ type }>{ type }</p> ) : null }
                 </span>
 
