@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getAllWeakness, removeDuplicateType, oneFourthAndHalfDamage } from './filterTypeDamageFuncs';
-import styles from './ResistanceWeakness.module.css';
+import Resistance from './Resistance/Resistance';
 import axios from 'axios';
 
 const ResistanceWeakness = ( { type } ) => {
@@ -51,28 +51,29 @@ const ResistanceWeakness = ( { type } ) => {
 
         oneType = (
             <div>
-                <h6>Resistance/Damage</h6>
 
-                <span className={ styles.container }>
-                    <h6>0x</h6>
-                    {
-                        damageRelations.no_damage_from.length !== 0
-                            ? damageRelations.no_damage_from.map( type => <p>{ type.name }</p> )
-                            : null
-                    }
-                </span>
+                {
+                    damageRelations.no_damage_from.length !== 0
+                        ? <Resistance resist={ damageRelations.no_damage_from } timesDamage='0x' />
+                        : null
+                }
+
                 <hr />
 
-                <span className={ styles.container }>
-                    <h6>1/2x</h6>
-                    { damageRelations.half_damage_from.map( type => <p key={ type.name }>{ type.name }</p> ) }
-                </span>
+
+                {
+                    damageRelations.half_damage_from.length !== 0
+                        ? <Resistance resist={ damageRelations.half_damage_from } timesDamage='1/2x' />
+                        : null
+                }
                 <hr />
 
-                <span className={ styles.container }>
-                    <h6>2x</h6>
-                    { damageRelations.double_damage_from.map( type => <p key={ type.name }>{ type.name }</p> ) }
-                </span>
+                {
+                    damageRelations.double_damage_from.length !== 0
+                        ? <Resistance resist={ damageRelations.double_damage_from } timesDamage='2x' />
+                        : null
+                }
+
             </div>
 
         )
@@ -163,41 +164,27 @@ const ResistanceWeakness = ( { type } ) => {
             } );
         }
 
-
-
         damage.normal = [ ...dmgReceivedType1.normal, ...dmgReceivedType2.normal ]
         damage.oneHalf = [ ...resistance.half ];
         damage.oneFourth = [ ...resistance.fourth ];
         damage.double = [ ...noDuplicateWeaknesses ];
+
         twoTypes = (
             <div>
-                <h6>Resistance/Damage</h6>
-
-                <span className={ styles.container }>
-                    <h6>1/4x</h6>
-                    { damage.oneHalf.length !== 0 ? damage.oneHalf.map( type => <p key={ type }>{ type }</p> ) : null }
-                </span>
-
-                <hr />
-                <span className={ styles.container }>
-                    <h6>1/2x</h6>
-                    { damage.oneFourth.length !== 0 ? damage.oneFourth.map( type => <p key={ type }>{ type }</p> ) : null }
-                </span>
+                {damage.oneFourth.length !== 0 ? <Resistance resist={ damage.oneFourth } timesDamage='1/4x' /> : null }
 
                 <hr />
 
-                <span className={ styles.container }>
-                    <h6>2x</h6>
-                    { damage.double.length !== 0 ? damage.double.map( type => <p key={ type }>{ type }</p> ) : null }
-                </span>
+                {damage.oneHalf.length !== 0 ? <Resistance resist={ damage.oneHalf } timesDamage='1/2x' /> : null }
 
                 <hr />
-                <span className={ styles.container }>
-                    <h6>4x</h6>
-                    { damage.quadruple.length !== 0 ? damage.quadruple.map( type => <p key={ type }>{ type }</p> ) : null }
-                </span>
 
-            </div>
+                {damage.double.length !== 0 ? <Resistance resist={ damage.double } timesDamage='2x' /> : null }
+
+                <hr />
+
+                {damage.quadruple.length !== 0 ? <Resistance resist={ damage.quadruple } timesDamage='4x' /> : null }
+            </div >
         )
     }
 
