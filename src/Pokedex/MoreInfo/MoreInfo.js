@@ -222,10 +222,12 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
                     </ModalBody>
 
                     <ModalBody>
+                        <hr className={ `${ styles.hrStats } ${ styles.hrMargin }` } />
                         { stats.length !== 0 ? <Stats stats={ stats } /> : null }
                     </ModalBody>
 
                     <ModalBody>
+                        <hr className={ `${ styles.hrDamage } ${ styles.hrMargin }` } />
                         { types.length !== 0 ? <ResistanceWeakness type={ types } key={ uuidv4() } /> : null }
                     </ModalBody>
 
