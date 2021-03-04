@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getAllWeakness, removeDuplicateType, oneFourthAndHalfDamage } from './filterTypeDamageFuncs';
-import Resistance from './Resistance/Resistance';
+import Damage from './Damage/Damage';
 import axios from 'axios';
 
 const ResistanceWeakness = ( { type } ) => {
@@ -54,7 +54,7 @@ const ResistanceWeakness = ( { type } ) => {
 
                 {
                     damageRelations.no_damage_from.length !== 0
-                        ? <Resistance resist={ damageRelations.no_damage_from } timesDamage='0x' />
+                        ? <Damage resist={ damageRelations.no_damage_from } timesDamage='0x' />
                         : null
                 }
 
@@ -63,14 +63,14 @@ const ResistanceWeakness = ( { type } ) => {
 
                 {
                     damageRelations.half_damage_from.length !== 0
-                        ? <Resistance resist={ damageRelations.half_damage_from } timesDamage='1/2x' />
+                        ? <Damage damageList={ damageRelations.half_damage_from } timesDamage='1/2x' />
                         : null
                 }
                 <hr />
 
                 {
                     damageRelations.double_damage_from.length !== 0
-                        ? <Resistance resist={ damageRelations.double_damage_from } timesDamage='2x' />
+                        ? <Damage damageList={ damageRelations.double_damage_from } timesDamage='2x' />
                         : null
                 }
 
@@ -171,19 +171,19 @@ const ResistanceWeakness = ( { type } ) => {
 
         twoTypes = (
             <div>
-                {damage.oneFourth.length !== 0 ? <Resistance resist={ damage.oneFourth } timesDamage='1/4x' /> : null }
+                {damage.oneFourth.length !== 0 ? <Damage damageList={ damage.oneFourth } timesDamage='1/4x' /> : null }
 
                 <hr />
 
-                {damage.oneHalf.length !== 0 ? <Resistance resist={ damage.oneHalf } timesDamage='1/2x' /> : null }
+                {damage.oneHalf.length !== 0 ? <Damage damageList={ damage.oneHalf } timesDamage='1/2x' /> : null }
 
                 <hr />
 
-                {damage.double.length !== 0 ? <Resistance resist={ damage.double } timesDamage='2x' /> : null }
+                {damage.double.length !== 0 ? <Damage damageList={ damage.double } timesDamage='2x' /> : null }
 
                 <hr />
 
-                {damage.quadruple.length !== 0 ? <Resistance resist={ damage.quadruple } timesDamage='4x' /> : null }
+                {damage.quadruple.length !== 0 ? <Damage damageList={ damage.quadruple } timesDamage='4x' /> : null }
             </div >
         )
     }
