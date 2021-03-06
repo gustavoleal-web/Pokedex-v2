@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import SearchBytypes from './Search/SearchByType'
 import axios from 'axios';
 import Pokedex from './Pokedex/Pokedex'
 import SelectPokedex from './SelectedPokedex/SelectPokedex'
@@ -9,7 +10,10 @@ import styles from './App.module.css';
 const App = () => {
   const [ state, setState ] = useState( [] );
   const [ newPokedex, setNewPokedex ] = useState( [] );
-  const [ noPkmFound, setNoPkmFound ] = useState( null )
+  const [ noPkmFound, setNoPkmFound ] = useState( null );
+  const [ selectedType, setSelectedType ] = useState( null );
+
+  const [ pokemonByType, setPokemonByType ] = useState( [] );
 
   //set the start and end of each pokedex so on click event will slice from start to finish
   const pekedexStart = {
@@ -27,6 +31,14 @@ const App = () => {
     let cutPokedex = state.slice( pekedexStart[ e.target.name ][ 0 ], pekedexStart[ e.target.name ][ 1 ] );
     setNewPokedex( cutPokedex );
     setNoPkmFound( null );
+    setPokemonByType( [] );
+    setSelectedType(null);
+  }
+
+  const setPokedexByTypeHandler = ( type ) => { 
+    setNewPokedex( [] )
+    console.log(selectedType)
+    setSelectedType( type )
   }
 
   useEffect( () => {
@@ -44,6 +56,28 @@ const App = () => {
     }
     fetchData()
   }, [] )
+
+
+  //TYPES
+  useEffect( () => {
+    let isMounted = true;
+    const fetchData = async () => {
+      if ( isMounted && selectedType !== null ) {
+        try {
+          let pokemon = await axios.get(
+            `https://pokeapi.co/api/v2/type/${ selectedType }`
+          );
+          setPokemonByType( pokemon.data.pokemon );
+        } catch ( e ) {
+          console.log( e );
+        }
+      } else return;
+    };
+    fetchData();
+    return () => {
+      isMounted = false;
+    };
+  }, [ selectedType ] );
 
 
 
@@ -68,21 +102,37 @@ const App = () => {
 
     <div className={ styles.container }>
       <Search wasClicked={ wasClicked } />
+      <SearchBytypes setPokedexByTypeHandler={ setPokedexByTypeHandler } />
 
       {noPkmFound }
 
-      <div className={styles.pokemonsContainer}>
-        { state.length !== 0
+      <div className={ styles.pokemonsContainer }>
+        { newPokedex.length !== 0
           ? newPokedex.map( pokemon =>
             <Pokedex
               key={ pokemon.pokemon_species.url }
               id={ pokemon.entry_number }
               clickedPoke={ wasClicked }
             /> )
-          : <p>Loading</p>
+          : null
         }
 
       </div>
+
+      <div className={ styles.pokemonsContainer }>
+        { pokemonByType.length !== 0
+          ? pokemonByType.map( pokemon =>
+            <Pokedex
+              key={ pokemon.pokemon.name }
+              id={ pokemon.pokemon.name }
+              clickedPoke={ wasClicked }
+            /> )
+          : null
+        }
+
+      </div>
+
+
       <SelectPokedex fetchSelectedPokedex={ fetchSelectedPokedex } />
 
       <div>
