@@ -1,35 +1,32 @@
 .infoContainer {
-    box-shadow: 0px 1px 8px 0px rgba(0,0,0,0.3);
+    box-shadow   : 0px 1px 8px 0px rgba(0, 0, 0, 0.3);
     border-radius: 5px;
-    margin:  0 20px 20px 20px;
-    place-items: center;
-   
-}   
+    margin       : 0 20px 20px 20px;
+    place-items  : center;
+
+}
+
 
 .infoContainer div {
-    flex: 0 0 50%;
+    flex      : 0 0 50%;
     text-align: center;
 }
 
 .infoContainer p {
-    font-weight: bold;
+    font-weight   : bold;
     text-transform: capitalize;
-   
+    margin-top    : 10px;
 }
 
 
-.stats p{
+.stats p {
     font-weight: 500;
-    text-align: left;
+    text-align : left;
 }
 
-.fill {
-    width: 100%;
-    border-radius: 20px;
-    box-shadow: 0px 0px 2px black;
-}
 
 @media(max-width: 450px) {
+
     /* display is set to grid to overide flex. not the best solution */
     .infoContainer {
         display: block;
@@ -39,12 +36,12 @@
         flex-wrap: wrap;
     }
 
-    .stats p{
+    .stats p {
         text-align: center;
     }
 }
 
-@media(min-width: 451px ) {
+@media(min-width: 451px) {
     .stats p {
         margin-left: 50px;
     }
