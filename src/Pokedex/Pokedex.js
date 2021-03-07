@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import MoreInfo from './MoreInfo/MoreInfo'
+import MoreInfo from './MoreInfo/MoreInfo';
+import Sprites from './Sprites/Sprites';
 import axios from 'axios';
 
 import styles from './Pokedex.module.css';
@@ -12,32 +13,45 @@ const Pokedex = ( { id, clickedPoke } ) => {
     const [ type1, setType1 ] = useState( '' );
     const [ type2, setType2 ] = useState( '' );
     const [ typeColorBackground, setBackground ] = useState( '' );
-    const [ pokeForms, setPokeForms ] = useState( '' )
+    const [ pokeForms, setPokeForms ] = useState( '' );
+
+    const setStateFromReq = ( pokemonData ) => {
+        let fetchedPokemon = pokemonData;
+        setState( fetchedPokemon );
+        setBackground( backgroundTypes[ fetchedPokemon.types[ 0 ].type.name ] );
+
+        if ( fetchedPokemon.forms.length >= 1 ) {
+            setPokeForms( fetchedPokemon.forms );
+        }
+
+        if ( fetchedPokemon.types.length === 2 ) {
+            setType1( stylesTypes[ fetchedPokemon.types[ 0 ].type.name ] )
+            setType2( stylesTypes[ fetchedPokemon.types[ 1 ].type.name ] )
+        }
+        else {
+            setType1( stylesTypes[ fetchedPokemon.types[ 0 ].type.name ] )
+        }
+    }
 
     useEffect( () => {
         const fetchData = async () => {
             try {
-                let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon/${ id }` )
-                let fetchedPokemon = pokemon.data;
-                setState( fetchedPokemon );
-                setBackground( backgroundTypes[ fetchedPokemon.types[ 0 ].type.name ] );
-
-                if ( fetchedPokemon.forms.length >= 1 ) {
-                    setPokeForms( fetchedPokemon.forms );
+                let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon/${ id }/` );
+                if ( pokemon.status === 200 ) {
+                    setStateFromReq( pokemon.data )
                 }
-
-                if ( fetchedPokemon.types.length === 2 ) {
-                    setType1( stylesTypes[ fetchedPokemon.types[ 0 ].type.name ] )
-                    setType2( stylesTypes[ fetchedPokemon.types[ 1 ].type.name ] )
-                }
-                else {
-                    setType1( stylesTypes[ fetchedPokemon.types[ 0 ].type.name ] )
-                }
+                console.log('one')
 
             }
             catch ( e ) {
-                console.log( e );
+                let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon/${ id }` );
+                console.log('two')
+                if ( pokemon.status === 200 ) {
+                    setStateFromReq( pokemon.data )
+                }
+                else { throw new Error( 'could not reach url' ) }
             }
+
         }
         fetchData();
 
@@ -51,26 +65,10 @@ const Pokedex = ( { id, clickedPoke } ) => {
                     <div>
                         <p>No.{ state.id }:  { state.name.toUpperCase() }</p>
 
-                        {/*the API doesn't have images for all the different forms*/ }
-                        { state.sprites.other[ "official-artwork" ].front_default !== null
-                            ? <img style={ { width: '30%' } } src={ `${ state.sprites.other[ "official-artwork" ].front_default }` } alt={ state.name } />
-                            : state.front_default !== null
-                                //not all pokemon, especially the varieties have official artwork
-                                //so sprites will be shown in place
-                                //other wise it will display 'Image N/A'
-                                ? <img src={ `${ state.sprites.front_default }` } alt={ state.name } />
-                                : <p>Image: N/A</p>
-                        }
 
+                        <Sprites pokeImg={ state.sprites } name={ state.name } />
 
                         { /* For pokemons that have 2 types it will render both otherwise just the one type */ }
-                        { state.types.length === 2
-                            ? <div style={ { display: 'flex' } }>
-                                <p className={ `${ type1 } ${ styles.fill }` }>{ state.types[ 0 ].type.name }</p>
-                                <p className={ `${ type2 } ${ styles.fill }` }>{ state.types[ 1 ].type.name }</p>
-                            </div>
-                            : <p className={ `${ type1 } ${ styles.fill }` }>{ state.types[ 0 ].type.name }</p>
-                        }
 
                         <MoreInfo
                             id={ id }
@@ -83,6 +81,8 @@ const Pokedex = ( { id, clickedPoke } ) => {
                             pokeForms={ pokeForms }
                             stats={ state.stats }
                             types={ state.types }
+                            type1={ type1 }
+                            type2={ type2 }
                             backgroundColor={ typeColorBackground }
                             clickedPoke={ clickedPoke }
 
