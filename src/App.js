@@ -37,7 +37,6 @@ const App = () => {
 
   const setPokedexByTypeHandler = ( type ) => { 
     setNewPokedex( [] )
-    console.log(selectedType)
     setSelectedType( type )
   }
 
