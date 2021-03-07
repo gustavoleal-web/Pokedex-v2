@@ -1,9 +1,24 @@
 import React, { useEffect, useState } from 'react';
+import Pokedex from '../../../../Pokedex'
 import styles from './individualMethos.module.css'
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
 const IndividualMethods = ( { obj, clickedPoke } ) => {
+    const [ pokemon, setPokemon ] = useState( null );
+
+    const onClickHandler = ( name ) => {
+
+        setPokemon(
+            <div>
+                <Pokedex id={ name } />
+            </div>
+
+        )
+
+    }
+
+
     const [ sprite, setSprite ] = useState( '' );
 
     function renameKeys( obj, newKeys ) {
@@ -42,7 +57,7 @@ const IndividualMethods = ( { obj, clickedPoke } ) => {
 
 
     return (
-        <div style={ { border: '1px solid black' } }>
+        <div>
             {
                 Object.keys( renamedObj ).map( key => {
                     let evolutionInfo;
@@ -75,10 +90,10 @@ const IndividualMethods = ( { obj, clickedPoke } ) => {
             }
             {
                 sprite
-                    ? <img src={ `${ sprite }` } alt='pokemon sprite' onClick={ () => clickedPoke( renamedObj.evolution ) } className={ styles.pokeSprite } />
+                    ? <img src={ `${ sprite }` } alt='pokemon sprite' onClick={ () => onClickHandler( renamedObj.evolution ) } className={ styles.pokeSprite } />
                     : null
             }
-
+            {pokemon }
         </div>
     )
 }
