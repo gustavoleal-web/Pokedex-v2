@@ -43,7 +43,7 @@ const IndividualMethods = ( { obj, clickedPoke } ) => {
     useEffect( () => {
         const fetchData = async () => {
             try {
-                let pokemon = await axios.get( ` https://pokeapi.co/api/v2/pokemon-form/${ renamedObj.evolution }` );
+                let pokemon = await axios.get( ` https://pokeapi.co/api/v2/pokemon-form/${ renamedObj.evolution }/` );
                 setSprite( pokemon.data.sprites.front_default )
             }
             catch ( e ) {
@@ -64,15 +64,15 @@ const IndividualMethods = ( { obj, clickedPoke } ) => {
 
                     //  too many if statements refactor
                     if ( renamedObj[ key ] === true ) {
-                        evolutionInfo = <p>{ key }</p>
+                        evolutionInfo = <p key={ uuidv4() }>{ key }</p>
                     }
 
                     else if ( key === 'gender' && renamedObj[ key ] === 1 ) {
-                        evolutionInfo = <p>{ `${ key }: female` }</p>
+                        evolutionInfo = <p key={ uuidv4() } >{ `${ key }: female` }</p>
                     }
 
                     else if ( key === 'gender' && renamedObj[ key ] === 2 ) {
-                        evolutionInfo = <p>{ `${ key }: male` }</p>
+                        evolutionInfo = <p key={ uuidv4() }>{ `${ key }: male` }</p>
                     }
 
                     else if ( key === 'name' ) {
