@@ -1,8 +1,10 @@
 import React from 'react';
-import styles from '../ResistanceWeakness.module.css'
-import backgroundTypeColor from '../../../pokeTypes.module.css'
+import styles from '../ResistanceWeakness.module.css';
+import backgroundTypeColor from '../../../pokeTypes.module.css';
+
 
 const Damage = ( { damageList, timesDamage } ) => {
+
     //if resist is an object it will execute this block
     //it is needed b/c the prop type.name will need to be accessed unlike the arr in the else check
     if ( damageList[ 0 ].hasOwnProperty( 'name' ) ) {
@@ -10,9 +12,16 @@ const Damage = ( { damageList, timesDamage } ) => {
             <>
                 <h6>{ timesDamage }</h6>
                 <span className={ styles.container }>
-                    { damageList.map( type => <p className={ backgroundTypeColor[ type.name ] } key={ type.name }>{ type.name }</p> ) }
-
+                    {
+                        damageList.map( type =>
+                            <p
+                                className={ backgroundTypeColor[ type.name ] }
+                                key={ type.name } >
+                                { type.name }
+                            </p> )
+                    }
                 </span>
+
             </>
 
 
@@ -24,7 +33,8 @@ const Damage = ( { damageList, timesDamage } ) => {
             <>
                 <h6>{ timesDamage }</h6>
                 <span className={ styles.container }>
-                    { damageList.map( type => <p className={ backgroundTypeColor[ type ] } key={ type }>{ type }</p> ) }
+                    { damageList.map( type => <p className={ backgroundTypeColor[ type ] } key={ type } >{ type }</p> ) }
+
                 </span>
             </>
         )
