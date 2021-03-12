@@ -14,10 +14,26 @@ import maleIcon from '../../img/icons/male-gender.png'
 import femaleIcon from '../../img/icons/female-gender.png'
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import { Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody } from 'reactstrap';
+// import { Route, Link } from 'react-router-dom';
 
-const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms, stats, types, clickedPoke, backgroundColor } ) => {
-    const [ modal, setModal ] = useState( false );
+const MoreInfo = ( {
+    name,
+    abilities,
+    sprites,
+    weight,
+    height,
+    moves,
+    pokeForms,
+    stats,
+    types,
+    type1,
+    type2,
+    clickedPoke,
+    backgroundColor,
+    modal,
+    toggle } ) => {
+
     const [ evolutionChainUrl, setUrl ] = useState( '' );
     const [ varieties, setVarieties ] = useState( '' );
     const [ trainingData, setTrainigData ] = useState( {} );
@@ -28,7 +44,6 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
     const hiddenAbilities = [];
 
     //from reactstrap
-    const toggle = () => setModal( !modal );
     const closeBtn = <button className="close" onClick={ toggle }>&times;</button>;
 
 
@@ -74,9 +89,10 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
 
     useEffect( () => {
         const fetchData = async () => {
+
             try {
 
-                let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon-species/${ name }` );
+                let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon-species/${ name }/` );
                 let fetchedEvoChainURL = pokemon.data.evolution_chain.url;
 
 
@@ -132,7 +148,7 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
 
     return (
         <div>
-            <Button className={ styles.moreInfo } outline color="info" onClick={ toggle } size='sm'>i</Button>
+
             <Modal isOpen={ modal } toggle={ toggle } animation='false'>
 
                 <ModalHeader toggle={ toggle } close={ closeBtn } className={ backgroundColor }>
@@ -144,11 +160,30 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
                     }
                 </ModalHeader>
 
+                {/* <header>
+                    <nav>
+                        <ul>
+                            <li><Link to="/training-data">Training Data</Link></li>
+                            <li><Link to="/evolution">Evolution</Link></li>
+                        </ul>
+                    </nav>
+                </header>*/}
+
                 <span style={ { fontSize: '18px', textAlign: 'center' } }>
                     <ModalBody>
                         <hr className={ `${ styles.hrGeneral } ${ styles.hrMargin }` } />
                         <div>
                             { Object.keys( pekedexEntries ).length !== 0 ? <PokedexEntries pokedexData={ pekedexEntries } /> : null }
+
+                            { types.length === 2
+                                ? <div style={ { display: 'flex' } }>
+                                    <p className={ `${ type1 } ${ styles.fill }` }>{ types[ 0 ].type.name }</p>
+                                    <p className={ `${ type2 } ${ styles.fill }` }>{ types[ 1 ].type.name }</p>
+                                </div>
+                                : <p className={ `${ type1 } ${ styles.fill }` }>{ types[ 0 ].type.name }</p>
+                            }
+
+
                             <p>Weight: { weightInKg } kg</p>
                             <p>Height: { feet } ft</p>
 
@@ -173,6 +208,26 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
                         <h5>Hidden</h5>
                         <Abilities abilities={ hiddenAbilities } />
                     </ModalBody>
+                    
+                    {/*
+                    <ModalBody>
+                        <Route path='/training-data' render={ () => (
+                            <div>
+                                <hr className={ `${ styles.hrTraining } ${ styles.hrMargin }` } />
+                                <Training data={ trainingData } />
+                            </div>
+
+                        ) }>
+                        </Route>
+                    </ModalBody>
+
+
+                    <Route path='/evolution' render={ () => (
+                        <EvolutionChain clickedPoke={ clickedPoke } evolutionChainUrl={ evolutionChainUrl } />
+                    ) }>
+                    </Route>*/}
+
+
 
 
                     <ModalBody>
@@ -185,6 +240,10 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
                         <hr className={ `${ styles.hrEvolution } ${ styles.hrMargin }` } />
                         { <EvolutionChain clickedPoke={ clickedPoke } evolutionChainUrl={ evolutionChainUrl } /> }
                     </ModalBody>
+
+
+
+
 
 
                     <ModalBody>
@@ -226,10 +285,14 @@ const MoreInfo = ( { name, abilities, sprites, weight, height, moves, pokeForms,
                         { stats.length !== 0 ? <Stats stats={ stats } /> : null }
                     </ModalBody>
 
+
                     <ModalBody>
+
                         <hr className={ `${ styles.hrDamage } ${ styles.hrMargin }` } />
                         { types.length !== 0 ? <ResistanceWeakness type={ types } key={ uuidv4() } /> : null }
                     </ModalBody>
+
+
 
 
 
