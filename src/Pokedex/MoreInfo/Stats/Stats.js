@@ -1,6 +1,6 @@
 import React from 'react';
 import MinAndMaxStats from './MinAndMaxStats/MinAndMaxStats'
-import styles from './stas.module.css';
+import styles from './stats.module.css';
 import { v4 as uuidv4 } from 'uuid';
 
 const Stats = ( { stats } ) => {
