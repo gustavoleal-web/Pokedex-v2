@@ -6,7 +6,7 @@ import axios from 'axios';
 import styles from './Pokedex.module.css';
 import stylesTypes from './pokeTypes.module.css'
 import backgroundTypes from './pokeTypesBackgrondColor.module.css'
-import { Spinner } from 'reactstrap';
+import { Spinner, Button } from 'reactstrap';
 
 const Pokedex = ( { id, clickedPoke } ) => {
     const [ state, setState ] = useState( [] );
@@ -14,6 +14,9 @@ const Pokedex = ( { id, clickedPoke } ) => {
     const [ type2, setType2 ] = useState( '' );
     const [ typeColorBackground, setBackground ] = useState( '' );
     const [ pokeForms, setPokeForms ] = useState( '' );
+
+    const [ modal, setModal ] = useState( false );
+    const toggle = () => setModal( !modal );
 
     const setStateFromReq = ( pokemonData ) => {
         let fetchedPokemon = pokemonData;
@@ -40,12 +43,11 @@ const Pokedex = ( { id, clickedPoke } ) => {
                 if ( pokemon.status === 200 ) {
                     setStateFromReq( pokemon.data )
                 }
-                console.log('one')
+
 
             }
             catch ( e ) {
                 let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon/${ id }` );
-                console.log('two')
                 if ( pokemon.status === 200 ) {
                     setStateFromReq( pokemon.data )
                 }
@@ -63,31 +65,33 @@ const Pokedex = ( { id, clickedPoke } ) => {
 
                 <div className={ `${ styles.infoContainer } ${ typeColorBackground }` }>
                     <div>
+
+                        <Sprites pokeImg={ state.sprites } name={ state.name } />
                         <p>No.{ state.id }:  { state.name.toUpperCase() }</p>
 
 
-                        <Sprites pokeImg={ state.sprites } name={ state.name } />
-
                         { /* For pokemons that have 2 types it will render both otherwise just the one type */ }
-
-                        <MoreInfo
-                            id={ id }
-                            name={ state.name }
-                            abilities={ state.abilities }
-                            sprites={ state.sprites }
-                            weight={ state.weight }
-                            height={ state.height }
-                            moves={ state.moves }
-                            pokeForms={ pokeForms }
-                            stats={ state.stats }
-                            types={ state.types }
-                            type1={ type1 }
-                            type2={ type2 }
-                            backgroundColor={ typeColorBackground }
-                            clickedPoke={ clickedPoke }
-
-                        />
-
+                       <Button onClick={() => toggle()}>i</Button>
+                        { modal ?
+                            <MoreInfo
+                                id={ id }
+                                name={ state.name }
+                                abilities={ state.abilities }
+                                sprites={ state.sprites }
+                                weight={ state.weight }
+                                height={ state.height }
+                                moves={ state.moves }
+                                pokeForms={ pokeForms }
+                                stats={ state.stats }
+                                types={ state.types }
+                                type1={ type1 }
+                                type2={ type2 }
+                                backgroundColor={ typeColorBackground }
+                                clickedPoke={ clickedPoke }
+                                modal={ modal }
+                                toggle={toggle}
+                            />
+                            : null }
                     </div>
                 </div>
             }
