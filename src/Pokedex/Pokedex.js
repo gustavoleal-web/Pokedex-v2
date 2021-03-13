@@ -37,22 +37,28 @@ const Pokedex = ( { id, clickedPoke } ) => {
     }
 
     useEffect( () => {
+        let isMounted = true;
         const fetchData = async () => {
-            try {
-                let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon/${ id }/` );
-                if ( pokemon.status === 200 ) {
-                    setStateFromReq( pokemon.data )
-                }
+            if ( isMounted ) {
+                try {
+                    let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon/${ id }/`, { headers: {'Access-Control-Allow-Origin': '*'}} );
+                    if ( pokemon.status === 200 ) {
+                        setStateFromReq( pokemon.data )
+                    }
 
 
-            }
-            catch ( e ) {
-                let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon/${ id }` );
-                if ( pokemon.status === 200 ) {
-                    setStateFromReq( pokemon.data )
                 }
-                else { throw new Error( 'could not reach url' ) }
+                catch ( e ) {
+                    let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon/${ id }`, { headers: {'Access-Control-Allow-Origin': '*'}} );
+                    if ( pokemon.status === 200 ) {
+                        setStateFromReq( pokemon.data )
+                    }
+                    else { throw new Error( 'could not reach url' ) }
+                }
             }
+            return () => {
+                isMounted = false;
+            };
 
         }
         fetchData();
@@ -71,7 +77,7 @@ const Pokedex = ( { id, clickedPoke } ) => {
 
 
                         { /* For pokemons that have 2 types it will render both otherwise just the one type */ }
-                       <Button onClick={() => toggle()}>i</Button>
+                        <Button onClick={ () => toggle() }>i</Button>
                         { modal ?
                             <MoreInfo
                                 id={ id }
@@ -89,7 +95,7 @@ const Pokedex = ( { id, clickedPoke } ) => {
                                 backgroundColor={ typeColorBackground }
                                 clickedPoke={ clickedPoke }
                                 modal={ modal }
-                                toggle={toggle}
+                                toggle={ toggle }
                             />
                             : null }
                     </div>
