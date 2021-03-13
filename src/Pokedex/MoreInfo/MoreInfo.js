@@ -67,205 +67,252 @@ const MoreInfo = ( {
     const pokeName = name;
 
     //these pokemon originally come with a - in their name so their name should not be modified
-    if ( name !== 'mr-mime'
-        && name !== 'mime-jr'
-        && name !== 'mr-rime'
-        && name !== 'nidoran-f'
-        && name !== 'nidoran-m'
-        && name !== 'ho-oh'
-        && name !== 'porygon-z'
-        && name !== 'tapu-bulu'
-        && name !== 'tapu-koko'
-        && name !== 'tapu-lele'
-        && name !== 'tapu-fini'
-        && name !== 'jangmo-o'
-        && name !== 'hakamo-o'
-        && name !== 'kommo-o'
-        && name.includes( '-' ) ) {
+    // if ( name !== 'mr-mime'
+    //     && name !== 'mime-jr'
+    //     && name !== 'mr-rime'
+    //     && name !== 'nidoran-f'
+    //     && name !== 'nidoran-m'
+    //     && name !== 'ho-oh'
+    //     && name !== 'porygon-z'
+    //     && name !== 'tapu-bulu'
+    //     && name !== 'tapu-koko'
+    //     && name !== 'tapu-lele'
+    //     && name !== 'tapu-fini'
+    //     && name !== 'jangmo-o'
+    //     && name !== 'hakamo-o'
+    //     && name !== 'kommo-o'
+    //     && name.includes( '-' ) ) {
 
-        let end = name.indexOf( '-' );
-        name = name.substring( 0, end );
-    }
+    //     let end = name.indexOf( '-' );
+    //     name = name.substring( 0, end );
+    //     console.log(name)
+    // }
 
     useEffect( () => {
+        let isMounted = true;
         const fetchData = async () => {
+            if ( isMounted ) {
 
-            try {
+                try {
 
-                let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon-species/${ name }/` );
-                let fetchedEvoChainURL = pokemon.data.evolution_chain.url;
+                    let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon-species/${ name }/`, { headers: { 'X-Custom-Header': '*' } } );
+                    let fetchedEvoChainURL = pokemon.data.evolution_chain.url;
 
 
-                if ( pokemon.data.gender_rate === -1 ) {
-                    setGender( 'genderless' )
+                    if ( pokemon.data.gender_rate === -1 ) {
+                        setGender( 'genderless' )
+                    }
+                    else {
+                        let genderRate = {};
+                        let female = ( 12.5 * pokemon.data.gender_rate );
+                        let male = 100 - female;
+                        genderRate.male = male;
+                        genderRate.female = female;
+                        setGender( genderRate );
+                    }
+
+                    let fetechedTraining = {};
+                    ( {
+                        base_happiness: fetechedTraining.baseHappiness,
+                        capture_rate: fetechedTraining.captureRate,
+                        growth_rate: fetechedTraining.grouthRate
+                    } = pokemon.data );
+
+
+                    let fetchedPokedEntries = {};
+                    ( {
+                        flavor_text_entries: fetchedPokedEntries.pokedexTextEntries,
+                        genera: fetchedPokedEntries.genus,
+                        generation: fetchedPokedEntries.generation
+                    } = pokemon.data );
+
+                    let fetchedEggData = {};
+
+                    ( {
+                        egg_groups: fetchedEggData.eggGroups,
+                        hatch_counter: fetchedEggData.hatchCounter
+                    } = pokemon.data )
+
+                    setTrainigData( fetechedTraining );
+                    setPokedexEntries( fetchedPokedEntries );
+                    setEggData( fetchedEggData );
+                    setUrl( fetchedEvoChainURL );
+
+                    pokemon.data.varieties ? setVarieties( pokemon.data.varieties ) : setVarieties( '' );
                 }
-                else {
-                    let genderRate = {};
-                    let female = ( 12.5 * pokemon.data.gender_rate );
-                    let male = 100 - female;
-                    genderRate.male = male;
-                    genderRate.female = female;
-                    setGender( genderRate );
+                catch ( e ) {
+                    console.log( e );
                 }
-
-                let fetechedTraining = {};
-                ( {
-                    base_happiness: fetechedTraining.baseHappiness,
-                    capture_rate: fetechedTraining.captureRate,
-                    growth_rate: fetechedTraining.grouthRate
-                } = pokemon.data );
-
-
-                let fetchedPokedEntries = {};
-                ( {
-                    flavor_text_entries: fetchedPokedEntries.pokedexTextEntries,
-                    genera: fetchedPokedEntries.genus,
-                    generation: fetchedPokedEntries.generation
-                } = pokemon.data );
-
-                let fetchedEggData = {};
-
-                ( {
-                    egg_groups: fetchedEggData.eggGroups,
-                    hatch_counter: fetchedEggData.hatchCounter
-                } = pokemon.data )
-
-                setTrainigData( fetechedTraining );
-                setPokedexEntries( fetchedPokedEntries );
-                setEggData( fetchedEggData );
-                setUrl( fetchedEvoChainURL );
-
-                pokemon.data.varieties ? setVarieties( pokemon.data.varieties ) : setVarieties( '' );
-            }
-            catch ( e ) {
-                console.log( e );
             }
         }
         fetchData();
+        return () => {
+            isMounted = false;
+        };
 
     }, [ name ] );
 
 
+    let showSpritesVersion = null;
+    let showGeneralData = null;
+    let showTypes = null;
+    let showGender = null;
+    let shoWabilities = null;
+    let showTraining = null;
+    let showEvolution = null;
+    let showBreeding = null;
+    let showVarieties = null;
+    let showForms = null;
+    let showStats = null;
+    let showDamaga = null;
+
+
+    if ( sprites.versions[ 'generation-viii' ].icons.front_default ) {
+        showSpritesVersion =
+            <img
+                src={ `${ sprites.versions[ 'generation-viii' ].icons.front_default }` }
+                alt={ { name } }
+            />
+    }
+
+    // if ( Object.keys( pekedexEntries ).length !== 0 ) {
+    //     showGeneralData = 
+    // }
+
+    if ( types.length === 2 ) {
+        showTypes = (
+            <div style={ { display: 'flex' } }>
+                <p className={ `${ type1 } ${ styles.fill }` }>{ types[ 0 ].type.name }</p>
+                <p className={ `${ type2 } ${ styles.fill }` }>{ types[ 1 ].type.name }</p>
+            </div>
+        )
+    }
+    else {
+        showTypes =
+            <p
+                className={ `${ type1 } ${ styles.fill }` }>
+                { types[ 0 ].type.name }
+            </p>
+    }
+
+    if ( gender === 'genderless' ) {
+        showGender = <p>Genderless</p>
+    }
+    else {
+        showGender = (
+            <div>
+                <p><img src={ maleIcon } alt='male' /> { gender.male }%</p>
+                <p><img src={ femaleIcon } alt='female' /> { gender.female }%</p>
+            </div>
+        )
+    }
+
+    shoWabilities = <ModalBody >
+        <hr
+            className={ `${ styles.hrAbilities } ${ styles.hrMargin }` }
+            style={ { marginTop: '40px', marginBottom: '40px' } }
+        />
+        <h5>Common</h5>
+        <Abilities abilities={ commonAbilities } />
+
+        <h5>Hidden</h5>
+        <Abilities abilities={ hiddenAbilities } />
+    </ModalBody>
+
+    if ( Object.keys( trainingData ).length !== 0 ) {
+        showTraining =
+            <ModalBody>
+                <hr className={ `${ styles.hrTraining } ${ styles.hrMargin }` } />
+                <Training data={ trainingData } />
+            </ModalBody>
+    }
+
+    if ( Object.keys( eggData ).length !== 0 ) {
+        showBreeding =
+            <ModalBody>
+                <hr className={ `${ styles.hrBreeding } ${ styles.hrMargin }` } />
+                <Breeding eggData={ eggData } />
+            </ModalBody>
+    }
+
+    if ( varieties.length !== 0 ) {
+        showVarieties =
+            <ModalBody>
+                <hr className={ `${ styles.hrVarieties } ${ styles.hrMargin }` } />
+                <Varieties varieties={ varieties } clickedPoke={ clickedPoke } />
+            </ModalBody>
+    }
+
+    if ( pokeForms.length !== 0 ) {
+        showForms =
+            <ModalBody>
+                <hr className={ `${ styles.hrForms } ${ styles.hrMargin }` } />
+                <div className={ styles.formsContainer }>
+                    { pokeForms.map( poke => <AlternateForms pokeForms={ poke } key={ poke.url } /> ) }
+                    <ShinyPoke shinySprite={ sprites.front_shiny } />
+                </div>
+            </ModalBody>
+    }
+
+    if ( stats.length !== 0 ) {
+        showStats =
+            <ModalBody>
+                <hr className={ `${ styles.hrStats } ${ styles.hrMargin }` } />
+                { stats.length !== 0 ? <Stats stats={ stats } /> : null }
+            </ModalBody>
+
+    }
+
+    if ( types.length !== 0 ) {
+        showDamaga =
+            <ModalBody>
+                <hr className={ `${ styles.hrDamage } ${ styles.hrMargin }` } />
+                { types.length !== 0 ? <ResistanceWeakness type={ types } key={ uuidv4() } /> : null }
+            </ModalBody>
+
+    }
+
+    showEvolution =
+        <ModalBody style={ { display: 'block' } }>
+            <hr className={ `${ styles.hrEvolution } ${ styles.hrMargin }` } />
+            <EvolutionChain clickedPoke={ clickedPoke } evolutionChainUrl={ evolutionChainUrl } />
+        </ModalBody>
+
     return (
         <div>
-
             <Modal isOpen={ modal } toggle={ toggle } animation='false'>
-
-                <ModalHeader toggle={ toggle } close={ closeBtn } className={ backgroundColor }>
+                <ModalHeader
+                    toggle={ toggle }
+                    close={ closeBtn }
+                    className={ backgroundColor }>
                     { pokeName.toUpperCase() }
-                    {
-                        sprites.versions[ 'generation-viii' ].icons.front_default
-                            ? <img src={ `${ sprites.versions[ 'generation-viii' ].icons.front_default }` } alt={ { name } } />
-                            : null
-                    }
+                    { showSpritesVersion }
                 </ModalHeader>
-
-                {/* <header>
-                    <nav>
-                        <ul>
-                            <li><Link to="/training-data">Training Data</Link></li>
-                            <li><Link to="/evolution">Evolution</Link></li>
-                        </ul>
-                    </nav>
-                </header>*/}
 
                 <span style={ { fontSize: '18px', textAlign: 'center' } }>
                     <ModalBody>
                         <hr className={ `${ styles.hrGeneral } ${ styles.hrMargin }` } />
-                        <div>
-                            { Object.keys( pekedexEntries ).length !== 0 ? <PokedexEntries pokedexData={ pekedexEntries } /> : null }
+                        { Object.keys( pekedexEntries ).length !== 0 ? <PokedexEntries pokedexData={ pekedexEntries } /> : null }
 
-                            { types.length === 2
-                                ? <div style={ { display: 'flex' } }>
-                                    <p className={ `${ type1 } ${ styles.fill }` }>{ types[ 0 ].type.name }</p>
-                                    <p className={ `${ type2 } ${ styles.fill }` }>{ types[ 1 ].type.name }</p>
-                                </div>
-                                : <p className={ `${ type1 } ${ styles.fill }` }>{ types[ 0 ].type.name }</p>
-                            }
+                        { showTypes }
 
+                        <p>Weight: { weightInKg } kg</p>
+                        <p>Height: { feet } ft</p>
 
-                            <p>Weight: { weightInKg } kg</p>
-                            <p>Height: { feet } ft</p>
+                        <h5>Gender</h5>
+                        { showGender }
 
-                            <h5>Gender</h5>
-                            {
-                                gender === 'genderless'
-                                    ? <p>Genderless</p>
-                                    : <div>
-                                        <p><img src={ maleIcon } alt='male' /> { gender.male }%</p>
-                                        <p><img src={ femaleIcon } alt='female' /> { gender.female }%</p>
-                                    </div>
-                            }
-
-                        </div>
                     </ModalBody>
-
-                    <ModalBody >
-                        <hr className={ `${ styles.hrAbilities } ${ styles.hrMargin }` } style={ { marginTop: '40px', marginBottom: '40px' } } />
-                        <h5>Common</h5>
-                        <Abilities abilities={ commonAbilities } />
-
-                        <h5>Hidden</h5>
-                        <Abilities abilities={ hiddenAbilities } />
-                    </ModalBody>
-                    
-                    {/*
-                    <ModalBody>
-                        <Route path='/training-data' render={ () => (
-                            <div>
-                                <hr className={ `${ styles.hrTraining } ${ styles.hrMargin }` } />
-                                <Training data={ trainingData } />
-                            </div>
-
-                        ) }>
-                        </Route>
-                    </ModalBody>
-
-
-                    <Route path='/evolution' render={ () => (
-                        <EvolutionChain clickedPoke={ clickedPoke } evolutionChainUrl={ evolutionChainUrl } />
-                    ) }>
-                    </Route>*/}
-
-
-
-
-                    <ModalBody>
-                        <hr className={ `${ styles.hrTraining } ${ styles.hrMargin }` } />
-                        { Object.keys( trainingData ).length !== 0 ? <Training data={ trainingData } /> : null }
-                    </ModalBody>
-
-
-                    <ModalBody style={ { display: 'block' } }>
-                        <hr className={ `${ styles.hrEvolution } ${ styles.hrMargin }` } />
-                        { <EvolutionChain clickedPoke={ clickedPoke } evolutionChainUrl={ evolutionChainUrl } /> }
-                    </ModalBody>
-
-
-
-
-
-
-                    <ModalBody>
-                        <hr className={ `${ styles.hrBreeding } ${ styles.hrMargin }` } />
-                        { Object.keys( eggData ).length !== 0 ? <Breeding eggData={ eggData } /> : null }
-                    </ModalBody>
-
-                    <ModalBody>
-                        <hr className={ `${ styles.hrVarieties } ${ styles.hrMargin }` } />
-                        { varieties.length === 0 ? null : <Varieties varieties={ varieties } clickedPoke={ clickedPoke } /> }
-                    </ModalBody>
-
-
-                    <ModalBody>
-                        <hr className={ `${ styles.hrForms } ${ styles.hrMargin }` } />
-                        <div className={ styles.formsContainer }>
-                            { pokeForms.length !== 0 ? pokeForms.map( poke => <AlternateForms pokeForms={ poke } key={ poke.url } /> ) : null }
-                            <ShinyPoke shinySprite={ sprites.front_shiny } />
-                        </div>
-                    </ModalBody>
-
-                    <ModalBody>
+                    { shoWabilities }
+                    { showTraining }
+                    { showEvolution }
+                    { showBreeding }
+                    { showVarieties }
+                    { showForms }
+                    { showStats }
+                    { showDamaga }
+                    {/* 
+                        <ModalBody>
                         <hr className={ `${ styles.hrStats } ${ styles.hrMargin }` } />
                         <div >
                             {
@@ -278,23 +325,8 @@ const MoreInfo = ( {
                                 )
                             }
                         </div>
-                    </ModalBody>
-
-                    <ModalBody>
-                        <hr className={ `${ styles.hrStats } ${ styles.hrMargin }` } />
-                        { stats.length !== 0 ? <Stats stats={ stats } /> : null }
-                    </ModalBody>
-
-
-                    <ModalBody>
-
-                        <hr className={ `${ styles.hrDamage } ${ styles.hrMargin }` } />
-                        { types.length !== 0 ? <ResistanceWeakness type={ types } key={ uuidv4() } /> : null }
-                    </ModalBody>
-
-
-
-
+                        </ModalBody>
+                    */}
 
                 </span>
             </Modal>
