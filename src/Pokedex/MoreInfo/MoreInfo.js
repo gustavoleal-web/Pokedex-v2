@@ -43,6 +43,9 @@ const MoreInfo = ( {
     const commonAbilities = [];
     const hiddenAbilities = [];
 
+    console.log(Modal.propTypes.size)
+  
+
     //from reactstrap
     const closeBtn = <button className="close" onClick={ toggle }>&times;</button>;
 
@@ -154,7 +157,7 @@ const MoreInfo = ( {
 
 
     let showSpritesVersion = null;
-    let showGeneralData = null;
+    //let showGeneralData = null;
     let showTypes = null;
     let showGender = null;
     let shoWabilities = null;
@@ -280,7 +283,7 @@ const MoreInfo = ( {
 
     return (
         <div>
-            <Modal isOpen={ modal } toggle={ toggle } animation='false'>
+            <Modal isOpen={ modal } toggle={ toggle } animation='false' fullscreen='xl'>
                 <ModalHeader
                     toggle={ toggle }
                     close={ closeBtn }
@@ -292,7 +295,7 @@ const MoreInfo = ( {
                 <span style={ { fontSize: '18px', textAlign: 'center' } }>
                     <ModalBody>
                         <hr className={ `${ styles.hrGeneral } ${ styles.hrMargin }` } />
-                        { Object.keys( pekedexEntries ).length !== 0 ? <PokedexEntries pokedexData={ pekedexEntries } /> : null }
+                        { Object.keys( pekedexEntries ).length !== 0 ? <PokedexEntries pokedexData={ pekedexEntries } /> : <h5>Loading...</h5> }
 
                         { showTypes }
 
