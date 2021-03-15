@@ -6,7 +6,8 @@ import axios from 'axios';
 import styles from './Pokedex.module.css';
 import stylesTypes from './pokeTypes.module.css'
 import backgroundTypes from './pokeTypesBackgrondColor.module.css'
-import { Spinner, Button } from 'reactstrap';
+import { Spinner, } from 'reactstrap';
+import Button from 'react-bootstrap/Button';
 
 const Pokedex = ( { id, clickedPoke } ) => {
     const [ state, setState ] = useState( [] );
@@ -15,8 +16,14 @@ const Pokedex = ( { id, clickedPoke } ) => {
     const [ typeColorBackground, setBackground ] = useState( '' );
     const [ pokeForms, setPokeForms ] = useState( '' );
 
-    const [ modal, setModal ] = useState( false );
-    const toggle = () => setModal( !modal );
+    // const [ modal, setModal ] = useState( false );
+    // const toggle = () => setModal( !modal );
+
+
+    const [ lgShow, setLgShow ] = useState( false );
+    const showModalHandler = ( bool ) => {
+        setLgShow( bool )
+    }
 
     const setStateFromReq = ( pokemonData ) => {
         let fetchedPokemon = pokemonData;
@@ -41,7 +48,10 @@ const Pokedex = ( { id, clickedPoke } ) => {
         const fetchData = async () => {
             if ( isMounted ) {
                 try {
-                    let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon/${ id }/`, { headers: {'Access-Control-Allow-Origin': '*'}} );
+                    let pokemon = await axios.get(
+                        `https://pokeapi.co/api/v2/pokemon/${ id }/`,
+                        { 'headers': { 'Access-Control-Allow-Origin': '*' } } );
+
                     if ( pokemon.status === 200 ) {
                         setStateFromReq( pokemon.data )
                     }
@@ -49,7 +59,9 @@ const Pokedex = ( { id, clickedPoke } ) => {
 
                 }
                 catch ( e ) {
-                    let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon/${ id }`, { headers: {'Access-Control-Allow-Origin': '*'}} );
+                    let pokemon = await axios.get(
+                        `https://pokeapi.co/api/v2/pokemon/${ id }`,
+                        { 'headers': { 'Access-Control-Allow-Origin': '*' } } );
                     if ( pokemon.status === 200 ) {
                         setStateFromReq( pokemon.data )
                     }
@@ -77,8 +89,9 @@ const Pokedex = ( { id, clickedPoke } ) => {
 
 
                         { /* For pokemons that have 2 types it will render both otherwise just the one type */ }
-                        <Button onClick={ () => toggle() }>i</Button>
-                        { modal ?
+                        {/*<Button onClick={ () => toggle() }>i</Button>*/ }
+                        <Button variant="outline-info" onClick={ () => showModalHandler( true ) }>i</Button>
+                        { lgShow ?
                             <MoreInfo
                                 id={ id }
                                 name={ state.name }
@@ -94,8 +107,8 @@ const Pokedex = ( { id, clickedPoke } ) => {
                                 type2={ type2 }
                                 backgroundColor={ typeColorBackground }
                                 clickedPoke={ clickedPoke }
-                                modal={ modal }
-                                toggle={ toggle }
+                                showModal={ lgShow }
+                                showModalHandler={ showModalHandler }
                             />
                             : null }
                     </div>
