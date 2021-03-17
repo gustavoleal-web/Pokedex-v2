@@ -14,8 +14,9 @@ import maleIcon from '../../img/icons/male-gender.png'
 import femaleIcon from '../../img/icons/female-gender.png'
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-import { Modal, ModalHeader, ModalBody } from 'reactstrap';
+//import { Modal, ModalHeader, Modal.Body } from 'reactstrap';
 // import { Route, Link } from 'react-router-dom';
+import Modal from 'react-bootstrap/Modal';
 
 const MoreInfo = ( {
     name,
@@ -31,8 +32,9 @@ const MoreInfo = ( {
     type2,
     clickedPoke,
     backgroundColor,
-    modal,
-    toggle } ) => {
+    showModal,
+    showModalHandler
+} ) => {
 
     const [ evolutionChainUrl, setUrl ] = useState( '' );
     const [ varieties, setVarieties ] = useState( '' );
@@ -43,11 +45,8 @@ const MoreInfo = ( {
     const commonAbilities = [];
     const hiddenAbilities = [];
 
-    console.log(Modal.propTypes.size)
-  
-
     //from reactstrap
-    const closeBtn = <button className="close" onClick={ toggle }>&times;</button>;
+    //const closeBtn = <button className="close" onClick={ toggle }>&times;</button>;
 
 
     //converted the value to meeters then to ft
@@ -210,7 +209,7 @@ const MoreInfo = ( {
         )
     }
 
-    shoWabilities = <ModalBody >
+    shoWabilities = <Modal.Body >
         <hr
             className={ `${ styles.hrAbilities } ${ styles.hrMargin }` }
             style={ { marginTop: '40px', marginBottom: '40px' } }
@@ -220,80 +219,85 @@ const MoreInfo = ( {
 
         <h5>Hidden</h5>
         <Abilities abilities={ hiddenAbilities } />
-    </ModalBody>
+    </Modal.Body>
 
     if ( Object.keys( trainingData ).length !== 0 ) {
         showTraining =
-            <ModalBody>
+            <Modal.Body>
                 <hr className={ `${ styles.hrTraining } ${ styles.hrMargin }` } />
                 <Training data={ trainingData } />
-            </ModalBody>
+            </Modal.Body>
     }
 
     if ( Object.keys( eggData ).length !== 0 ) {
         showBreeding =
-            <ModalBody>
+            <Modal.Body>
                 <hr className={ `${ styles.hrBreeding } ${ styles.hrMargin }` } />
                 <Breeding eggData={ eggData } />
-            </ModalBody>
+            </Modal.Body>
     }
 
     if ( varieties.length !== 0 ) {
         showVarieties =
-            <ModalBody>
+            <Modal.Body>
                 <hr className={ `${ styles.hrVarieties } ${ styles.hrMargin }` } />
                 <Varieties varieties={ varieties } clickedPoke={ clickedPoke } />
-            </ModalBody>
+            </Modal.Body>
     }
 
     if ( pokeForms.length !== 0 ) {
         showForms =
-            <ModalBody>
+            <Modal.Body>
                 <hr className={ `${ styles.hrForms } ${ styles.hrMargin }` } />
                 <div className={ styles.formsContainer }>
                     { pokeForms.map( poke => <AlternateForms pokeForms={ poke } key={ poke.url } /> ) }
                     <ShinyPoke shinySprite={ sprites.front_shiny } />
                 </div>
-            </ModalBody>
+            </Modal.Body>
     }
 
     if ( stats.length !== 0 ) {
         showStats =
-            <ModalBody>
+            <Modal.Body>
                 <hr className={ `${ styles.hrStats } ${ styles.hrMargin }` } />
                 { stats.length !== 0 ? <Stats stats={ stats } /> : null }
-            </ModalBody>
+            </Modal.Body>
 
     }
 
     if ( types.length !== 0 ) {
         showDamaga =
-            <ModalBody>
+            <Modal.Body>
                 <hr className={ `${ styles.hrDamage } ${ styles.hrMargin }` } />
                 { types.length !== 0 ? <ResistanceWeakness type={ types } key={ uuidv4() } /> : null }
-            </ModalBody>
+            </Modal.Body>
 
     }
 
     showEvolution =
-        <ModalBody style={ { display: 'block' } }>
+        <Modal.Body style={ { display: 'block' } }>
             <hr className={ `${ styles.hrEvolution } ${ styles.hrMargin }` } />
             <EvolutionChain clickedPoke={ clickedPoke } evolutionChainUrl={ evolutionChainUrl } />
-        </ModalBody>
+        </Modal.Body>
 
     return (
         <div>
-            <Modal isOpen={ modal } toggle={ toggle } animation='false' fullscreen='xl'>
-                <ModalHeader
-                    toggle={ toggle }
-                    close={ closeBtn }
+            <Modal
+            centered
+                size="lg"
+                show={ showModal }
+                onHide={ () => showModalHandler( false ) }
+                aria-labelledby="example-modal-sizes-title-sm">
+
+                <Modal.Header
+                    closeButton
                     className={ backgroundColor }>
                     { pokeName.toUpperCase() }
                     { showSpritesVersion }
-                </ModalHeader>
+                </Modal.Header>
 
                 <span style={ { fontSize: '18px', textAlign: 'center' } }>
-                    <ModalBody>
+                    <Modal.Body>
                         <hr className={ `${ styles.hrGeneral } ${ styles.hrMargin }` } />
                         { Object.keys( pekedexEntries ).length !== 0 ? <PokedexEntries pokedexData={ pekedexEntries } /> : <h5>Loading...</h5> }
 
@@ -305,7 +309,7 @@ const MoreInfo = ( {
                         <h5>Gender</h5>
                         { showGender }
 
-                    </ModalBody>
+                    </Modal.Body>
                     { shoWabilities }
                     { showTraining }
                     { showEvolution }
@@ -315,7 +319,7 @@ const MoreInfo = ( {
                     { showStats }
                     { showDamaga }
                     {/* 
-                        <ModalBody>
+                        <Modal.Body>
                         <hr className={ `${ styles.hrStats } ${ styles.hrMargin }` } />
                         <div >
                             {
@@ -328,7 +332,7 @@ const MoreInfo = ( {
                                 )
                             }
                         </div>
-                        </ModalBody>
+                        </Modal.Body>
                     */}
 
                 </span>
