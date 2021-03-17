@@ -9,40 +9,48 @@ const ResistanceWeakness = ( { type } ) => {
     let twoTypes;
 
     useEffect( () => {
+        let isMounted = true;
+
         const fetchData = async () => {
-            if ( type.length === 1 ) {
-                try {
-                    //the api can't fetched the url if it has a '/' at the end to it is removed
-                    const editedUrl = type[ 0 ].type.url.slice( 0, -1 )
-                    let pokemon = await axios.get( editedUrl )
-                    let arr = [ pokemon.data ]
-                    setState( arr )
+            if ( isMounted ) {
+                if ( type.length === 1 ) {
+                    try {
+                        //the api can't fetched the url if it has a '/' at the end to it is removed
+                        const editedUrl = type[ 0 ].type.url.slice( 0, -1 )
+                        let pokemon = await axios.get( editedUrl )
+                        let arr = [ pokemon.data ]
+                        setState( arr )
 
+                    }
+                    catch ( e ) {
+                        console.log( e );
+                    }
                 }
-                catch ( e ) {
-                    console.log( e );
-                }
-            }
-            else if ( type.length === 2 ) {
-                try {
-                    //the api can't fetched the url if it has a '/' at the end to it is removed
-                    const editedUrl1 = type[ 0 ].type.url.slice( 0, -1 )
-                    const editedUrl2 = type[ 1 ].type.url.slice( 0, -1 )
+                else if ( type.length === 2 ) {
+                    try {
+                        //the api can't fetched the url if it has a '/' at the end to it is removed
+                        const editedUrl1 = type[ 0 ].type.url.slice( 0, -1 )
+                        const editedUrl2 = type[ 1 ].type.url.slice( 0, -1 )
 
-                    let promise1 = axios.get( editedUrl1 );
-                    let promise2 = axios.get( editedUrl2 );
+                        let promise1 = axios.get( editedUrl1 );
+                        let promise2 = axios.get( editedUrl2 );
 
-                    let p1 = await promise1;
-                    let p2 = await promise2;
-                    let arr = [ p1.data, p2.data ];
-                    setState( arr )
-                }
-                catch ( e ) {
-                    console.log( e );
+                        let p1 = await promise1;
+                        let p2 = await promise2;
+                        let arr = [ p1.data, p2.data ];
+                        setState( arr )
+                    }
+                    catch ( e ) {
+                        console.log( e );
+                    }
                 }
             }
         }
+
         fetchData();
+    return () => {
+      isMounted = false;
+    };
 
     }, [ type ] );
 
@@ -54,7 +62,7 @@ const ResistanceWeakness = ( { type } ) => {
 
                 {
                     damageRelations.no_damage_from.length !== 0
-                        ? <Damage resist={ damageRelations.no_damage_from } timesDamage='0x' />
+                        ? <Damage damageList={ damageRelations.no_damage_from } timesDamage='0x' />
                         : null
                 }
 

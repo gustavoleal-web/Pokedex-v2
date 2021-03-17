@@ -6,21 +6,29 @@ const AlternateForms = ( { pokeForms } ) => {
     let formName = 'normal';
 
     useEffect( () => {
+        let isMounted = true;
+
         const fetchData = async () => {
-            try {
-                let pokemon = await axios.get( `${ pokeForms.url }` )
-                let fetchedPokeForm = pokemon.data;
-                setAlternatives( fetchedPokeForm );
+            if ( isMounted ) {
+                try {
+                    let pokemon = await axios.get( `${ pokeForms.url }` )
+                    let fetchedPokeForm = pokemon.data;
+                    setAlternatives( fetchedPokeForm );
+                }
+                catch ( e ) {
+                    console.log( e );
+                }
             }
-            catch ( e ) {
-                console.log( e );
-            }
+
         }
         fetchData();
+        return () => {
+            isMounted = false;
+        };
 
     }, [ pokeForms ] )
 
-    if(alternatives.form_name) {
+    if ( alternatives.form_name ) {
         formName = alternatives.form_name;
     }
 

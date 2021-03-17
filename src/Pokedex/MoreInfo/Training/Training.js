@@ -8,17 +8,24 @@ const Training = ( { data } ) => {
     let experience;
 
     useEffect( () => {
+        let isMounted = true;
         const fetchData = async () => {
-            try {
-                let pokemon = await axios.get( url );
-                setMaxExperience( pokemon.data.levels[ 99 ] );
+            if ( isMounted ) {
+                try {
+                    let pokemon = await axios.get( url );
+                    setMaxExperience( pokemon.data.levels[ 99 ] );
+                }
+
+                catch ( e ) {
+                    console.log( e )
+                }
             }
 
-            catch ( e ) {
-                console.log( e )
-            }
         }
-        fetchData()
+        fetchData();
+        return () => {
+            isMounted = false;
+          };
     }, [ url ] );
 
     if ( maxExperience.experience ) {

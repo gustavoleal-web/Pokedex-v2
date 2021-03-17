@@ -8,28 +8,39 @@ const EvolutionChain = ( { evolutionChainUrl, clickedPoke } ) => {
     const [ methods, setMethods ] = useState( [] );
 
     useEffect( () => {
+        let isMounted = true;
         const fetchData = async () => {
+            if ( isMounted ) {
+                let evosAndAlternative;
+                try {
+                    let pokemon = await axios.get( evolutionChainUrl );
 
-            let evosAndAlternative;
-            try {
-                let pokemon = await axios.get( evolutionChainUrl );
-                let fetchedEvoChain = pokemon.data.chain;
+                    let fetchedEvoChain = pokemon.data.chain;
 
-                // pokeEvoLine = setEvoChain( fetchedEvoChain );
-                // setState( pokeEvoLine );
+                    // pokeEvoLine = setEvoChain( fetchedEvoChain );
+                    // setState( pokeEvoLine );
 
 
-                //testing all evolutions and alternative evolutions
-                evosAndAlternative = filterEvolutionsTriggers( fetchedEvoChain );
-                setMethods( evosAndAlternative );
-              
+                    //testing all evolutions and alternative evolutions
+                    if ( fetchedEvoChain !== undefined ) {
+                        evosAndAlternative = filterEvolutionsTriggers( fetchedEvoChain );
+                        setMethods( evosAndAlternative );
+                    }
+
+
+
+                }
+                catch ( e ) {
+                    console.log( e );
+                }
             }
-            catch ( e ) {
-                console.log( e );
-            }
+
 
         }
         fetchData();
+        return () => {
+            isMounted = false;
+          };
 
     }, [ evolutionChainUrl ] );
 

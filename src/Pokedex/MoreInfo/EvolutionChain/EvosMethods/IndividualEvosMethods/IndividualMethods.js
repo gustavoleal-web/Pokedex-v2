@@ -41,17 +41,25 @@ const IndividualMethods = ( { obj, clickedPoke } ) => {
 
 
     useEffect( () => {
+        let isMounted = true;
+
         const fetchData = async () => {
-            try {
+            if(isMounted) {
+                try {
                 let pokemon = await axios.get( ` https://pokeapi.co/api/v2/pokemon-form/${ renamedObj.evolution }/` );
                 setSprite( pokemon.data.sprites.front_default )
             }
             catch ( e ) {
                 console.log( e );
             }
+            }
+            
         }
         fetchData();
 
+        return () => {
+            isMounted = false;
+        };
     }, [ renamedObj.evolution ] );
 
 
