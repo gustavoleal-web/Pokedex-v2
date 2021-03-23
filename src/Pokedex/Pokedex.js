@@ -7,7 +7,7 @@ import styles from './Pokedex.module.css';
 import stylesTypes from './pokeTypes.module.css'
 import backgroundTypes from './pokeTypesBackgrondColor.module.css'
 import { Spinner, } from 'reactstrap';
-import Button from 'react-bootstrap/Button';
+//import Button from 'react-bootstrap/Button';
 
 const Pokedex = ( { id, clickedPoke } ) => {
     const [ state, setState ] = useState( [] );
@@ -51,7 +51,7 @@ const Pokedex = ( { id, clickedPoke } ) => {
                     let pokemon = await axios.get(
                         `https://pokeapi.co/api/v2/pokemon/${ id }/`,
                         { 'headers': { 'Access-Control-Allow-Origin': '*' } } );
-
+                    
                     if ( pokemon.status === 200 ) {
                         setStateFromReq( pokemon.data )
                     }
@@ -76,21 +76,34 @@ const Pokedex = ( { id, clickedPoke } ) => {
         fetchData();
 
     }, [ id ] );
+
+
     return (
 
         <>
-            { Object.keys( state ).length === 0 ? <Spinner color="primary" style={ { display: 'flex' } } /> :
+            { Object.keys( state ).length === 0 ? <Spinner color='primary' style={ { display: 'flex' } } /> :
 
                 <div className={ `${ styles.infoContainer } ${ typeColorBackground }` }>
                     <div>
 
-                        <Sprites pokeImg={ state.sprites } name={ state.name } />
+                        <Sprites pokeImg={ state.sprites } name={ state.name } showModalHandler={ showModalHandler } />
                         <p>No.{ state.id }:  { state.name.toUpperCase() }</p>
 
 
                         { /* For pokemons that have 2 types it will render both otherwise just the one type */ }
                         {/*<Button onClick={ () => toggle() }>i</Button>*/ }
-                        <Button variant="outline-info" onClick={ () => showModalHandler( true ) }>i</Button>
+                        {/*
+                         <Button
+                            variant='outline-info'
+                            onClick={ () => showModalHandler( true ) }
+                            style={ {
+                                width: '12%',
+                                borderRadius: '100%'
+                            } }>i
+                            
+                            </Button>
+                        */ }
+
                         { lgShow ?
                             <MoreInfo
                                 id={ id }
