@@ -25,6 +25,11 @@
 }
 
 
+.searchDropDown {
+    margin: 0px 30px 30px 30px;
+
+}
+
 @media(max-width: 450px) {
 
     /* display is set to grid to overide flex. not the best solution */
