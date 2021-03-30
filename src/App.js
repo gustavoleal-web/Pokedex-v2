@@ -6,13 +6,15 @@ import SelectPokedex from './SelectedPokedex/SelectPokedex'
 import Search from './Search/Search';
 import NotFound from './PokemonNotFound/notFound'
 import styles from './App.module.css';
+import { BrowserRouter } from 'react-router-dom';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
-const App = () => {
+const App = ( { selectedPokedex, nationalPokedex } ) => {
   const [ state, setState ] = useState( [] );
-  const [ newPokedex, setNewPokedex ] = useState( [] );
+  const [ newPokedex, setNewPokedex ] = useState( selectedPokedex );
   const [ noPkmFound, setNoPkmFound ] = useState( null );
   const [ selectedType, setSelectedType ] = useState( null );
-
   const [ pokemonByType, setPokemonByType ] = useState( [] );
 
   //set the start and end of each pokedex so on click event will slice from start to finish
@@ -27,34 +29,44 @@ const App = () => {
     galar: [ 809, 898 ]
   }
 
-  const fetchSelectedPokedex = ( e = 'kanto' ) => {
-    let cutPokedex = state.slice( pekedexStart[ e.target.name ][ 0 ], pekedexStart[ e.target.name ][ 1 ] );
-    setNewPokedex( cutPokedex );
+  //move this function and useEffect to App2 then pass the newPokdex to App to render Pokedex Component
+  const fetchSelectedPokedex = ( pokedex ) => {
+    //console.log(state)
+    //let cutPokedex = state.slice( pekedexStart[ pokedex ][ 0 ], pekedexStart[ pokedex ][ 1 ] );
+    //setNewPokedex( cutPokedex );
     setNoPkmFound( null );
     setPokemonByType( [] );
-    setSelectedType(null);
+    setSelectedType( null );
   }
 
-  const setPokedexByTypeHandler = ( type ) => { 
+  const setPokedexByTypeHandler = ( type ) => {
     setNewPokedex( [] )
-    setSelectedType( type )
+    setSelectedType( type ) 
   }
 
-  useEffect( () => {
+  // useEffect( () => {
+  //   let isMounted = true;
 
-    const fetchData = async () => {
-      try {
-        let pokemon = await axios.get( ` https://pokeapi.co/api/v2/pokedex/national/ ` );
-        let pokemonEntries = pokemon.data.pokemon_entries;
-        setState( pokemonEntries );
-        setNewPokedex( pokemonEntries.slice( 0, 151 ) );
-      }
-      catch ( e ) {
-        console.log( e );
-      }
-    }
-    fetchData()
-  }, [] )
+  //   const fetchData = async () => {
+  //     if ( isMounted ) {
+  //       try {
+  //         let pokemon = await axios.get( ` https://pokeapi.co/api/v2/pokedex/national/ ` );
+  //         let pokemonEntries = pokemon.data.pokemon_entries;
+  //         setState( pokemonEntries );
+  //         fetchSelectedPokedex(selectedPokedex)
+  //         //setNewPokedex( pokemonEntries.slice( 0, 151 ) );
+  //       }
+  //       catch ( e ) {
+  //         console.log( e );
+  //       }
+  //     }
+
+  //   }
+  //   fetchData();
+  //   return () => {
+  //     isMounted = false;
+  //   };
+  // }, [] );
 
 
   //TYPES
@@ -64,7 +76,8 @@ const App = () => {
       if ( isMounted && selectedType !== null ) {
         try {
           let pokemon = await axios.get(
-            `https://pokeapi.co/api/v2/type/${ selectedType }`
+            `https://pokeapi.co/api/v2/type/${ selectedType }`,
+            { headers: { 'Access-Control-Allow-Origin': '*' } }
           );
           setPokemonByType( pokemon.data.pokemon );
         } catch ( e ) {
@@ -82,9 +95,9 @@ const App = () => {
 
   const wasClicked = ( name ) => {
     name = name.toLowerCase();
-
+    console.log(name)
     //this will return all pokemon that match the full input or part of it.
-    const foundMatches = state.filter( pokemon => {
+    const foundMatches = nationalPokedex.filter( pokemon => {
       let found;
       if ( pokemon.pokemon_species.name.includes( name ) ) {
         found = pokemon;
@@ -98,51 +111,68 @@ const App = () => {
   }
 
   return (
+    <BrowserRouter>
+      <div className={ styles.container }>
 
-    <div className={ styles.container }>
-      <Search wasClicked={ wasClicked } />
-      <SearchBytypes setPokedexByTypeHandler={ setPokedexByTypeHandler } />
+        <Search wasClicked={ wasClicked } />
 
-      {noPkmFound }
-
-      <div className={ styles.pokemonsContainer }>
-        { newPokedex.length !== 0
-          ? newPokedex.map( pokemon =>
-            <Pokedex
-              key={ pokemon.pokemon_species.url }
-              id={ pokemon.entry_number }
-              clickedPoke={ wasClicked }
-            /> )
-          : null
-        }
-
-      </div>
-
-      <div className={ styles.pokemonsContainer }>
-        { pokemonByType.length !== 0
-          ? pokemonByType.map( pokemon =>
-            <Pokedex
-              key={ pokemon.pokemon.name }
-              id={ pokemon.pokemon.name }
-              clickedPoke={ wasClicked }
-            /> )
-          : null
-        }
-
-      </div>
+        <header style={ { display: 'flex' } }>
+          <SelectPokedex fetchSelectedPokedex={ fetchSelectedPokedex } />
+          <SearchBytypes setPokedexByTypeHandler={ setPokedexByTypeHandler } />
 
 
-      <SelectPokedex fetchSelectedPokedex={ fetchSelectedPokedex } />
 
-      <div>
-        Icons made by <a href='https://www.freepik.com' title='Freepik'>Freepik
+          <DropdownButton id="dropdown-basic-button" title="Filter">
+            <Dropdown.Item href="#/action-1">Color</Dropdown.Item>
+            <Dropdown.Item href="#/action-2">Egg Group</Dropdown.Item>
+            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+          </DropdownButton>
+
+        </header>
+
+
+
+
+        { noPkmFound }
+
+        <div className={ styles.pokemonsContainer }>
+          { newPokedex.length !== 0
+            ? newPokedex.map( pokemon =>
+              <Pokedex
+                key={ pokemon.pokemon_species.url }
+                id={ pokemon.entry_number }
+                clickedPoke={ wasClicked }
+
+              /> )
+            : null
+          }
+
+        </div>
+
+        <div className={ styles.pokemonsContainer }>
+          { pokemonByType.length !== 0
+            ? pokemonByType.map( pokemon =>
+              <Pokedex
+                key={ pokemon.pokemon.name }
+                id={ pokemon.pokemon.name }
+                clickedPoke={ wasClicked }
+
+              /> )
+            : null
+          }
+
+        </div>
+
+        <div>
+          Icons made by <a href='https://www.freepik.com' title='Freepik'>Freepik
         </a> from <a href='https://www.flaticon.com/' title='Flaticon'>www.flaticon.com</a>
-      </div>
-      <div>
-        Icons made by <a href="https://www.flaticon.com/authors/iconixar" title="iconixar">iconixar
+        </div>
+        <div>
+          Icons made by <a href="https://www.flaticon.com/authors/iconixar" title="iconixar">iconixar
         </a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
+        </div>
       </div>
-    </div>
+    </BrowserRouter>
   )
 
 }
