@@ -35,3 +35,13 @@ p {
     justify-content: space-evenly;
 
 }
+
+@media (max-width: 700px) {
+   .dropdown {
+       flex-wrap: wrap;
+   }
+
+   .dropdown button {
+    margin-top: 10px;
+   }
+}
