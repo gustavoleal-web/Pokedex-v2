@@ -10,24 +10,25 @@ import { BrowserRouter } from 'react-router-dom';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 
-const App = ( { selectedPokedex, nationalPokedex } ) => {
-  const [ state, setState ] = useState( [] );
+const App = ( { selectedPokedex, nationalPokedex, pokedexByType, pokedexByColor } ) => {
+  //const [ state, setState ] = useState( [] );
+  console.log( pokedexByColor )
   const [ newPokedex, setNewPokedex ] = useState( selectedPokedex );
   const [ noPkmFound, setNoPkmFound ] = useState( null );
   const [ selectedType, setSelectedType ] = useState( null );
   const [ pokemonByType, setPokemonByType ] = useState( [] );
 
   //set the start and end of each pokedex so on click event will slice from start to finish
-  const pekedexStart = {
-    kanto: [ 0, 151 ],
-    johto: [ 151, 250 ],
-    hoenn: [ 251, 386 ],
-    sinnoh: [ 386, 493 ],
-    unova: [ 494, 649 ],
-    kalos: [ 649, 721 ],
-    alola: [ 721, 809 ],
-    galar: [ 809, 898 ]
-  }
+  // const pekedexStart = {
+  //   kanto: [ 0, 151 ],
+  //   johto: [ 151, 250 ],
+  //   hoenn: [ 251, 386 ],
+  //   sinnoh: [ 386, 493 ],
+  //   unova: [ 494, 649 ],
+  //   kalos: [ 649, 721 ],
+  //   alola: [ 721, 809 ],
+  //   galar: [ 809, 898 ]
+  // }
 
   //move this function and useEffect to App2 then pass the newPokdex to App to render Pokedex Component
   const fetchSelectedPokedex = ( pokedex ) => {
@@ -41,7 +42,7 @@ const App = ( { selectedPokedex, nationalPokedex } ) => {
 
   const setPokedexByTypeHandler = ( type ) => {
     setNewPokedex( [] )
-    setSelectedType( type ) 
+    setSelectedType( type )
   }
 
   // useEffect( () => {
@@ -95,7 +96,7 @@ const App = ( { selectedPokedex, nationalPokedex } ) => {
 
   const wasClicked = ( name ) => {
     name = name.toLowerCase();
-    console.log(name)
+    console.log( name )
     //this will return all pokemon that match the full input or part of it.
     const foundMatches = nationalPokedex.filter( pokemon => {
       let found;
@@ -119,8 +120,6 @@ const App = ( { selectedPokedex, nationalPokedex } ) => {
         <header style={ { display: 'flex' } }>
           <SelectPokedex fetchSelectedPokedex={ fetchSelectedPokedex } />
           <SearchBytypes setPokedexByTypeHandler={ setPokedexByTypeHandler } />
-
-
 
           <DropdownButton id="dropdown-basic-button" title="Filter">
             <Dropdown.Item href="#/action-1">Color</Dropdown.Item>
@@ -150,8 +149,8 @@ const App = ( { selectedPokedex, nationalPokedex } ) => {
         </div>
 
         <div className={ styles.pokemonsContainer }>
-          { pokemonByType.length !== 0
-            ? pokemonByType.map( pokemon =>
+          { pokedexByType.length !== 0
+            ? pokedexByType.map( pokemon =>
               <Pokedex
                 key={ pokemon.pokemon.name }
                 id={ pokemon.pokemon.name }
@@ -162,6 +161,22 @@ const App = ( { selectedPokedex, nationalPokedex } ) => {
           }
 
         </div>
+
+       
+
+       <div className={ styles.pokemonsContainer }>
+        { pokedexByColor.length !== 0
+          ? pokedexByColor.pokemon_species.map( ( pokemon, i ) =>
+            <Pokedex
+              key={ i }
+              id={ pokemon.pokedexNumber }
+              clickedPoke={ wasClicked }
+
+            /> )
+          : null
+        }
+
+      </div>
 
         <div>
           Icons made by <a href='https://www.freepik.com' title='Freepik'>Freepik
