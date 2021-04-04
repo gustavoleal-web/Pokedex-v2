@@ -42,8 +42,10 @@ const MoreInfo = ( {
     const [ pekedexEntries, setPokedexEntries ] = useState( {} );
     const [ gender, setGender ] = useState( {} );
     const [ eggData, setEggData ] = useState( {} );
+    const [ error, setError ] = useState( false )
     const commonAbilities = [];
     const hiddenAbilities = [];
+
 
     //from reactstrap
     //const closeBtn = <button className="close" onClick={ toggle }>&times;</button>;
@@ -94,7 +96,6 @@ const MoreInfo = ( {
         let isMounted = true;
         const fetchData = async () => {
             if ( isMounted ) {
-
                 try {
 
                     let pokemon = await axios.get(
@@ -144,7 +145,7 @@ const MoreInfo = ( {
                     pokemon.data.varieties ? setVarieties( pokemon.data.varieties ) : setVarieties( '' );
                 }
                 catch ( e ) {
-                    console.log( e );
+                    setError( true );
                 }
             }
         }
@@ -177,10 +178,6 @@ const MoreInfo = ( {
                 alt={ { name } }
             />
     }
-
-    // if ( Object.keys( pekedexEntries ).length !== 0 ) {
-    //     showGeneralData = 
-    // }
 
     if ( types.length === 2 ) {
         showTypes = (
@@ -281,7 +278,14 @@ const MoreInfo = ( {
             <EvolutionChain clickedPoke={ clickedPoke } evolutionChainUrl={ evolutionChainUrl } />
         </Modal.Body>
 
+
+    if ( error ) {
+        console.log( 'Oopps something went wrong.' )
+    }
+
+
     return (
+
         <div>
             <Modal
                 centered
@@ -303,7 +307,7 @@ const MoreInfo = ( {
                         {
                             Object.keys( pekedexEntries ).length !== 0
                                 ? <PokedexEntries pokedexData={ pekedexEntries } />
-                                :  null
+                                : <h5>No Data</h5>
                         }
 
                         { showTypes }
@@ -324,26 +328,28 @@ const MoreInfo = ( {
                     { showStats }
                     { showDamaga }
                     {/* 
-                        <Modal.Body>
-                        <hr className={ `${ styles.hrStats } ${ styles.hrMargin }` } />
-                        <div >
-                            {
-                                stats.map( ( stat ) =>
-                                    <span key={ uuidv4() } className={ styles.statsContainer }>
-                                        <p className={ styles.statsName }>{ stat.stat.name }: </p>
-                                        <p className={ styles.statsValue }>{ stat.base_stat } </p>
-                                    </span>
-
-                                )
-                            }
-                        </div>
-                        </Modal.Body>
-                    */}
+                            <Modal.Body>
+                            <hr className={ `${ styles.hrStats } ${ styles.hrMargin }` } />
+                            <div >
+                                {
+                                    stats.map( ( stat ) =>
+                                        <span key={ uuidv4() } className={ styles.statsContainer }>
+                                            <p className={ styles.statsName }>{ stat.stat.name }: </p>
+                                            <p className={ styles.statsValue }>{ stat.base_stat } </p>
+                                        </span>
+    
+                                    )
+                                }
+                            </div>
+                            </Modal.Body>
+                        */}
 
                 </span>
             </Modal>
         </div>
     );
+
+
 }
 
 export default React.memo( MoreInfo );
