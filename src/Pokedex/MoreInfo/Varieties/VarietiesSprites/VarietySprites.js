@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const VarietySprites = ( { url } ) => {
+const VarietySprites = ( { url, retrieveById } ) => {
     const [ sprite, setSprites ] = useState( null );
 
     useEffect( () => {
@@ -33,7 +33,7 @@ const VarietySprites = ( { url } ) => {
     }, [ url ] );
 
     if ( sprite !== null ) {
-        return <img src={ sprite } alt={sprite}/>
+        return <img src={ sprite } alt={ sprite } onClick={ () => retrieveById( url ) } />
     }
     else return null;
 }
