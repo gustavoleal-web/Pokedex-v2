@@ -3,13 +3,14 @@ import Pokedex from '../../Pokedex';
 import VarietiesSprites from './VarietiesSprites/VarietySprites'
 import styles from './varieties.module.css'
 
-const Varieties = ( { varieties, clickedPoke } ) => {
+const Varieties = ( { varieties } ) => {
     const [ form, setForms ] = useState( null );
 
     const retrieveById = ( url ) => {
-        //extracted only the id from the url b/c using the Pokemon doesn't always work
+
+        //extracted only the id from the url b/c using the Pokemon name doesn't always work
         let id = url.slice( 34, url.length - 1 );
-        setForms( <Pokedex id={ id } clickedPoke={ clickedPoke } /> )
+        setForms( <Pokedex id={ id } /> )
     }
 
     return (
@@ -20,11 +21,10 @@ const Varieties = ( { varieties, clickedPoke } ) => {
                         return (
                             <span key={ form.pokemon.name }>
                                 <p
-                                    onClick={ () => retrieveById( form.pokemon.url ) }
                                     className={ styles.cursor } >
                                     { form.pokemon.name }
                                 </p>
-                                <VarietiesSprites url={form.pokemon.url}/>
+                                <VarietiesSprites url={ form.pokemon.url } retrieveById={ retrieveById } />
                             </span>
 
                         )
