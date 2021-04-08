@@ -3,7 +3,9 @@ import axios from 'axios';
 import { Button } from 'reactstrap';
 
 const Abilities = ( { abilities } ) => {
-    const [ state, setState ] = useState( '' );
+    const [ state, setState ] = useState( {
+        effect: ''
+    } );
     const cssStyles = {
         width: '51%',
         height: '27px',
@@ -16,9 +18,18 @@ const Abilities = ( { abilities } ) => {
             let pokemon = await axios.get( url )
             let pokemonEntries = pokemon.data;
 
-            for ( let i = 0; i < pokemonEntries.effect_entries.length; i++ ) {
-                if ( pokemonEntries.effect_entries[ i ].language.name === 'en' ) {
-                    setState( pokemonEntries.effect_entries[ i ] )
+            //some pokemon have their hidden effect under a different object name
+            //this is how the API has it set.
+            //so the check is performed to set the state appropriately
+            if ( pokemonEntries.effect_entries.length === 0 ) {
+                setState( { ...state, effect: pokemonEntries.flavor_text_entries[ 0 ].flavor_text } );
+            }
+
+            else {
+                for ( let i = 0; i < pokemonEntries.effect_entries.length; i++ ) {
+                    if ( pokemonEntries.effect_entries[ i ].language.name === 'en' ) {
+                        setState( { ...state, effect: pokemonEntries.effect_entries[ i ].short_effect } )
+                    }
                 }
             }
 
@@ -40,7 +51,7 @@ const Abilities = ( { abilities } ) => {
                         style={ cssStyles }>{ ability.name }
                     </Button> )
             }
-            { state ? <p>{ state.short_effect }</p> : <p>...</p> }
+            { state ? <p>{ state.effect }</p> : null }
         </>
 
 
