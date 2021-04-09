@@ -4,7 +4,7 @@ import styles from './individualMethos.module.css'
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 
-const IndividualMethods = ( { obj, clickedPoke } ) => {
+const IndividualMethods = ( { obj } ) => {
     const [ pokemon, setPokemon ] = useState( null );
 
     const onClickHandler = ( name ) => {
