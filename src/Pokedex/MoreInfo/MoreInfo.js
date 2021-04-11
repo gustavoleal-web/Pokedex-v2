@@ -30,7 +30,6 @@ const MoreInfo = ( {
     types,
     type1,
     type2,
-    clickedPoke,
     backgroundColor,
     showModal,
     showModalHandler
@@ -239,7 +238,7 @@ const MoreInfo = ( {
         showVarieties =
             <Modal.Body>
                 <hr className={ `${ styles.hrVarieties } ${ styles.hrMargin }` } />
-                <Varieties varieties={ varieties } clickedPoke={ clickedPoke } />
+                <Varieties varieties={ varieties } />
             </Modal.Body>
     }
 
@@ -275,7 +274,7 @@ const MoreInfo = ( {
     showEvolution =
         <Modal.Body style={ { display: 'block' } }>
             <hr className={ `${ styles.hrEvolution } ${ styles.hrMargin }` } />
-            <EvolutionChain clickedPoke={ clickedPoke } evolutionChainUrl={ evolutionChainUrl } />
+            <EvolutionChain evolutionChainUrl={ evolutionChainUrl } />
         </Modal.Body>
 
 
