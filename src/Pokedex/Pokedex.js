@@ -9,7 +9,7 @@ import backgroundTypes from './pokeTypesBackgrondColor.module.css'
 import { Spinner, } from 'reactstrap';
 //import Button from 'react-bootstrap/Button';
 
-const Pokedex = ( { id, clickedPoke } ) => {
+const Pokedex = ( { id } ) => {
     const [ state, setState ] = useState( [] );
     const [ type1, setType1 ] = useState( '' );
     const [ type2, setType2 ] = useState( '' );
@@ -119,7 +119,6 @@ const Pokedex = ( { id, clickedPoke } ) => {
                                 type1={ type1 }
                                 type2={ type2 }
                                 backgroundColor={ typeColorBackground }
-                                clickedPoke={ clickedPoke }
                                 showModal={ lgShow }
                                 showModalHandler={ showModalHandler }
                             />
