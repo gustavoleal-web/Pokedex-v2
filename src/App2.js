@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import NotFound from './PokemonNotFound/notFound';
 import axios from 'axios'
 import styles from './app2.module.css'
-import Button from 'react-bootstrap/Button';
+//import Button from 'react-bootstrap/Button';
+import Search from './Search'
 //import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
-import App from './App';
-import InputGroup from 'react-bootstrap/InputGroup';
-import FormControl from 'react-bootstrap/FormControl';
+import SelectedSearchOption from './SelectedSearchOption';
+//import InputGroup from 'react-bootstrap/InputGroup';
+//import FormControl from 'react-bootstrap/FormControl';
 
 import Navbar from 'react-bootstrap/NavBar'
 import Nav from 'react-bootstrap/Nav'
@@ -18,11 +19,11 @@ import Nav from 'react-bootstrap/Nav'
 import Dropdowns from './Dropdowns';
 
 const App2 = () => {
-    const [ state, setState ] = useState( null );
+    const [ nationalPokedex, setNationalPokedex ] = useState( null );
     const [ selectedPokedex, setSelectedPokedex ] = useState( null );
 
-    const [ name, setName ] = useState( '' );
-    const [ isDisbled, setIsDisabled ] = useState( true );
+    const [ eggGroup, setEggGroup ] = useState( null );
+    const [ pokemonEggGroup, setPokemonEggGroup ] = useState( [] );
 
     const [ selectedType, setSelectedType ] = useState( null );
     const [ pokemonByType, setPokemonByType ] = useState( [] );
@@ -61,17 +62,18 @@ const App2 = () => {
         galar: [ 809, 898 ]
     }
 
-    //move this function and useEffect to App2 then pass the newPokdex to App to render Pokedex Component
     const fetchSelectedPokedex = ( pokedex ) => {
-        let cutPokedex = state.slice( pekedexStart[ pokedex ][ 0 ], pekedexStart[ pokedex ][ 1 ] );
+        let cutPokedex = nationalPokedex.slice( pekedexStart[ pokedex ][ 0 ], pekedexStart[ pokedex ][ 1 ] );
         setSelectedPokedex( cutPokedex );
-        // setNoPkmFound( null );
-        // setPokemonByType( [] );
-        // setSelectedType( null );
+        setNoPkmFound( null );
+        setPokemonByType( [] );
+        setSelectedType( null );
+        setPokemonByColor( [] )
     }
 
     const setPokedexByTypeHandler = ( type ) => {
-        setSelectedPokedex( [] )
+        setSelectedPokedex( [] );
+        setPokemonByColor( [] );
         setSelectedType( type )
     }
 
@@ -82,24 +84,21 @@ const App2 = () => {
 
     }
 
-    const updateName = ( e ) => {
-        e.target.value = e.target.value.trim();
-        //the shortest pokemon name is 3 char and the longest is 11
-        if ( e.target.value.length >= 3 && e.target.value.length < 12 ) {
-            setName( e.target.value );
-            setIsDisabled( false );
-        }
-        else {
-            setIsDisabled( true );
-        }
+    const setPokemonByEggHandler = ( egg ) => {
+        setSelectedPokedex( [] );
+        setPokemonByType( [] );
+        setPokemonByColor( [] );
+        setEggGroup( egg );
 
     }
 
+
+
     const searchPokemon = ( name ) => {
         name = name.toLowerCase();
-        console.log( name )
+
         //this will return all pokemon that match the full input or part of it.
-        const foundMatches = state.filter( pokemon => {
+        const foundMatches = nationalPokedex.filter( pokemon => {
             let found;
             if ( pokemon.pokemon_species.name.includes( name ) ) {
                 found = pokemon;
@@ -107,7 +106,7 @@ const App2 = () => {
             return found;
         } );
 
-        foundMatches.length === 0 ? setNoPkmFound( <NotFound /> ) : setNoPkmFound( null )
+        foundMatches.length === 0 ? setNoPkmFound( true ) : setNoPkmFound( null )
 
         setSelectedPokedex( foundMatches );
     }
@@ -121,7 +120,7 @@ const App2 = () => {
                 try {
                     let pokemon = await axios.get( ` https://pokeapi.co/api/v2/pokedex/national/ ` );
                     let pokemonEntries = pokemon.data.pokemon_entries;
-                    setState( pokemonEntries );
+                    setNationalPokedex( pokemonEntries );
                 }
                 catch ( e ) {
                     console.log( e );
@@ -168,7 +167,7 @@ const App2 = () => {
                         `https://pokeapi.co/api/v2/pokemon-color/${ selectedColor }`,
                         { headers: { 'Access-Control-Allow-Origin': '*' } }
                     );
-
+                    console.log( 'color', pokemon.data.pokemon_species )
                     for ( let p of pokemon.data.pokemon_species ) {
                         let url = p.url;
                         let id = url.slice( 41 );
@@ -190,6 +189,29 @@ const App2 = () => {
     }, [ selectedColor ] );
 
 
+    //EGG GROUPS
+    useEffect( () => {
+        let isMounted = true;
+        const fetchData = async () => {
+            if ( isMounted && eggGroup !== null ) {
+                try {
+                    let pokemon = await axios.get(
+                        `https://pokeapi.co/api/v2/egg-group/${ eggGroup }/`,
+                        { headers: { 'Access-Control-Allow-Origin': '*' } }
+                    );
+                    setPokemonEggGroup( pokemon.data )
+                } catch ( e ) {
+                    console.log( e );
+                }
+            } else return;
+        };
+        fetchData();
+        return () => {
+            isMounted = false;
+        };
+    }, [ eggGroup ] );
+
+
     const navigation = <div>
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
             <Navbar.Brand >Pokemon Search</Navbar.Brand>
@@ -199,72 +221,57 @@ const App2 = () => {
                     <Dropdowns arr={ allPokedexes } title='Pokedex' func={ fetchSelectedPokedex } />
                     <Dropdowns arr={ types } title='Type' func={ setPokedexByTypeHandler } />
                     <Dropdowns arr={ colors } title='Color' func={ setPokemonByColorHandler } />
-                    <Dropdowns arr={ eggGroups } title='Egg-Groups' />
+                    <Dropdowns arr={ eggGroups } title='Egg-Groups' func={ setPokemonByEggHandler } />
                 </Nav>
             </Navbar.Collapse>
         </Navbar>
 
     </div>
 
+    let main = null;
+
 
     if ( notFound ) {
-        return (
-            <>
-                {navigation }
-                <NotFound />
-            </>
-        )
-
-
+        main = <NotFound />
     }
 
     else if ( selectedPokedex === null ) {
-        return (
-            <>
-                {navigation }
-                <div className={ styles.centerElements }>
-                    <div>
-                        <h1 className={ styles.title }>POKEDEX</h1>
-                    </div>
-                    <p>Welcome to the Pokemon Search Tool.</p>
-                    <p>Here you can search for your favorite pokemon in various ways.</p>
+        main = <div className={ styles.centerElements }>
+            <div>
+                <h1 className={ styles.title }>POKEDEX</h1>
+            </div>
+            <p>Welcome to the Pokemon Search Tool.</p>
+            <p>Here you can search for your favorite pokemon in various ways.</p>
 
 
-                    <div className={ styles.center }>
-                        <InputGroup className='mb-3'>
-                            <FormControl
-                                placeholder='Pokemon name'
-                                aria-label='Pokemon name'
-                                aria-describedby='basic-addon2'
-                                onChange={ updateName }
-                            />
-                            <InputGroup.Append>
-                                <Button variant='outline-primary' disabled={ isDisbled } onClick={ () => searchPokemon( name ) }>Search</Button>
-                            </InputGroup.Append>
-                        </InputGroup>
-                    </div>
+            <div className={ styles.center }>
+                <Search searchPokemon={ searchPokemon } />
+            </div>
 
-                    <div className={ styles.dropdown }>
+            <div className={ styles.dropdown }>
 
-                    </div>
-                </div>
-
-
-            </>
-        )
-
+            </div>
+        </div>
 
     }
 
     else {
-        return <App
-            nationalPokedex={ state }
+        main = <SelectedSearchOption
             selectedPokedex={ selectedPokedex }
             pokedexByType={ pokemonByType }
             pokedexByColor={ pokemonByColor }
+            pokedexByEggGroup={ pokemonEggGroup }
+            searchPokemon={ searchPokemon }
+
         />
     }
 
+    return (
+        <>
+            {navigation }
+            {main }
+        </>
+    )
 
 }
 
