@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import NotFound from './PokemonNotFound/notFound';
 import axios from 'axios'
-import styles from './app2.module.css'
+import styles from './app.module.css'
 //import Button from 'react-bootstrap/Button';
 import Search from './Search'
 //import ButtonGroup from 'react-bootstrap/ButtonGroup';
