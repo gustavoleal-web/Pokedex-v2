@@ -1,11 +1,11 @@
 import React from 'react';
 import IndividualMethods from './IndividualEvosMethods/IndividualMethods'
 
-const EvosMethods = ( { methods, clickedPoke } ) => {
+const EvosMethods = ( { methods } ) => {
 
     let doesNotEvo = null;
     let allWaysToEvolve = [];
-    let basePokemon = methods.length !== 0 ? <p onClick={ () => clickedPoke( methods[ 0 ].name ) }>{ methods[ 0 ].name }</p> : null;
+    let basePokemon = methods.length !== 0 ? <p>{ methods[ 0 ].name }</p> : null;
 
     methods.map( ( m ) => {
         let removedFalseValues = {};
@@ -39,7 +39,7 @@ const EvosMethods = ( { methods, clickedPoke } ) => {
         <div>
             {basePokemon }
 
-            {doesNotEvo ? doesNotEvo : allWaysToEvolve.map( ( object, i ) => <IndividualMethods obj={ object } key={ i } clickedPoke={ clickedPoke } /> ) }
+            {doesNotEvo ? doesNotEvo : allWaysToEvolve.map( ( object, i ) => <IndividualMethods obj={ object } key={ i } /> ) }
         </div>
     )
 }
