@@ -145,7 +145,6 @@ const App2 = () => {
                         { headers: { 'Access-Control-Allow-Origin': '*' } }
                     );
                     setPokemonByType( pokemon.data.pokemon )
-                    //setPokemonByType( pokemon.data.pokemon );
                 } catch ( e ) {
                     console.log( e );
                 }
@@ -199,7 +198,17 @@ const App2 = () => {
                         `https://pokeapi.co/api/v2/egg-group/${ eggGroup }/`,
                         { headers: { 'Access-Control-Allow-Origin': '*' } }
                     );
-                    setPokemonEggGroup( pokemon.data )
+
+                    for ( let p of pokemon.data.pokemon_species ) {
+                        let url = p.url;
+                        let id = url.slice( 41 );
+                        let intId = +id.substring( 1, id.length - 1 );
+
+                        p.pokedexNumber = intId;
+                    }
+
+                    setPokemonEggGroup( pokemon.data );
+                    
                 } catch ( e ) {
                     console.log( e );
                 }
