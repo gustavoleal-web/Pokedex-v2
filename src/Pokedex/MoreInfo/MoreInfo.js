@@ -14,7 +14,6 @@ import maleIcon from '../../img/icons/male-gender.png'
 import femaleIcon from '../../img/icons/female-gender.png'
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-//import { Modal, ModalHeader, Modal.Body } from 'reactstrap';
 // import { Route, Link } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 
@@ -44,10 +43,6 @@ const MoreInfo = ( {
     const [ error, setError ] = useState( false )
     const commonAbilities = [];
     const hiddenAbilities = [];
-
-
-    //from reactstrap
-    //const closeBtn = <button className="close" onClick={ toggle }>&times;</button>;
 
 
     //converted the value to meeters then to ft
@@ -326,22 +321,6 @@ const MoreInfo = ( {
                     { showForms }
                     { showStats }
                     { showDamaga }
-                    {/* 
-                            <Modal.Body>
-                            <hr className={ `${ styles.hrStats } ${ styles.hrMargin }` } />
-                            <div >
-                                {
-                                    stats.map( ( stat ) =>
-                                        <span key={ uuidv4() } className={ styles.statsContainer }>
-                                            <p className={ styles.statsName }>{ stat.stat.name }: </p>
-                                            <p className={ styles.statsValue }>{ stat.base_stat } </p>
-                                        </span>
-    
-                                    )
-                                }
-                            </div>
-                            </Modal.Body>
-                        */}
 
                 </span>
             </Modal>
