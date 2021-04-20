@@ -1,18 +1,17 @@
-import React, { useState, useEffect } from 'react';
-//import SearchBytypes from './Search/SearchByType'
-//import axios from 'axios';
+import React from 'react';
 import Pokedex from './Pokedex/Pokedex';
-import Search from './Search';
-//import SelectPokedex from './SelectedPokedex/SelectPokedex'
-//import Search from './Search/Search';
-//import NotFound from './PokemonNotFound/notFound'
+import Search from './Search/Search';
 import styles from './SelectedSearchOption.module.css';
 import { BrowserRouter } from 'react-router-dom';
 
+const SelectedSearchOption = ( {
+  selectedPokedex,
+  pokedexByType,
+  pokedexByColor,
+  pokedexByEggGroup,
+  searchPokemon
+} ) => {
 
-
-const SelectedSearchOption = ( { selectedPokedex, pokedexByType, pokedexByColor, searchPokemon } ) => {
-  
   return (
     <BrowserRouter>
       <div className={ styles.container }>
@@ -65,6 +64,21 @@ const SelectedSearchOption = ( { selectedPokedex, pokedexByType, pokedexByColor,
           }
 
         </div>
+
+        <div className={ styles.pokemonsContainer }>
+          { Object.keys( pokedexByEggGroup ).length !== 0
+            ? pokedexByEggGroup.pokemon_species.map( ( pokemon, i ) =>
+              <Pokedex
+                key={ i }
+                id={ pokemon.pokedexNumber }
+
+              /> )
+            : null
+          }
+
+        </div>
+
+
 
         <div>
           Icons made by <a href='https://www.freepik.com' title='Freepik'>Freepik
