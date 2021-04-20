@@ -1,7 +1,3 @@
-// import DropdownButton from 'react-bootstrap/DropdownButton';
-// import Dropdown from 'react-bootstrap/Dropdown';
-// import Navbar from 'react-bootstrap/NavBar'
-// import Nav from 'react-bootstrap/Nav'
 import NavDropdown from 'react-bootstrap/NavDropdown'
 
 const Dropdowns = ( { arr, title, func } ) => {
