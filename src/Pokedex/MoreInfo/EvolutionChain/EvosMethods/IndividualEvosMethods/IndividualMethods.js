@@ -1,25 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import Pokedex from '../../../../Pokedex'
 import styles from './individualMethos.module.css'
+
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
 
 const IndividualMethods = ( { obj } ) => {
-    const [ pokemon, setPokemon ] = useState( null );
+    const [ clickedPokemon, setClickedPokemon ] = useState( null );
+    const [ sprite, setSprite ] = useState( '' );
+    let pokemonName;
 
     const onClickHandler = ( name ) => {
-
-        setPokemon(
+        setClickedPokemon(
             <div>
                 <Pokedex id={ name } />
             </div>
-
         )
-
     }
-
-
-    const [ sprite, setSprite ] = useState( '' );
 
     function renameKeys( obj, newKeys ) {
         const keyValues = Object.keys( obj ).map( key => {
@@ -39,21 +38,20 @@ const IndividualMethods = ( { obj } ) => {
     };
     const renamedObj = renameKeys( obj, newKeys );
 
-
     useEffect( () => {
         let isMounted = true;
 
         const fetchData = async () => {
-            if(isMounted) {
+            if ( isMounted ) {
                 try {
-                let pokemon = await axios.get( ` https://pokeapi.co/api/v2/pokemon-form/${ renamedObj.evolution }/` );
-                setSprite( pokemon.data.sprites.front_default )
+                    let pokemon = await axios.get( ` https://pokeapi.co/api/v2/pokemon-form/${ renamedObj.evolution }/` );
+                    setSprite( pokemon.data.sprites.front_default )
+                }
+                catch ( e ) {
+                    console.log( e );
+                }
             }
-            catch ( e ) {
-                console.log( e );
-            }
-            }
-            
+
         }
         fetchData();
 
@@ -65,12 +63,12 @@ const IndividualMethods = ( { obj } ) => {
 
 
     return (
-        <div>
+        <div className={ `${ styles.width } ` } >
+            <hr />
             {
                 Object.keys( renamedObj ).map( key => {
                     let evolutionInfo;
 
-                    //  too many if statements refactor
                     if ( renamedObj[ key ] === true ) {
                         evolutionInfo = <p key={ uuidv4() }>{ key }</p>
                     }
@@ -87,21 +85,34 @@ const IndividualMethods = ( { obj } ) => {
                         //prevents the name from being repeated for every evolution
                         evolutionInfo = null;
                     }
-                    else if ( key === 'evolution' || key === 'trigger' ) {
+                    else if ( key === 'evolution' ) {
+                        pokemonName = <h5 key={ uuidv4() }>{ renamedObj[ key ].replace( '-', ' ' ).toUpperCase() }</h5>
+                    }
+
+                    else if ( key === 'trigger' ) {
                         evolutionInfo = <p key={ uuidv4() }>{ renamedObj[ key ].replace( '-', ' ' ) }</p>
                     }
+
                     else {
                         evolutionInfo = <p key={ uuidv4() }>{ `${ key.replaceAll( '_', ' ' ) }: ${ renamedObj[ key ] }` }</p>
                     }
+
                     return evolutionInfo;
                 } )
             }
+
             {
                 sprite
-                    ? <img src={ `${ sprite }` } alt='pokemon sprite' onClick={ () => onClickHandler( renamedObj.evolution ) } className={ styles.pokeSprite } />
+                    ? <img
+                        src={ `${ sprite }` }
+                        alt='pokemon sprite'
+                        onClick={ () => onClickHandler( renamedObj.evolution ) }
+                        className={ styles.pokeSprite }
+                    />
                     : null
             }
-            {pokemon }
+            { pokemonName }
+            { clickedPokemon }
         </div>
     )
 }
