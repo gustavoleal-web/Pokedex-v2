@@ -5,12 +5,14 @@ import styles from './individualMethos.module.css'
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
 
 const IndividualMethods = ( { obj } ) => {
+
     const [ clickedPokemon, setClickedPokemon ] = useState( null );
-    const [ sprite, setSprite ] = useState( '' );
+    const [ sprite, setSprite ] = useState( null );
+    const [ itemSprite, setItemSprite ] = useState( null );
     let pokemonName;
+    let evolutionInfo;
 
     const onClickHandler = ( name ) => {
         setClickedPokemon(
@@ -61,57 +63,97 @@ const IndividualMethods = ( { obj } ) => {
     }, [ renamedObj.evolution ] );
 
 
+    //ITMES
+    useEffect( () => {
+        let isMounted = true;
+
+        const fetchData = async () => {
+
+            if ( isMounted && Object.keys( obj ).includes( 'item' ) ) {
+                try {
+                    let item = await axios.get( ` https://pokeapi.co/api/v2/item/${ obj.item }/` );
+                    setItemSprite( item.data.sprites.default )
+                }
+                catch ( e ) {
+                    console.log( e );
+                }
+            }
+
+        }
+        fetchData();
+
+        return () => {
+            isMounted = false;
+        };
+    }, [ obj, obj.item ] );
+
+
 
     return (
         <div className={ `${ styles.width } ` } >
-            <hr />
-            {
-                Object.keys( renamedObj ).map( key => {
-                    let evolutionInfo;
+            <Card className={ styles.card } >
 
-                    if ( renamedObj[ key ] === true ) {
-                        evolutionInfo = <p key={ uuidv4() }>{ key }</p>
-                    }
+                {
+                    sprite === null
+                        ? null
+                        : <Card.Img variant="top"
+                            bsPrefix={ styles.pokeSprite }
+                            className={ styles.pokeSprite }
+                            src={ `${ sprite }` }
+                            onClick={ () =>
+                                onClickHandler( renamedObj.evolution ) }
 
-                    else if ( key === 'gender' && renamedObj[ key ] === 1 ) {
-                        evolutionInfo = <p key={ uuidv4() } >{ `${ key }: female` }</p>
-                    }
+                        />
+                }
 
-                    else if ( key === 'gender' && renamedObj[ key ] === 2 ) {
-                        evolutionInfo = <p key={ uuidv4() }>{ `${ key }: male` }</p>
-                    }
+                <Card.Body>
 
-                    else if ( key === 'name' ) {
-                        //prevents the name from being repeated for every evolution
-                        evolutionInfo = null;
-                    }
-                    else if ( key === 'evolution' ) {
-                        pokemonName = <h5 key={ uuidv4() }>{ renamedObj[ key ].replace( '-', ' ' ).toUpperCase() }</h5>
-                    }
+                    {
+                        Object.keys( renamedObj ).map( key => {
 
-                    else if ( key === 'trigger' ) {
-                        evolutionInfo = <p key={ uuidv4() }>{ renamedObj[ key ].replace( '-', ' ' ) }</p>
-                    }
 
-                    else {
-                        evolutionInfo = <p key={ uuidv4() }>{ `${ key.replaceAll( '_', ' ' ) }: ${ renamedObj[ key ] }` }</p>
-                    }
+                            if ( renamedObj[ key ] === true ) {
+                                evolutionInfo = <Card.Text key={ uuidv4() }>{ key }</Card.Text>
+                            }
 
-                    return evolutionInfo;
-                } )
-            }
+                            else if ( key === 'gender' && renamedObj[ key ] === 1 ) {
+                                evolutionInfo = <Card.Text key={ uuidv4() } >{ `${ key }: female` }</Card.Text>
+                            }
 
-            {
-                sprite
-                    ? <img
-                        src={ `${ sprite }` }
-                        alt='pokemon sprite'
-                        onClick={ () => onClickHandler( renamedObj.evolution ) }
-                        className={ styles.pokeSprite }
-                    />
-                    : null
-            }
-            { pokemonName }
+                            else if ( key === 'gender' && renamedObj[ key ] === 2 ) {
+                                evolutionInfo = <Card.Text key={ uuidv4() }>{ `${ key }: male` }</Card.Text>
+                            }
+
+                            else if ( key === 'name' ) {
+                                //prevents the name from being repeated for every evolution
+                                evolutionInfo = null;
+                            }
+                            else if ( key === 'evolution' ) {
+                                pokemonName = <h5 key={ uuidv4() }>{ renamedObj[ key ].replace( '-', ' ' ).toUpperCase() }</h5>
+                            }
+
+                            else if ( key === 'trigger' ) {
+                                evolutionInfo = <Card.Text key={ uuidv4() }>{ renamedObj[ key ].replace( '-', ' ' ) }</Card.Text>
+                            }
+
+                            else {
+                                evolutionInfo =
+                                    <Card.Text key={ uuidv4() }>
+                                        { `${ key.replaceAll( '_', ' ' ) }: ${ renamedObj[ key ] }` }
+                                        { itemSprite !== null ? <img src={ `${ itemSprite }` } alt="item" /> : null }
+                                    </Card.Text>
+
+
+
+                            }
+
+                            return evolutionInfo;
+                        } ) }
+
+                    <Card.Title>  { pokemonName }</Card.Title>
+                </Card.Body>
+            </Card>
+
             { clickedPokemon }
         </div>
     )
