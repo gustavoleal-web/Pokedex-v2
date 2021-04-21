@@ -1,11 +1,36 @@
-import React from 'react';
-import IndividualMethods from './IndividualEvosMethods/IndividualMethods'
+import React, { useState, useEffect } from 'react';
+import IndividualMethods from './IndividualEvosMethods/IndividualMethods';
+import styles from './EvosMethods.module.css';
+import axios from 'axios';
+import Card from 'react-bootstrap/Card';
 
 const EvosMethods = ( { methods } ) => {
+    const [ sprite, setSprite ] = useState( null );
 
-    let doesNotEvo = null;
     let allWaysToEvolve = [];
-    let basePokemon = methods.length !== 0 ? <p>{ methods[ 0 ].name }</p> : null;
+    let basePokemon = methods.length !== 0 ? <h5>{ methods[ 0 ].name.toUpperCase() }</h5> : null;
+
+    useEffect( () => {
+        let isMounted = true;
+
+        const fetchData = async () => {
+            if ( isMounted ) {
+                try {
+                    let pokemon = await axios.get( ` https://pokeapi.co/api/v2/pokemon-form/${ methods[ 0 ].name }/` );
+                    setSprite( pokemon.data.sprites.front_default )
+                }
+                catch ( e ) {
+                    console.log( e );
+                }
+            }
+
+        }
+        fetchData();
+
+        return () => {
+            isMounted = false;
+        };
+    }, [ methods ] );
 
     methods.map( ( m ) => {
         let removedFalseValues = {};
@@ -33,14 +58,20 @@ const EvosMethods = ( { methods } ) => {
         return true;
     } );
 
-
-
     return (
-        <div>
-            {basePokemon }
+        <div className={ styles.flex }>
+            <Card className={ styles.card }>
+                <Card.Img variant="top" src={ `${ sprite }` } bsPrefix={ styles.pokeSprite } className={ styles.pokeSprite } />
+                <Card.Body className={ styles.test }>
+                    <Card.Title>{ basePokemon }</Card.Title>
+                </Card.Body>
+            </Card>
 
-            {doesNotEvo ? doesNotEvo : allWaysToEvolve.map( ( object, i ) => <IndividualMethods obj={ object } key={ i } /> ) }
-        </div>
+            {
+                allWaysToEvolve.length === 0 ? null : allWaysToEvolve.map( ( object, i ) =>
+                    <IndividualMethods obj={ object } key={ i } /> )
+            }
+        </div >
     )
 }
 
