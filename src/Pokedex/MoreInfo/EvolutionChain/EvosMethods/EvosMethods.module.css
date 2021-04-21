@@ -1,0 +1,25 @@
+.pokeSprite {
+    width: 55%;
+}
+
+.card {
+    width: 14rem;
+    margin-bottom: 20px;
+}
+
+.test {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+
+@media (min-width: 900px) {
+    .flex {
+        display        : flex;
+        justify-content: space-evenly;
+        flex-wrap      : wrap;
+    }
+
+
+}
