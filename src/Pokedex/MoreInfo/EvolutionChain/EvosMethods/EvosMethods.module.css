@@ -1,5 +1,6 @@
 .pokeSprite {
-    width: 55%;
+    width: max-content;
+    margin-left: 55px;
 }
 
 .card {
