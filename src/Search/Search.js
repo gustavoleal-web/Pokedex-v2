@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
-import styles from './search.module.css';
-import { Button, Input } from 'reactstrap';
-import icon from '../img/icons/loupe.png'
+import React, {useState} from 'react';
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
+import Button from 'react-bootstrap/Button';
+//import icon from '../img/icons/loupe.png'
 
-
-//TODO: clear input after button is pressed
-
-const Search = ( { wasClicked } ) => {
-    const [ name, setName ] = useState( '' )
+const Search = ( {searchPokemon } ) => {
+    const [ name, setName ] = useState( '' );
     const [ isDisbled, setIsDisabled ] = useState( true );
 
     const updateName = ( e ) => {
@@ -24,23 +22,18 @@ const Search = ( { wasClicked } ) => {
     }
 
     return (
-        <>
-            <div className={ styles.container }>
-                <Input placeholder="Pokemon" onChange={ updateName } />
-                <Button
-                    onClick={ () => wasClicked( name ) }
-                    disabled={ isDisbled }
-                    color='secondary'
-                    className={ styles.button }>
-                    <img src={ icon } alt='search icon' className={ styles.searchIcon } />
-                </Button>
-            </div>
-
-            <p style={ { textAlign: 'center' } }>For Pokemons with a period in their name e.i Mr.Mime use a dash (-) instead.</p>
-
-        </>
+        <InputGroup className='mb-3'>
+            <FormControl
+                placeholder='Pokemon name'
+                aria-label='Pokemon name'
+                aria-describedby='basic-addon2'
+                onChange={ updateName }
+            />
+            <InputGroup.Append>
+                <Button variant='outline-primary' disabled={ isDisbled } onClick={ () => searchPokemon( name ) }>Search</Button>
+            </InputGroup.Append>
+        </InputGroup>
     )
 }
 
-export default React.memo( Search );
-
+export default Search;
