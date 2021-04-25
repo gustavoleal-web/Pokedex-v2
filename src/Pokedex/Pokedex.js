@@ -89,21 +89,6 @@ const Pokedex = ( { id } ) => {
                         <Sprites pokeImg={ state.sprites } name={ state.name } showModalHandler={ showModalHandler } />
                         <p>No.{ state.id }:  { state.name.toUpperCase() }</p>
 
-
-                        { /* For pokemons that have 2 types it will render both otherwise just the one type */ }
-                        {/*<Button onClick={ () => toggle() }>i</Button>*/ }
-                        {/*
-                         <Button
-                            variant='outline-info'
-                            onClick={ () => showModalHandler( true ) }
-                            style={ {
-                                width: '12%',
-                                borderRadius: '100%'
-                            } }>i
-                            
-                            </Button>
-                        */ }
-
                         { lgShow ?
                             <MoreInfo
                                 id={ id }
