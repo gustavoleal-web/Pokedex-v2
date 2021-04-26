@@ -16,10 +16,7 @@ const Pokedex = ( { id } ) => {
     const [ typeColorBackground, setBackground ] = useState( '' );
     const [ pokeForms, setPokeForms ] = useState( '' );
 
-    // const [ modal, setModal ] = useState( false );
-    // const toggle = () => setModal( !modal );
-
-
+    //from react-strap
     const [ lgShow, setLgShow ] = useState( false );
     const showModalHandler = ( bool ) => {
         setLgShow( bool )
@@ -85,7 +82,6 @@ const Pokedex = ( { id } ) => {
 
                 <div className={ `${ styles.infoContainer } ${ typeColorBackground }` }>
                     <div>
-
                         <Sprites pokeImg={ state.sprites } name={ state.name } showModalHandler={ showModalHandler } />
                         <p>No.{ state.id }:  { state.name.toUpperCase() }</p>
 
