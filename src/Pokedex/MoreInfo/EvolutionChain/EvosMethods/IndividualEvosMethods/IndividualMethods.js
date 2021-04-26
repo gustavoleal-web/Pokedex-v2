@@ -90,7 +90,7 @@ const IndividualMethods = ( { obj } ) => {
 
 
     return (
-        <div className={ `${ styles.width } ` } >
+        < >
             <Card className={ styles.card } >
 
                 {
@@ -155,7 +155,8 @@ const IndividualMethods = ( { obj } ) => {
             </Card>
 
             { clickedPokemon }
-        </div>
+          
+        </>
     )
 }
 
