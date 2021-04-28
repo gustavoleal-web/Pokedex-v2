@@ -3,6 +3,7 @@ import PokedexEntries from './PokedexEntries/PokedexEntries'
 import Abilities from './Abilities/Abilities';
 import Training from './Training/Training';
 import EvolutionChain from './EvolutionChain/EvolutionChain';
+import Moves from './Moves/Moves';
 import Breeding from './Breeding/Breeding.js'
 import AlternateForms from './AlternateForms/alternateForms';
 import Varieties from './Varieties/Varieties';
@@ -44,47 +45,7 @@ const MoreInfo = ( {
     const commonAbilities = [];
     const hiddenAbilities = [];
 
-    //function found online
-    const compare = ( a, b ) => {
-        const currentLv = a.level;
-        const nextLv = b.level;
 
-        let comparison = 0;
-        if ( currentLv > nextLv ) {
-            comparison = 1;
-        } else if ( currentLv < nextLv ) {
-            comparison = -1;
-        }
-        return comparison;
-    }
-
-
-    const movesByLearnedMethod = ( method ) => {
-        const levelUpMoves = moves.filter( move => {
-            return move.version_group_details[ move.version_group_details.length - 1 ].move_learn_method.name === method
-        } );
-
-        return levelUpMoves
-    }
-
-
-    const levelUpMoves = movesByLearnedMethod( 'level-up' );
-    console.log(levelUpMoves)
-
-    const recentGame = levelUpMoves.map( move => {
-        if ( move.version_group_details[ move.version_group_details.length - 1 ].version_group.name === 'ultra-sun-ultra-moon' ) {
-            return {
-                name: move.move.name,
-                level: move.version_group_details[ move.version_group_details.length - 1 ].level_learned_at
-            }
-
-        }
-        return true;
-    } );
-
-    recentGame.sort( compare );
-
-    //console.log( recentGame )
 
     //converted the value to meeters then to ft
     let feet = ( height / 10 ) * 3.281;
@@ -362,7 +323,8 @@ const MoreInfo = ( {
                     { showForms }
                     { showStats }
                     { showDamaga }
-
+                    {moves.length !== 0 ? <Moves moves={moves}/> : null }
+                    
                 </span>
             </Modal>
         </div>
