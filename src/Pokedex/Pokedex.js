@@ -48,7 +48,7 @@ const Pokedex = ( { id } ) => {
                     let pokemon = await axios.get(
                         `https://pokeapi.co/api/v2/pokemon/${ id }/`,
                         { 'headers': { 'Access-Control-Allow-Origin': '*' } } );
-                    
+
                     if ( pokemon.status === 200 ) {
                         setStateFromReq( pokemon.data )
                     }
@@ -56,9 +56,7 @@ const Pokedex = ( { id } ) => {
 
                 }
                 catch ( e ) {
-                    let pokemon = await axios.get(
-                        `https://pokeapi.co/api/v2/pokemon/${ id }`,
-                        { 'headers': { 'Access-Control-Allow-Origin': '*' } } );
+                    let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon/${ id }/` );
                     if ( pokemon.status === 200 ) {
                         setStateFromReq( pokemon.data )
                     }
