@@ -17,6 +17,7 @@ const Sprites = ( { pokeImg, name, showModalHandler } ) => {
 
     else if ( pokeImg.front_default !== null ) {
         return <img
+            className={ `${ styles.imgWidth } ${ styles.pointer }` }
             src={ `${ pokeImg.front_default }` }
             alt={ name }
             onClick={ () => showModalHandler( true ) }
