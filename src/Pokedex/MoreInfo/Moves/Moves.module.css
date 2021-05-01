@@ -1,0 +1,9 @@
+.size {
+    width: 68%;
+    margin-left: 16%;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+}
