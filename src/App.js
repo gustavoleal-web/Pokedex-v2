@@ -1,21 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import NotFound from './PokemonNotFound/notFound';
-import axios from 'axios'
 import styles from './app.module.css'
-//import Button from 'react-bootstrap/Button';
-import Search from './Search'
-//import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
+import axios from 'axios'
+
+import Search from './Search/Search';
 import SelectedSearchOption from './SelectedSearchOption';
-//import InputGroup from 'react-bootstrap/InputGroup';
-//import FormControl from 'react-bootstrap/FormControl';
-
 import Navbar from 'react-bootstrap/NavBar'
 import Nav from 'react-bootstrap/Nav'
-//import NavDropdown from 'react-bootstrap/NavDropdown'
-//import SearchByType from './Search/SearchByType';
-
-
 import Dropdowns from './Dropdowns';
 
 const App2 = () => {
