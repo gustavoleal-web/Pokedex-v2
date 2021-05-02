@@ -1,9 +1,19 @@
 .size {
-    width: 68%;
-    margin-left: 16%;
+    width: 88%;
+    margin-left: 5%;
+  
 }
+
 
 .container {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: 1fr 3fr 2fr 1.5fr repeat(2, 1fr);
+}
+
+.start {
+    justify-self: start;
+}
+
+.end {
+    justify-self: end;
 }
