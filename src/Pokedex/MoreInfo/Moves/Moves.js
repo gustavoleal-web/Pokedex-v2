@@ -1,6 +1,6 @@
 import React from 'react';
 import MoveDetails from './MovesDetails';
-import styles from './MoveDatils.module.css';
+import styles from './Moves.module.css';
 
 const Moves = ( { moves } ) => {
     const games = [ 'ultra-sun-ultra-moon', 'sun-moon', 'x-y', 'omega-ruby-alpha-sapphire' ];
@@ -114,20 +114,22 @@ const Moves = ( { moves } ) => {
     levelUpMovesByGame.sort( compare );
 
     return (
-        <div className={styles.size}>
+        <div className={ styles.size }>
             <span className={ styles.container }>
-                <h5>Name</h5>
-                <h5>Level</h5>
-                <h5>Type</h5>
-                <h5>Power</h5>
-                <h5>PP</h5>
-                <h5>Acc.</h5>
-                <h5>Cat.</h5>
+                <h5 className={styles.start}>Lv.</h5>
+                <h5 className={styles.start}>Name</h5>
+                <h5 className={styles.start}>Type</h5>
+                <h5 className={styles.start}>Cat.</h5>
+                <h5 className={styles.end}>Power</h5>
+                <h5 className={styles.end}>Acc.</h5>
+               
             </span>
-            {
-                levelUpMovesByGame.map( move => <MoveDetails name={ move.name } level={ move.level } />)
-            }
+
            
+                {
+                    levelUpMovesByGame.map( move => <MoveDetails name={ move.name } level={ move.level } /> )
+                }
+
         </div>
     )
 }
