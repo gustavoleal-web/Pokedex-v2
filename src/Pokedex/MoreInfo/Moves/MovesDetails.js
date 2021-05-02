@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import styles from './MoveDatils.module.css';
+import styles from './MoveDetails.module.css';
 
 
 const MoveDetails = ( { name, level } ) => {
@@ -36,17 +36,19 @@ const MoveDetails = ( { name, level } ) => {
 
 
     if ( Object.keys( allMoveInfo ).length !== 0 ) {
+
         return (
             <>
                 <hr />
                 <div className={ styles.container }>
-                    <p className={styles.start}>{ name }</p>
-                    <p> { level }</p>
-                    <p>{ allMoveInfo.type.name }</p>
-                    <p>{ allMoveInfo.power }</p>
-                    <p>{ allMoveInfo.pp }</p>
-                    <p> { allMoveInfo.accuracy }</p>
-                    <p> { allMoveInfo.damage_class.name }</p>
+                    <p className={ styles.start }> { level }</p>
+                    <p className={ styles.start }>{ name }</p>
+                    <p className={ styles.start }>{ allMoveInfo.type.name }</p>
+                    <p className={ styles.start }> { allMoveInfo.damage_class.name }</p>
+                    { allMoveInfo.power === null ? <p className={ styles.end }>-</p> : <p className={ styles.end }>{ allMoveInfo.power }</p> }
+                    { allMoveInfo.accuracy === null ? <p className={ styles.end }>-</p> : <p className={ styles.end }>{ allMoveInfo.accuracy }</p> }
+
+                   
                 </div>
 
             </> )
