@@ -4,6 +4,10 @@ import styles from '../Moves.module.css';
 const TableTitles = ( { firstTitle } ) => {
     let tableTitleSize;
     let title;
+
+    //these tables are shortes so the appropriate container class will accommodate for it
+    //there is no need for a title like 'Lv.' or 'TM' in these table title
+    //so null is assigned
     if ( firstTitle === 'tutor' || firstTitle === 'egg' ) {
         tableTitleSize = styles.container2;
         title = null
@@ -13,8 +17,6 @@ const TableTitles = ( { firstTitle } ) => {
         tableTitleSize = styles.container;
         title = <h5 className={ styles.start }>{ firstTitle }</h5>;;
     }
-    //let tableTitleSize = ( firstTitle === 'tutor' ) ? styles.container2 : styles.container;
-
 
     return <span className={ tableTitleSize }>
         { title }

@@ -4,8 +4,8 @@ import styles from './MoveDetails.module.css';
 
 const MoveDetails = ( { name, level, learnMethod } ) => {
     const [ allMoveInfo, setAllMoveInfo ] = useState( {} );
-    const [ tm, setTm ] = useState( [] );
-
+    const [ tm, setTm ] = useState( {} );
+    //these tables are shortes so the appropriate container class will accommodate for it
     let tableSize = ( learnMethod === 'tutor' || learnMethod === 'egg' ) ? styles.container2 : styles.container;
 
     useEffect( () => {
@@ -64,10 +64,12 @@ const MoveDetails = ( { name, level, learnMethod } ) => {
 
     }, [ allMoveInfo, learnMethod ] );
 
-    let levelOrTm = null;
+    let levelOrTm;
+
     if ( Object.keys( allMoveInfo ).length !== 0 && Object.keys( tm ).length !== 0 ) {
         levelOrTm = <p className={ styles.start }>{ tm.item.name }</p>
     }
+    //so the value 0 is not displayed in the pokemon level column it will be assinged null
     else if ( level === 0 ) {
         levelOrTm = null
     }
