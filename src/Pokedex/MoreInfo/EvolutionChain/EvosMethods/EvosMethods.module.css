@@ -15,12 +15,19 @@
 }
 
 
+@media (min-width: 300px) and (max-width: 900px) {
+    .card {
+        margin: auto;
+        margin-bottom: 20px;
+    }
+}
+
 @media (min-width: 900px) {
     .flex {
         display        : flex;
         justify-content: space-evenly;
         flex-wrap      : wrap;
+        
     }
-
 
 }

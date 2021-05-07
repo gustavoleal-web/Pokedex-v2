@@ -12,3 +12,10 @@
     margin-left: 55px;
 }
 
+
+@media (min-width: 300px) and (max-width: 900px) {
+    .card {
+        margin: auto;
+        margin-bottom: 20px;
+    }
+}
