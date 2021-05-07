@@ -1,10 +1,12 @@
 import React from 'react';
 import MoveDetails from './MovesDetails';
+import TableTitles from './TableTitle/TableTitle'
 import styles from './Moves.module.css';
 import { v4 as uuidv4 } from 'uuid';
 
 const Moves = ( { moves } ) => {
     const games = [ 'ultra-sun-ultra-moon', 'sun-moon', 'x-y', 'omega-ruby-alpha-sapphire' ];
+   
 
     //function found online
     const compare = ( a, b ) => {
@@ -114,23 +116,13 @@ const Moves = ( { moves } ) => {
 
     levelUpMovesByGame.sort( compare );
 
-    //console.log( tmMovesByGame )
-
     return (
 
         <div className={ styles.componentSize }>
-            <span className={ styles.container }>
-                <h5 className={ styles.start }>Lv.</h5>
-                <h5 className={ styles.start }>Name</h5>
-                <h5 className={ styles.start }>Type</h5>
-                <h5 className={ styles.start }>Cat.</h5>
-                <h5 className={ styles.end }>Power</h5>
-                <h5 className={ styles.end }>Acc.</h5>
-
-            </span>
 
             <span>
                 <h4>Level Up Moves</h4>
+                <TableTitles firstTitle='Lv.' />
                 {
                     levelUpMovesByGame.map( move =>
                         <MoveDetails
@@ -145,6 +137,7 @@ const Moves = ( { moves } ) => {
 
             <span>
                 <h4>Tutor Moves</h4>
+                <TableTitles firstTitle='tutor'/>
                 {
                     tutorMovesByGame.map( move =>
                         <MoveDetails
@@ -158,6 +151,7 @@ const Moves = ( { moves } ) => {
 
             <span>
                 <h4>TM Moves</h4>
+                <TableTitles firstTitle='TM' />
                 {
                     tmMovesByGame.map( move =>
                         <MoveDetails
@@ -171,6 +165,7 @@ const Moves = ( { moves } ) => {
 
             <span>
                 <h4>Egg Moves</h4>
+                <TableTitles firstTitle='egg' />
                 {
                     eggMovesByGame.map( move =>
                         <MoveDetails
