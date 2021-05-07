@@ -1,14 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import IndividualMethods from './IndividualEvosMethods/IndividualMethods';
+import Pokedex from '../../../Pokedex';
 import styles from './EvosMethods.module.css';
 import axios from 'axios';
 import Card from 'react-bootstrap/Card';
 
 const EvosMethods = ( { methods } ) => {
     const [ sprite, setSprite ] = useState( null );
+    const [ clickedPokemon, setClickedPokemon ] = useState( null );
 
     let allWaysToEvolve = [];
-    let basePokemon = methods.length !== 0 ? <h5>{ methods[ 0 ].name.toUpperCase() }</h5> : null;
+    let basePokemon = methods.length !== 0 ? <h5 >{ methods[ 0 ].name.toUpperCase() }</h5> : null;
+
+    const onClickHandler = ( name ) => {
+        setClickedPokemon(
+            <div>
+                <Pokedex id={ name } />
+            </div>
+        )
+    }
+
 
     useEffect( () => {
         let isMounted = true;
@@ -61,11 +72,18 @@ const EvosMethods = ( { methods } ) => {
     return (
         <div className={ styles.flex }>
             <Card className={ styles.card }>
-                <Card.Img variant="top" src={ `${ sprite }` } bsPrefix={ styles.pokeSprite } className={ styles.pokeSprite } />
+                <Card.Img
+                    variant="top" src={ `${ sprite }` }
+                    bsPrefix={ styles.pokeSprite }
+                    onClick={ () => onClickHandler( methods[ 0 ].name ) }
+                    className={ styles.pokeSprite }
+                />
                 <Card.Body className={ styles.test }>
                     <Card.Title>{ basePokemon }</Card.Title>
                 </Card.Body>
             </Card>
+
+            { clickedPokemon }
 
             {
                 allWaysToEvolve.length === 0 ? null : allWaysToEvolve.map( ( object, i ) =>
