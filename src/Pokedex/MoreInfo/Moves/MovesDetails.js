@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styles from './MoveDetails.module.css';
-import backgroundColor from '../../pokeTypes.module.css'
-
 
 const MoveDetails = ( { name, level, learnMethod } ) => {
     const [ allMoveInfo, setAllMoveInfo ] = useState( {} );
-    const [ tm, setTm ] = useState( [] )
+    const [ tm, setTm ] = useState( [] );
+
+    let tableSize = ( learnMethod === 'tutor' || learnMethod === 'egg' ) ? styles.container2 : styles.container;
 
     useEffect( () => {
         let isMounted = true;
@@ -68,10 +68,12 @@ const MoveDetails = ( { name, level, learnMethod } ) => {
     if ( Object.keys( allMoveInfo ).length !== 0 && Object.keys( tm ).length !== 0 ) {
         levelOrTm = <p className={ styles.start }>{ tm.item.name }</p>
     }
+    else if ( level === 0 ) {
+        levelOrTm = null
+    }
     else {
         levelOrTm = <p className={ styles.start }> { level }</p>
     }
-
 
     if ( Object.keys( allMoveInfo ).length !== 0 ) {
         let type = `${ allMoveInfo.type.name }.png`;
@@ -82,19 +84,19 @@ const MoveDetails = ( { name, level, learnMethod } ) => {
         return (
             <>
                 <hr />
-                <div className={ styles.container }>
+                <div className={ tableSize }>
                     { levelOrTm }
                     <p className={ styles.start }>{ name }</p>
                     <img
                         src={ ` https://raw.githubusercontent.com/msikma/pokesprite/master/misc/types/go/${ type }` }
                         alt={ allMoveInfo.type.name }
-                        className={styles.moveIcons}
+                        className={ styles.moveIcons }
                     />
 
                     <img
                         src={ `https://raw.githubusercontent.com/msikma/pokesprite/master/misc/seals/home/${ seals }` }
                         alt={ allMoveInfo.damage_class.name }
-                        className={styles.moveIcons}
+                        className={ styles.moveIcons }
                     />
 
                     { movePower }
