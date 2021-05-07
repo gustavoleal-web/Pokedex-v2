@@ -9,8 +9,18 @@
     grid-template-columns: 1fr 4fr 3fr 1.5fr 1fr 1.5fr;
 }
 
+.container2 {
+    display              : grid;
+    grid-template-columns: 4fr 1.5fr 1.5fr 1fr 1fr;
+}
+
+
 .start {
     justify-self: start;
+}
+
+.center {
+    justify-self: center;
 }
 
 .end {
@@ -26,6 +36,11 @@
 
 @media(min-width: 900px) {
     .container {
+        width      : 60%;
+        margin-left: 20%;
+    }
+
+    .container2 {
         width      : 60%;
         margin-left: 20%;
     }

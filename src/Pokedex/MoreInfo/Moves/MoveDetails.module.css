@@ -1,6 +1,12 @@
 .container {
-    display: grid;
+    display              : grid;
     grid-template-columns: 1fr 4fr 3fr 1.5fr 1fr 1.5fr;
+
+}
+
+.container2 {
+    display              : grid;
+    grid-template-columns: 4fr 1.5fr 1.5fr 1fr 1fr;
 }
 
 
@@ -8,32 +14,51 @@
     justify-self: start;
 }
 
+
+
 .end {
     justify-self: end;
 }
 
+.pokeTypeBorder {
+    border       : 1px solid black;
+    border-radius: 5px;
+    width        : 80%;
+    height       : 27px;
+    font-weight  : 400;
+    margin-bottom: 0;
+}
 
+.moveIcons {
+    width       : 30px;
+    height      : 30px;
+    justify-self: center;
+}
 
 @media(min-width: 500px) {
     .container {
         grid-template-columns: 1fr 3fr 2fr 1.5fr repeat(2, 1fr)
-       
     }
-    
+
 }
 
 @media(min-width: 900px) {
     .container {
-        width: 60%;
+        width      : 60%;
+        margin-left: 20%;
+    }
+}
+
+@media(min-width: 900px) {
+    .container2 {
+        width      : 60%;
         margin-left: 20%;
     }
 }
 
 @media(min-width: 901px) and (max-width: 999px) {
     .container {
-        width: 90%;
+        width      : 90%;
         margin-left: 6%;
     }
 }
-
-
