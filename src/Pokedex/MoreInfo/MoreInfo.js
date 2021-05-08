@@ -48,10 +48,14 @@ const MoreInfo = ( {
 
 
     //converted the value to meeters then to ft
-    let feet = ( height / 10 ) * 3.281;
-    feet = feet.toFixed( 2 )
+    let meters = height / 10;
+    let feet = meters * 3.281;
+    feet = feet.toFixed( 2 );
+
 
     let weightInKg = weight / 10;
+    let pounds = weightInKg * 2.2;
+    pounds = pounds.toFixed( 2 );
 
     for ( let i = 0; i < abilities.length; i++ ) {
         if ( abilities[ i ].is_hidden ) {
@@ -285,7 +289,7 @@ const MoreInfo = ( {
         <div>
             <Modal
                 centered
-                size="lg"
+                size="xl"
                 show={ showModal }
                 onHide={ () => showModalHandler( false ) }
                 aria-labelledby="example-modal-sizes-title-sm">
@@ -308,11 +312,20 @@ const MoreInfo = ( {
 
                         { showTypes }
 
-                        <p>Weight: { weightInKg } kg</p>
-                        <p>Height: { feet } ft</p>
+                        <span className={ styles.pokedexSizeWeight }>
+                            <span>
+                                <h5>Size</h5>
+                                <p>Weight: { weightInKg } kg / { pounds } lbs</p>
+                                <p>Height: { meters } m / { feet } ft</p>
+                            </span>
 
-                        <h5>Gender</h5>
-                        { showGender }
+                            <span>
+                                <h5>Gender</h5>
+                                { showGender }
+                            </span>
+
+                        </span>
+
 
                     </Modal.Body>
                     { shoWabilities }
@@ -323,8 +336,8 @@ const MoreInfo = ( {
                     { showForms }
                     { showStats }
                     { showDamaga }
-                    {moves.length !== 0 ? <Moves moves={moves}/> : null }
-                    
+                    { moves.length !== 0 ? <Moves moves={ moves } /> : null }
+
                 </span>
             </Modal>
         </div>
