@@ -7,7 +7,8 @@ const Abilities = ( { abilities } ) => {
         effect: ''
     } );
     const cssStyles = {
-        width: '51%',
+        minWidth: '250px',
+        maxWidth: '300px',
         height: '27px',
         margin: '0',
         padding: '0',
