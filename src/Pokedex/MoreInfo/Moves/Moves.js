@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 const Moves = ( { moves } ) => {
     const games = [ 'ultra-sun-ultra-moon', 'sun-moon', 'x-y', 'omega-ruby-alpha-sapphire' ];
-   
+
 
     //function found online
     const compare = ( a, b ) => {
@@ -121,7 +121,7 @@ const Moves = ( { moves } ) => {
         <div className={ styles.componentSize }>
 
             <span>
-                <h4>Level Up Moves</h4>
+                <h4 className={ styles.titleMargin }>Level Up Moves</h4>
                 <TableTitles firstTitle='Lv.' />
                 {
                     levelUpMovesByGame.map( move =>
@@ -136,8 +136,8 @@ const Moves = ( { moves } ) => {
 
 
             <span>
-                <h4>Tutor Moves</h4>
-                <TableTitles firstTitle='tutor'/>
+                <h4 className={ styles.titleMargin }>Tutor Moves</h4>
+                <TableTitles firstTitle='tutor' />
                 {
                     tutorMovesByGame.map( move =>
                         <MoveDetails
@@ -150,7 +150,7 @@ const Moves = ( { moves } ) => {
             </span>
 
             <span>
-                <h4>TM Moves</h4>
+                <h4 className={ styles.titleMargin }>TM Moves</h4>
                 <TableTitles firstTitle='TM' />
                 {
                     tmMovesByGame.map( move =>
@@ -164,7 +164,7 @@ const Moves = ( { moves } ) => {
             </span>
 
             <span>
-                <h4>Egg Moves</h4>
+                <h4 className={ styles.titleMargin }>Egg Moves</h4>
                 <TableTitles firstTitle='egg' />
                 {
                     eggMovesByGame.map( move =>
