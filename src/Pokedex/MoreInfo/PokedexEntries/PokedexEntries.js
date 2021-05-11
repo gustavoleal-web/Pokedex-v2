@@ -1,7 +1,7 @@
 import React from 'react'
 
 const PokedexEntries = ( { pokedexData } ) => {
-   
+
     let englishEntry = '';
     let generation = '';
     const englishGenus = pokedexData.genus.find( genus => genus.language.name === 'en' );
@@ -52,8 +52,8 @@ const PokedexEntries = ( { pokedexData } ) => {
     return (
         <>
             <p>This Pokemon was introduced in { generation }.</p>
-            <p>It is known as the {englishGenus.genus}</p>
-            <p>{ englishEntry }</p>
+            <p>It is known as the { englishGenus.genus }</p>
+            <p style={ { maxWidth: '500px', margin: 'auto' } }>{ englishEntry }</p>
         </>
     )
 }
