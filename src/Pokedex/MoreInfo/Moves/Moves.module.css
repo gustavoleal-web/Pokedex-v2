@@ -14,6 +14,10 @@
     grid-template-columns: 4fr 1.5fr 1.5fr 1fr 1fr;
 }
 
+.titleMargin {
+    margin-top: 100px;
+    margin-bottom: 30px;
+}
 
 .start {
     justify-self: start;
