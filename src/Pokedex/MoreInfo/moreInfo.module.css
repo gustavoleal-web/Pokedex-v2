@@ -5,10 +5,16 @@
 }
 
 .fill {
-    width        : 100%;
+    max-width    : 300px;
+    margin       : auto;
     border-radius: 20px;
     box-shadow   : 0px 0px 2px black;
+    margin-bottom: 70px;
+    margin-top   : 50px;
 }
+
+
+
 
 .hrMargin {
     margin-top   : 40px;
@@ -76,21 +82,29 @@ hr:after {
 }
 
 .statsContainer {
-    display: grid;
+    display              : grid;
     grid-template-columns: 2fr 1fr;
-    column-gap: 15px;
-    margin-left: 20%;
+    column-gap           : 15px;
+    margin-left          : 20%;
 
 }
 
 
 .statsName {
-    justify-self: start;
+    justify-self  : start;
     text-transform: capitalize;
-  
+
 }
 
 .statsValue {
     justify-self: start;
 }
 
+@media(min-width: 500px) {
+    .pokedexSizeWeight {
+        display              : grid;
+        grid-template-columns: 1fr 1fr;
+        max-width            : 500px;
+        margin               : auto;
+    }
+}
