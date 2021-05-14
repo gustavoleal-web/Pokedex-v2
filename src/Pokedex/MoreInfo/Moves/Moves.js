@@ -122,6 +122,7 @@ const Moves = ( { moves } ) => {
 
             <span>
                 <h4 className={ styles.titleMargin }>Level Up Moves</h4>
+
                 <TableTitles firstTitle='Lv.' />
                 {
                     levelUpMovesByGame.map( move =>
@@ -167,13 +168,16 @@ const Moves = ( { moves } ) => {
                 <h4 className={ styles.titleMargin }>Egg Moves</h4>
                 <TableTitles firstTitle='egg' />
                 {
-                    eggMovesByGame.map( move =>
-                        <MoveDetails
-                            name={ move.name }
-                            level={ move.level }
-                            learnMethod={ move.moveLearnMethod }
-                            key={ uuidv4() }
-                        /> )
+                    eggMoves.length === 0
+                        ? <h6>Check base pokemon for eggs moves</h6>
+                        : eggMovesByGame.map( move =>
+                            <MoveDetails
+                                name={ move.name }
+                                level={ move.level }
+                                learnMethod={ move.moveLearnMethod }
+                                key={ uuidv4() }
+                            />
+                        )
                 }
             </span>
 
