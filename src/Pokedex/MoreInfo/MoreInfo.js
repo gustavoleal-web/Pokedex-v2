@@ -17,6 +17,7 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 // import { Route, Link } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
+import Nav from 'react-bootstrap/Nav';
 
 const MoreInfo = ( {
     name,
@@ -46,6 +47,7 @@ const MoreInfo = ( {
     const hiddenAbilities = [];
 
 
+    const [ showSelected, setShowSelected ] = useState( null )
 
     //converted the value to meeters then to ft
     let meters = height / 10;
@@ -168,7 +170,8 @@ const MoreInfo = ( {
     let showVarieties = null;
     let showForms = null;
     let showStats = null;
-    let showDamaga = null;
+    let showDamage = null;
+    let showMoves = null;
 
 
     if ( sprites.versions[ 'generation-viii' ].icons.front_default ) {
@@ -181,7 +184,7 @@ const MoreInfo = ( {
 
     if ( types.length === 2 ) {
         showTypes = (
-            <div style={ { display: 'flex' } }>
+            <div className={ styles.typesContainer }>
                 <p className={ `${ type1 } ${ styles.fill }` }>{ types[ 0 ].type.name }</p>
                 <p className={ `${ type2 } ${ styles.fill }` }>{ types[ 1 ].type.name }</p>
             </div>
@@ -264,7 +267,7 @@ const MoreInfo = ( {
     }
 
     if ( types.length !== 0 ) {
-        showDamaga =
+        showDamage =
             <Modal.Body>
                 <hr className={ `${ styles.hrDamage } ${ styles.hrMargin }` } />
                 { types.length !== 0 ? <ResistanceWeakness type={ types } key={ uuidv4() } /> : null }
@@ -278,18 +281,26 @@ const MoreInfo = ( {
             <EvolutionChain evolutionChainUrl={ evolutionChainUrl } />
         </Modal.Body>
 
+    if ( moves.length !== 0 ) {
+        showMoves = <Moves moves={ moves } />
+    }
+
 
     if ( error ) {
         console.log( 'Oopps something went wrong.' )
     }
 
 
+    const showSelectedHandler = ( component ) => {
+        setShowSelected( component );
+    }
+
     return (
 
         <div>
             <Modal
                 centered
-                size="xl"
+                size="lg"
                 show={ showModal }
                 onHide={ () => showModalHandler( false ) }
                 aria-labelledby="example-modal-sizes-title-sm">
@@ -297,9 +308,31 @@ const MoreInfo = ( {
                 <Modal.Header
                     closeButton
                     className={ backgroundColor }>
-                    { pokeName.toUpperCase() }
+                    <p className={ styles.pokeNameHeader }>{ pokeName.toUpperCase() }</p>
                     { showSpritesVersion }
                 </Modal.Header>
+
+
+                <Nav fill variant='tabs' style={ { fontSize: '20px' } }>
+                    <Nav.Item className={ styles.navBorder }>
+                        <Nav.Link onClick={ () => showSelectedHandler( showVarieties ) } >Varieties</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item className={ styles.navBorder }>
+                        <Nav.Link onClick={ () => showSelectedHandler( showForms ) }>Forms</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item className={ styles.navBorder }>
+                        <Nav.Link onClick={ () => showSelectedHandler( showStats ) }>Stats</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item className={ styles.navBorder }>
+                        <Nav.Link onClick={ () => showSelectedHandler( showDamage ) }>Resistance & Weakness</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item className={ styles.navBorder }>
+                        <Nav.Link onClick={ () => showSelectedHandler( showMoves ) }>Moves</Nav.Link>
+                    </Nav.Item>
+
+                </Nav>
+
+                { showSelected }
 
                 <span style={ { fontSize: '18px', textAlign: 'center' } }>
                     <Modal.Body>
@@ -328,15 +361,13 @@ const MoreInfo = ( {
 
 
                     </Modal.Body>
+
+
+
                     { shoWabilities }
                     { showTraining }
                     { showEvolution }
                     { showBreeding }
-                    { showVarieties }
-                    { showForms }
-                    { showStats }
-                    { showDamaga }
-                    { moves.length !== 0 ? <Moves moves={ moves } /> : null }
 
                 </span>
             </Modal>
