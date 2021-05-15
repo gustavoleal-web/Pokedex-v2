@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 //import icon from '../img/icons/loupe.png'
 
-const Search = ( {searchPokemon } ) => {
+const Search = ( { searchPokemon } ) => {
     const [ name, setName ] = useState( '' );
     const [ isDisbled, setIsDisabled ] = useState( true );
 
@@ -21,6 +21,12 @@ const Search = ( {searchPokemon } ) => {
 
     }
 
+    const pressedKey = ( e ) => {
+        if ( e.key === 'Enter' ) {
+            searchPokemon( e.target.value );
+        }
+    }
+
     return (
         <InputGroup className='mb-3'>
             <FormControl
@@ -28,6 +34,7 @@ const Search = ( {searchPokemon } ) => {
                 aria-label='Pokemon name'
                 aria-describedby='basic-addon2'
                 onChange={ updateName }
+                onKeyDown={ pressedKey }
             />
             <InputGroup.Append>
                 <Button variant='outline-primary' disabled={ isDisbled } onClick={ () => searchPokemon( name ) }>Search</Button>
