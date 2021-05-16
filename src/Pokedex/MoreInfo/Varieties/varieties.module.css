@@ -1,9 +1,18 @@
 .container {
-    display: flex;
+    display  : flex;
     flex-wrap: wrap;
-    justify-content: center;
+
+    justify-content: space-between;
 }
 
 .cursor:hover {
     cursor: pointer;
+}
+
+@media (min-width: 500px) {
+    .container {
+        justify-content: space-evenly;
+        max-width      : 700px;
+        margin         : auto;
+    }
 }
