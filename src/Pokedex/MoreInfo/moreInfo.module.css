@@ -5,7 +5,8 @@
 }
 
 .fill {
-    max-width    : 300px;
+    /* max-width    : 300px; */
+    width        : 46%;
     margin       : auto;
     border-radius: 20px;
     box-shadow   : 0px 0px 2px black;
@@ -13,8 +14,21 @@
     margin-top   : 50px;
 }
 
+/* .navBorder {
+    border-right: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+} */
 
+.typesContainer {
+    display  : flex;
+    max-width: 600px;
+    margin   : auto;
+}
 
+.pokeNameHeader {
+    font-size: 30px;
+
+}
 
 .hrMargin {
     margin-top   : 40px;
