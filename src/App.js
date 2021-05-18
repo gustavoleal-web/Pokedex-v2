@@ -60,13 +60,13 @@ const App2 = () => {
         setNoPkmFound( null );
         setPokemonByType( [] );
         setSelectedType( null );
-        setPokemonByColor( [] )
+        setPokemonByColor( [] );
     }
 
     const setPokedexByTypeHandler = ( type ) => {
         setSelectedPokedex( [] );
         setPokemonByColor( [] );
-        setSelectedType( type )
+        setSelectedType( type );
     }
 
     const setPokemonByColorHandler = ( color ) => {
@@ -200,7 +200,7 @@ const App2 = () => {
                     }
 
                     setPokemonEggGroup( pokemon.data );
-                    
+
                 } catch ( e ) {
                     console.log( e );
                 }
@@ -219,6 +219,7 @@ const App2 = () => {
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="mr-auto">
+
                     <Dropdowns arr={ allPokedexes } title='Pokedex' func={ fetchSelectedPokedex } />
                     <Dropdowns arr={ types } title='Type' func={ setPokedexByTypeHandler } />
                     <Dropdowns arr={ colors } title='Color' func={ setPokemonByColorHandler } />
@@ -241,9 +242,9 @@ const App2 = () => {
             <div>
                 <h1 className={ styles.title }>POKEDEX</h1>
             </div>
-            <p>Welcome to the Pokemon Search Tool.</p>
-            <p>Here you can search for your favorite pokemon in various ways.</p>
 
+            <p className={ styles.introInfo }>Welcome to the Pokemon Search Tool.</p>
+            <p className={ styles.introInfo }>Here you can search for your favorite pokemon in various ways.</p>
 
             <div className={ styles.center }>
                 <Search searchPokemon={ searchPokemon } />
@@ -269,8 +270,8 @@ const App2 = () => {
 
     return (
         <>
-            {navigation }
-            {main }
+            { navigation }
+            { main }
         </>
     )
 
