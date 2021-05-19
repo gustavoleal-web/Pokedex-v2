@@ -218,8 +218,13 @@ const MoreInfo = ( {
         <h5>Common</h5>
         <Abilities abilities={ commonAbilities } />
 
-        <h5>Hidden</h5>
-        <Abilities abilities={ hiddenAbilities } />
+        <h5 style={ { marginTop: '40px' } }>Hidden</h5>
+        {
+            hiddenAbilities.length === 0
+                ? <p>This pokemon does not have a hidden ability.</p>
+                : <Abilities abilities={ hiddenAbilities } />
+        }
+
     </Modal.Body>
 
     if ( Object.keys( trainingData ).length !== 0 ) {
