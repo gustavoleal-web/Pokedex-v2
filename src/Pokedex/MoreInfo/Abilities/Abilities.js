@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Button } from 'reactstrap';
+import Button from 'react-bootstrap/Button'
 
 const Abilities = ( { abilities } ) => {
     const [ state, setState ] = useState( {
@@ -10,8 +10,9 @@ const Abilities = ( { abilities } ) => {
         minWidth: '250px',
         maxWidth: '300px',
         height: '27px',
-        margin: '0',
+        marginTop: '10px',
         padding: '0',
+        fontWeight: 'bold'
     }
 
     const fetchAbilityData = async ( url ) => {
@@ -46,13 +47,12 @@ const Abilities = ( { abilities } ) => {
             {
                 abilities.map( ability =>
                     <Button onClick={ () => fetchAbilityData( ability.url ) }
+                        variant='outline-secondary'
                         key={ ability.name }
-                        id="PopoverFocus"
-                        type="button"
                         style={ cssStyles }>{ ability.name }
                     </Button> )
             }
-            { state ? <p>{ state.effect }</p> : null }
+            { state ? <p style={ { marginTop: '10px' } }>{ state.effect }</p> : null }
         </>
 
 
