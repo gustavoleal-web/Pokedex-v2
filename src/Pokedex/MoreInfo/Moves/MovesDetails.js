@@ -67,7 +67,8 @@ const MoveDetails = ( { name, level, learnMethod } ) => {
     let levelOrTm;
 
     if ( Object.keys( allMoveInfo ).length !== 0 && Object.keys( tm ).length !== 0 ) {
-        levelOrTm = <p className={ styles.start }>{ tm.item.name }</p>
+        let tmNumber = tm.item.name.slice(2)
+        levelOrTm = <p className={ styles.start }>{ tmNumber }</p>
     }
     //so the value 0 is not displayed in the pokemon level column it will be assinged null
     else if ( level === 0 ) {
