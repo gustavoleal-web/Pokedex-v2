@@ -1,43 +1,92 @@
+//found the Autocomplete logic online
 import React, { useState } from 'react';
 
 const Autocomplete = ( { nationalPokedex } ) => {
-    const [ testSuggestion, setTestSuggestion ] = useState( [] )
-    console.log( nationalPokedex )
+    const [ state, setState ] = useState( {
+        activeOption: 0,
+        filteredOptions: [],
+        showOptions: false,
+        userInput: ''
+    } )
+
 
     //testing autocomplete suggestion
-    const autoCompleteTest = ( e ) => {
-        console.log( e.target.value );
-        if ( e.target.value.length >= 3 ) {
+    const onChangeHandler = ( e ) => {
+        let userInput = e.target.value;
+
+        if ( userInput.length === 0 ) {
+            setState( {
+                activeOption: 0,
+                filteredOptions: [],
+                showOptions: true,
+                userInput: ''
+            } );
+        }
+
+        else {
             const filteredSuggestions = nationalPokedex.filter( pokemon => {
-                return pokemon.pokemon_species.name.indexOf( e.target.value.toLowerCase() ) > -1;
+                return pokemon.pokemon_species.name.indexOf( userInput.toLowerCase() ) > -1;
             } );
 
-            setTestSuggestion( filteredSuggestions );
+            setState( {
+                activeOption: 0,
+                filteredOptions: filteredSuggestions,
+                showOptions: true,
+                userInput: userInput
+            } );
         }
-        else return;
+
 
     }
 
-    const clickAutoCompleteTest = ( e ) => {
+    const onClickHandler = ( e ) => {
+        setState( {
+            activeOption: 0,
+            filteredOptions: [],
+            showOptions: false,
+            userInput: e.target.innerText
+        } )
+    }
 
-        //console.log( e.target.innerText )
+    let optionList;
+
+    if ( state.showOptions && state.userInput.length > 2 ) {
+        if ( state.filteredOptions.length ) {
+            optionList = (
+                <ul>
+                    {
+                        state.filteredOptions.map( pokemon => {
+                            return <li
+                                key={ pokemon.entry_number }
+                                onClick={ onClickHandler }>
+                                { pokemon.pokemon_species.name }
+                            </li>
+                        } )
+                    }
+                </ul>
+            );
+        } else {
+            optionList = (
+                <div >
+                    <em>No Option!</em>
+                </div>
+            );
+        }
     }
 
 
     return <div>
-        <input type="text" onChange={ autoCompleteTest } />
+        <input
+            type='text'
+            onChange={ onChangeHandler }
+            value={ state.userInput }
+        />
+        <button>Search</button>
 
-        {
-            testSuggestion.length === 0
-                ? null
-                : testSuggestion.map( p => {
-                    return <li key={ p.pokemon_species.name }
-                        onClick={ clickAutoCompleteTest } >
-                        { p.pokemon_species.name }
-                    </li>
-                } )
-        }
-    </div>
+        { optionList }
+    </div >
 }
 
 export default Autocomplete;
+
+
