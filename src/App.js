@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import NotFound from './PokemonNotFound/notFound';
 import styles from './app.module.css'
 
+import Autocomplete from './Autocomplete';
+
 import axios from 'axios'
 
 import Search from './Search/Search';
@@ -213,6 +215,9 @@ const App2 = () => {
     }, [ eggGroup ] );
 
 
+
+
+
     const navigation = <div>
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
             <Navbar.Brand >Pokemon Search</Navbar.Brand>
@@ -250,6 +255,10 @@ const App2 = () => {
                 <Search searchPokemon={ searchPokemon } />
             </div>
 
+            {
+                nationalPokedex === null ? null : <Autocomplete nationalPokedex={ nationalPokedex } />
+            }
+
             <div className={ styles.dropdown }>
 
             </div>
@@ -272,6 +281,7 @@ const App2 = () => {
         <>
             { navigation }
             { main }
+
         </>
     )
 
