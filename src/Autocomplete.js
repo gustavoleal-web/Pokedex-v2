@@ -1,18 +1,28 @@
 //found the Autocomplete logic online
 import React, { useState } from 'react';
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
+import Button from 'react-bootstrap/Button';
 
-const Autocomplete = ( { nationalPokedex } ) => {
+const Autocomplete = ( { nationalPokedex, searchPokemon } ) => {
     const [ state, setState ] = useState( {
         activeOption: 0,
         filteredOptions: [],
         showOptions: false,
         userInput: ''
-    } )
+    } );
+
+    const [ isDisbled, setIsDisabled ] = useState( true );
 
 
     //testing autocomplete suggestion
     const onChangeHandler = ( e ) => {
         let userInput = e.target.value;
+
+        if ( userInput.length > 2 ) {
+            setIsDisabled( false );
+
+        }
 
         if ( userInput.length === 0 ) {
             setState( {
@@ -21,7 +31,11 @@ const Autocomplete = ( { nationalPokedex } ) => {
                 showOptions: true,
                 userInput: ''
             } );
+
+            setIsDisabled( true );
         }
+
+
 
         else {
             const filteredSuggestions = nationalPokedex.filter( pokemon => {
@@ -51,6 +65,7 @@ const Autocomplete = ( { nationalPokedex } ) => {
     let optionList;
 
     if ( state.showOptions && state.userInput.length > 2 ) {
+
         if ( state.filteredOptions.length ) {
             optionList = (
                 <ul>
@@ -66,6 +81,7 @@ const Autocomplete = ( { nationalPokedex } ) => {
                 </ul>
             );
         } else {
+
             optionList = (
                 <div >
                     <em>No Option!</em>
@@ -75,16 +91,24 @@ const Autocomplete = ( { nationalPokedex } ) => {
     }
 
 
-    return <div>
-        <input
-            type='text'
-            onChange={ onChangeHandler }
-            value={ state.userInput }
-        />
-        <button>Search</button>
+    return (
+        <>
+            <InputGroup className='mb-3'>
+                <FormControl
+                    placeholder='Pokemon name'
+                    aria-label='Pokemon name'
+                    aria-describedby='basic-addon2'
+                    onChange={ onChangeHandler }
+                    value={ state.userInput }
+                />
+                <InputGroup.Append>
+                    <Button variant='outline-primary' disabled={ isDisbled } onClick={ () => searchPokemon( state.userInput ) }>Search</Button>
+                </InputGroup.Append>
+            </InputGroup>
 
-        { optionList }
-    </div >
+            { optionList }
+        </ >
+    )
 }
 
 export default Autocomplete;
