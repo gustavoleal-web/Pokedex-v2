@@ -62,6 +62,13 @@ const Autocomplete = ( { nationalPokedex, searchPokemon } ) => {
         } )
     }
 
+    const onKeyDownHandler = ( e ) => {
+        if ( e.key === 'Enter' ) {
+            searchPokemon( state.userInput );
+        }
+
+    }
+
     let optionList;
 
     if ( state.showOptions && state.userInput.length > 2 ) {
@@ -99,6 +106,7 @@ const Autocomplete = ( { nationalPokedex, searchPokemon } ) => {
                     aria-label='Pokemon name'
                     aria-describedby='basic-addon2'
                     onChange={ onChangeHandler }
+                    onKeyDown={ onKeyDownHandler }
                     value={ state.userInput }
                 />
                 <InputGroup.Append>
