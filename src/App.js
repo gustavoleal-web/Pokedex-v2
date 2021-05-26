@@ -256,7 +256,7 @@ const App2 = () => {
             </div>
 
             {
-                nationalPokedex === null ? null : <Autocomplete nationalPokedex={ nationalPokedex } />
+                nationalPokedex === null ? null : <Autocomplete nationalPokedex={ nationalPokedex } searchPokemon={searchPokemon}/>
             }
 
             <div className={ styles.dropdown }>
