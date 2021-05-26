@@ -1,13 +1,15 @@
 import React from 'react';
+//import Autocomplete from '../Autocomplete';
 import Search from '../Search/Search'
 import notFoundImg from '../img/surprised_pikachu.jpg'
 import styles from './notFound.module.css'
 
-const notFound = () => {
+
+const notFound = ( { nationalPokedex, searchPokemon } ) => {
     return (
         <>
-            <div className={styles.search}>
-                <Search />
+            <div className={ styles.search }>
+                <Search nationalPokedex={ nationalPokedex } searchPokemon={ searchPokemon } />
             </div>
 
 

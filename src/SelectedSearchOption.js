@@ -1,5 +1,6 @@
 import React from 'react';
 import Pokedex from './Pokedex/Pokedex';
+//import Autocomplete from './Autocomplete'
 import Search from './Search/Search';
 import styles from './SelectedSearchOption.module.css';
 import { BrowserRouter } from 'react-router-dom';
@@ -9,7 +10,8 @@ const SelectedSearchOption = ( {
   pokedexByType,
   pokedexByColor,
   pokedexByEggGroup,
-  searchPokemon
+  searchPokemon,
+  nationalPokedex
 } ) => {
 
   return (
@@ -17,7 +19,7 @@ const SelectedSearchOption = ( {
       <div className={ styles.container }>
 
         <span style={ { marginTop: '40px' } }>
-          <Search searchPokemon={ searchPokemon } />
+          <Search nationalPokedex={ nationalPokedex } searchPokemon={ searchPokemon } />
         </span>
 
 

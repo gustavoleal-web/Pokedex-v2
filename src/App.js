@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import NotFound from './PokemonNotFound/notFound';
 import styles from './app.module.css'
-
-import Autocomplete from './Autocomplete';
+//import Autocomplete from './Autocomplete';
 
 import axios from 'axios'
-
 import Search from './Search/Search';
 import SelectedSearchOption from './SelectedSearchOption';
 import Navbar from 'react-bootstrap/NavBar'
@@ -239,7 +237,7 @@ const App2 = () => {
 
 
     if ( notFound ) {
-        main = <NotFound />
+        main = <NotFound nationalPokedex={ nationalPokedex } searchPokemon={ searchPokemon } />
     }
 
     else if ( selectedPokedex === null ) {
@@ -252,12 +250,10 @@ const App2 = () => {
             <p className={ styles.introInfo }>Here you can search for your favorite pokemon in various ways.</p>
 
             <div className={ styles.center }>
-                <Search searchPokemon={ searchPokemon } />
+                {
+                    nationalPokedex === null ? null : <Search nationalPokedex={ nationalPokedex } searchPokemon={ searchPokemon } />
+                }
             </div>
-
-            {
-                nationalPokedex === null ? null : <Autocomplete nationalPokedex={ nationalPokedex } searchPokemon={searchPokemon}/>
-            }
 
             <div className={ styles.dropdown }>
 
@@ -273,6 +269,7 @@ const App2 = () => {
             pokedexByColor={ pokemonByColor }
             pokedexByEggGroup={ pokemonEggGroup }
             searchPokemon={ searchPokemon }
+            nationalPokedex={ nationalPokedex }
 
         />
     }
