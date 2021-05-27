@@ -1,0 +1,23 @@
+.options {
+    width: 300px;
+}
+
+.listItem {
+    position        : relative;
+    display         : block;
+    padding         : 5px 10px;
+    background-color: #fff;
+    border          : 1px solid rgba(0, 0, 0, .125);
+    border-radius   : 3px;
+    margin          : 4px 0px;
+    text-align      : center;
+}
+
+.listItem:hover {
+    cursor          : pointer;
+    background-color: rgb(79, 88, 97);
+    font-size       : 17px;
+    font-weight     : bold;
+    color           : white;
+}
+
