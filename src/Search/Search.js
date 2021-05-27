@@ -5,6 +5,9 @@ import React, { useState } from 'react';
 import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
+import ListGroup from 'react-bootstrap/ListGroup';
+import styles from './Search.module.css';
+
 
 const Search = ( { nationalPokedex, searchPokemon } ) => {
     const [ state, setState ] = useState( {
@@ -71,17 +74,22 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
 
         if ( state.filteredOptions.length ) {
             optionList = (
-                <ul>
+                <ListGroup className={ styles.options } >
                     {
                         state.filteredOptions.map( pokemon => {
-                            return <li
-                                key={ pokemon.entry_number }
-                                onClick={ onClickHandler }>
-                                { pokemon.pokemon_species.name }
-                            </li>
+                            return (
+                                <ListGroup.Item
+                                    key={ pokemon.entry_number }
+                                    onClick={ onClickHandler }
+                                    bsPrefix={ `${ styles.listItem }` }
+
+                                >
+                                    { pokemon.pokemon_species.name }
+                                </ListGroup.Item>
+                            )
                         } )
                     }
-                </ul>
+                </ListGroup>
             );
         } else {
 
@@ -106,7 +114,12 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
                     value={ state.userInput }
                 />
                 <InputGroup.Append>
-                    <Button variant='outline-primary' disabled={ isDisbled } onClick={ () => searchPokemon( state.userInput ) }>Search</Button>
+                    <Button
+                        variant='outline-primary'
+                        disabled={ isDisbled }
+                        onClick={ () => searchPokemon( state.userInput ) }>
+                        Search
+                    </Button>
                 </InputGroup.Append>
             </InputGroup>
 
