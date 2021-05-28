@@ -254,10 +254,6 @@ const App2 = () => {
                     nationalPokedex === null ? null : <Search nationalPokedex={ nationalPokedex } searchPokemon={ searchPokemon } />
                 }
             </div>
-
-            <div className={ styles.dropdown }>
-
-            </div>
         </div>
 
     }
@@ -276,8 +272,11 @@ const App2 = () => {
 
     return (
         <>
+
             { navigation }
+           <div className={styles.testBackground}>
             { main }
+           </div>
 
         </>
     )
