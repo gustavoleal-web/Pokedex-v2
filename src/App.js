@@ -271,14 +271,13 @@ const App2 = () => {
     }
 
     return (
-        <>
-
+        <div className={ styles.masterContainer }>
             { navigation }
-           <div className={styles.testBackground}>
-            { main }
-           </div>
+            <div className={ styles.fullBackground }>
+                { main }
+            </div>
 
-        </>
+        </div>
     )
 
 }
