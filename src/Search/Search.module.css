@@ -1,5 +1,6 @@
 .options {
     width: 300px;
+    position: absolute;
 }
 
 .listItem {
