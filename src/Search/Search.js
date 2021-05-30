@@ -8,6 +8,11 @@ import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 import styles from './Search.module.css';
 
+//TODO: shrink auto suggestions to 4–8
+//Highlight the Differences, Not What Users Just Typed
+//avoid scrollbars / optimized to fit within the viewport
+//try dimming the page when the scroll bar is active
+//provide visual hints that the list is scrollable
 
 const Search = ( { nationalPokedex, searchPokemon } ) => {
     const [ state, setState ] = useState( {
@@ -15,6 +20,13 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
         showOptions: false,
         userInput: ''
     } );
+
+
+    const varStyles = {
+        backgroundColor: 'black',
+        color: 'white',
+        fontWeight: '700'
+    }
 
     const [ isDisbled, setIsDisabled ] = useState( true );
 
@@ -74,7 +86,7 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
 
         if ( state.filteredOptions.length ) {
             optionList = (
-                <ListGroup className={ styles.options } >
+                <ListGroup className={ styles.options } style={ { paddingLeft: '10px' } }>
                     {
                         state.filteredOptions.map( pokemon => {
                             return (
@@ -104,7 +116,10 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
 
     return (
         <>
-            <InputGroup className='mb-3'>
+            <InputGroup className='mb-3' style={ {
+                margin: 'auto',
+                padding: '10px'
+            } }>
                 <FormControl
                     placeholder='Pokemon name'
                     aria-label='Pokemon name'
@@ -115,7 +130,7 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
                 />
                 <InputGroup.Append>
                     <Button
-                        variant='outline-primary'
+                        style={ varStyles }
                         disabled={ isDisbled }
                         onClick={ () => searchPokemon( state.userInput ) }>
                         Search
