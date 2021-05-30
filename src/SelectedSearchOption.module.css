@@ -1,12 +1,11 @@
-
 .container {
     display: grid;
 }
 
-
+/* 
 .pokemonsContainer {
     margin-top: 40px;
-}
+} */
 
 @media (min-width: 900px) {
     .container {
@@ -15,8 +14,14 @@
     }
 
     .pokemonsContainer {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
+        display              : grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media (max-width: 500px) {
+    .pokemonsContainer {
+        display: grid;
+        grid-template-columns: 1.5fr 1.5fr;
     }
 }
