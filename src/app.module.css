@@ -13,6 +13,9 @@
     height: 100vh;
 }
 
+
+/* need to create media queries to ensure background fits when user clicks on a search option */
+
 .fullBackground {
     background-image: url('https://wall.bestcarmagz.net/sites/default/files/pokemon-wallpapers-34898-6225497.png');
     background-repeat: no-repeat;
@@ -39,6 +42,9 @@
 
 .introInfo {
     font-size: 18px;
+    color: white;
+    text-shadow: black 0px 0px 10px;
+    font-weight: 700;
 }
 
 p {
