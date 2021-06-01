@@ -8,8 +8,10 @@ import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 import styles from './Search.module.css';
 
+
+import Text from './Text'
 //TODO: shrink auto suggestions to 4–8
-//Highlight the Differences, Not What Users Just Typed
+// //Highlight the Differences, Not What Users Just Typed
 //avoid scrollbars / optimized to fit within the viewport
 //try dimming the page when the scroll bar is active
 //provide visual hints that the list is scrollable
@@ -58,26 +60,50 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
             setState( {
                 filteredOptions: filteredSuggestions,
                 showOptions: true,
-                userInput: userInput
+                userInput: userInput,
             } );
         }
 
 
     }
 
-    const onClickHandler = ( e ) => {
+    const onClickHandler = ( value ) => {
         setState( {
             filteredOptions: [],
             showOptions: false,
-            userInput: e.target.innerText
+            userInput: value
         } )
     }
+
 
     const onKeyDownHandler = ( e ) => {
         if ( e.key === 'Enter' ) {
             searchPokemon( state.userInput );
         }
 
+    }
+
+    const highlightDifferences = ( pokemonName ) => {
+        let userInputSearch;
+        let highlightedAutoComplete;
+        let foundIndex = pokemonName.indexOf( state.userInput );
+
+        //1. the string is found in the beginning
+        //highlight everything after: the index after the last char of the substring. to the last index of the full string
+
+        if ( foundIndex === 0 ) {
+            userInputSearch = pokemonName.substring( foundIndex, state.userInput.length );
+            highlightedAutoComplete = pokemonName.substring( state.userInput.length, pokemonName.length );
+            return (
+                <Text
+                    userInputSearch={ userInputSearch }
+                    highlightedAutoComplete={ highlightedAutoComplete }
+                    onClickHandler={ onClickHandler }
+                />
+            );
+        }
+
+        else return null
     }
 
     let optionList;
@@ -89,15 +115,11 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
                 <ListGroup className={ styles.options } style={ { paddingLeft: '10px' } }>
                     {
                         state.filteredOptions.map( pokemon => {
+                            let text = highlightDifferences( pokemon.pokemon_species.name );
                             return (
-                                <ListGroup.Item
-                                    key={ pokemon.entry_number }
-                                    onClick={ onClickHandler }
-                                    bsPrefix={ `${ styles.listItem }` }
-
-                                >
-                                    { pokemon.pokemon_species.name }
-                                </ListGroup.Item>
+                                <span key={ pokemon.pokemon_species.name }>
+                                    { text }
+                                </span>
                             )
                         } )
                     }
@@ -127,6 +149,7 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
                     onChange={ onChangeHandler }
                     onKeyDown={ onKeyDownHandler }
                     value={ state.userInput }
+
                 />
                 <InputGroup.Append>
                     <Button
