@@ -259,15 +259,22 @@ const App2 = () => {
     }
 
     else {
-        main = <SelectedSearchOption
-            selectedPokedex={ selectedPokedex }
-            pokedexByType={ pokemonByType }
-            pokedexByColor={ pokemonByColor }
-            pokedexByEggGroup={ pokemonEggGroup }
-            searchPokemon={ searchPokemon }
-            nationalPokedex={ nationalPokedex }
+        main = <>
+            <div className={styles.inputContainer}>
+                <Search nationalPokedex={ nationalPokedex } searchPokemon={ searchPokemon } />
+            </div>
+            <SelectedSearchOption
+                selectedPokedex={ selectedPokedex }
+                pokedexByType={ pokemonByType }
+                pokedexByColor={ pokemonByColor }
+                pokedexByEggGroup={ pokemonEggGroup }
+                searchPokemon={ searchPokemon }
+                nationalPokedex={ nationalPokedex }
 
-        />
+            />
+        </>
+
+
     }
 
     return (
