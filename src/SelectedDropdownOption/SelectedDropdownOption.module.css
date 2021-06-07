@@ -2,10 +2,8 @@
     display: grid;
 }
 
-/* 
-.pokemonsContainer {
-    margin-top: 40px;
-} */
+
+
 
 @media (min-width: 900px) {
     .container {

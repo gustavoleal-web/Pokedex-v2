@@ -1,27 +1,20 @@
 import React from 'react';
-import Pokedex from './Pokedex/Pokedex';
-//import Autocomplete from './Autocomplete'
-import Search from './Search/Search';
-import styles from './SelectedSearchOption.module.css';
+import Pokedex from '../Pokedex/Pokedex';
+import styles from './SelectedDropdownOption.module.css';
 import { BrowserRouter } from 'react-router-dom';
+
 
 const SelectedSearchOption = ( {
   selectedPokedex,
   pokedexByType,
   pokedexByColor,
   pokedexByEggGroup,
-  searchPokemon,
-  nationalPokedex
+
 } ) => {
 
   return (
     <BrowserRouter>
       <div className={ styles.container }>
-
-        <span style={ { marginTop: '40px' } }>
-          <Search nationalPokedex={ nationalPokedex } searchPokemon={ searchPokemon } />
-        </span>
-
 
         <div className={ styles.pokemonsContainer }>
           { selectedPokedex.length !== 0
@@ -44,7 +37,6 @@ const SelectedSearchOption = ( {
                 key={ pokemon.pokemon.name }
                 id={ pokemon.pokemon.name }
 
-
               /> )
             : null
           }
@@ -59,7 +51,6 @@ const SelectedSearchOption = ( {
               <Pokedex
                 key={ i }
                 id={ pokemon.pokedexNumber }
-
 
               /> )
             : null
@@ -77,7 +68,6 @@ const SelectedSearchOption = ( {
               /> )
             : null
           }
-
         </div>
 
 
