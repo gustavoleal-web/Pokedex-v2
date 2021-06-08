@@ -216,16 +216,15 @@ const App2 = () => {
 
 
     const navigation = <div>
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Navbar collapseOnSelect expand='lg' bg='dark' variant='dark'>
             <Navbar.Brand >Pokemon Search</Navbar.Brand>
-            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-            <Navbar.Collapse id="responsive-navbar-nav">
-                <Nav className="mr-auto">
-
-                    <Dropdowns arr={ allPokedexes } title='Pokedex' func={ fetchSelectedPokedex } />
-                    <Dropdowns arr={ types } title='Type' func={ setPokedexByTypeHandler } />
-                    <Dropdowns arr={ colors } title='Color' func={ setPokemonByColorHandler } />
-                    <Dropdowns arr={ eggGroups } title='Egg-Groups' func={ setPokemonByEggHandler } />
+            <Navbar.Toggle aria-controls='responsive-navbar-nav' />
+            <Navbar.Collapse id='responsive-navbar-nav'>
+                <Nav className='mr-auto'>
+                    <Dropdowns options={ allPokedexes } title='Pokedex' renderSelection={ fetchSelectedPokedex } />
+                    <Dropdowns options={ types } title='Type' renderSelection={ setPokedexByTypeHandler } />
+                    <Dropdowns options={ colors } title='Color' renderSelection={ setPokemonByColorHandler } />
+                    <Dropdowns options={ eggGroups } title='Egg-Groups' renderSelection={ setPokemonByEggHandler } />
                 </Nav>
             </Navbar.Collapse>
         </Navbar>
