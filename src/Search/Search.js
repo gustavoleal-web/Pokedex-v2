@@ -9,7 +9,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import styles from './Search.module.css';
 
 
-import Text from './Text'
+import Text from './Text/Text'
 //TODO: shrink auto suggestions to 4–8
 // //Highlight the Differences, Not What Users Just Typed
 //avoid scrollbars / optimized to fit within the viewport
@@ -35,7 +35,7 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
     const onChangeHandler = ( e ) => {
         let userInput = e.target.value;
 
-        if ( userInput.length > 2 ) {
+        if ( userInput.length > 2 && state.filteredOptions.length !== 0 ) {
             setIsDisabled( false );
 
         }
@@ -56,9 +56,19 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
             const filteredSuggestions = nationalPokedex.filter( pokemon => {
                 return pokemon.pokemon_species.name.indexOf( userInput.toLowerCase() ) > -1;
             } );
+        
+            //removes pokemons from the list that have the userInput in the middle of their name
+            //prevents rendering of pokemon that does not start with the user's input
+            const onlyUserInputPokemos = filteredSuggestions.filter( pokemon => {
+                return pokemon.pokemon_species.name.slice( 0, userInput.length ) === userInput
+            } );
+
+            if ( onlyUserInputPokemos.length === 0 ) {
+                setIsDisabled( true );
+            }
 
             setState( {
-                filteredOptions: filteredSuggestions,
+                filteredOptions: onlyUserInputPokemos,
                 showOptions: true,
                 userInput: userInput,
             } );
@@ -77,6 +87,10 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
 
 
     const onKeyDownHandler = ( e ) => {
+        if(state.filteredOptions.length === 0) {
+            return;
+        }
+
         if ( e.key === 'Enter' ) {
             searchPokemon( state.userInput );
         }
@@ -109,7 +123,7 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
     let optionList;
 
     if ( state.showOptions && state.userInput.length > 2 ) {
-
+        // console.log(state.filteredOptions)
         if ( state.filteredOptions.length ) {
             optionList = (
                 <ListGroup className={ styles.options } style={ { paddingLeft: '10px' } }>
@@ -128,8 +142,8 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
         } else {
 
             optionList = (
-                <div >
-                    <em>No Option!</em>
+                <div>
+                    <em className={ styles.noMatchingName }>No Pokemon Name Matches!</em>
                 </div>
             );
         }
@@ -140,7 +154,8 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
         <>
             <InputGroup className='mb-3' style={ {
                 margin: 'auto',
-                padding: '10px'
+                padding: '10px',
+                maxWidth: '1100px'
             } }>
                 <FormControl
                     placeholder='Pokemon name'
