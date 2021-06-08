@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import NotFound from './PokemonNotFound/notFound';
 import styles from './app.module.css'
-//import Autocomplete from './Autocomplete';
 
 import axios from 'axios'
 import Search from './Search/Search';
-import SelectedSearchOption from './SelectedSearchOption';
+import SelectedDropdownOption from './SelectedDropdownOption/SelectedDropdownOption';
 import Navbar from 'react-bootstrap/NavBar'
 import Nav from 'react-bootstrap/Nav'
-import Dropdowns from './Dropdowns';
+import Dropdowns from './Dropdown/Dropdowns';
 
 const App2 = () => {
     const [ nationalPokedex, setNationalPokedex ] = useState( null );
@@ -263,7 +262,7 @@ const App2 = () => {
             <div className={styles.inputContainer}>
                 <Search nationalPokedex={ nationalPokedex } searchPokemon={ searchPokemon } />
             </div>
-            <SelectedSearchOption
+            <SelectedDropdownOption
                 selectedPokedex={ selectedPokedex }
                 pokedexByType={ pokemonByType }
                 pokedexByColor={ pokemonByColor }
