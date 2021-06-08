@@ -56,11 +56,11 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
             const filteredSuggestions = nationalPokedex.filter( pokemon => {
                 return pokemon.pokemon_species.name.indexOf( userInput.toLowerCase() ) > -1;
             } );
-        
+
             //removes pokemons from the list that have the userInput in the middle of their name
             //prevents rendering of pokemon that does not start with the user's input
             const onlyUserInputPokemos = filteredSuggestions.filter( pokemon => {
-                return pokemon.pokemon_species.name.slice( 0, userInput.length ) === userInput
+                return pokemon.pokemon_species.name.slice( 0, userInput.length ) === userInput.toLowerCase()
             } );
 
             if ( onlyUserInputPokemos.length === 0 ) {
@@ -87,7 +87,7 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
 
 
     const onKeyDownHandler = ( e ) => {
-        if(state.filteredOptions.length === 0) {
+        if ( state.filteredOptions.length === 0 ) {
             return;
         }
 
@@ -100,10 +100,7 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
     const highlightDifferences = ( pokemonName ) => {
         let userInputSearch;
         let highlightedAutoComplete;
-        let foundIndex = pokemonName.indexOf( state.userInput );
-
-        //1. the string is found in the beginning
-        //highlight everything after: the index after the last char of the substring. to the last index of the full string
+        let foundIndex = pokemonName.indexOf( state.userInput.toLocaleLowerCase() );
 
         if ( foundIndex === 0 ) {
             userInputSearch = pokemonName.substring( foundIndex, state.userInput.length );
@@ -123,7 +120,6 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
     let optionList;
 
     if ( state.showOptions && state.userInput.length > 2 ) {
-        // console.log(state.filteredOptions)
         if ( state.filteredOptions.length ) {
             optionList = (
                 <ListGroup className={ styles.options } style={ { paddingLeft: '10px' } }>
