@@ -1,12 +1,12 @@
 import NavDropdown from 'react-bootstrap/NavDropdown'
 
-const Dropdowns = ( { arr, title, func } ) => {
+const Dropdowns = ( { options, title, renderSelection } ) => {
     return <NavDropdown title={ title } id='collasible-nav-dropdown'>
         {
-            arr.map( element =>
+            options.map( element =>
                 <span key={ element }>
                     <NavDropdown.Item
-                        onClick={ () => func( element ) }
+                        onClick={ () => renderSelection( element ) }
                     >
                         { element }
 
