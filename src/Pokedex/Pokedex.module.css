@@ -30,9 +30,13 @@
 
 }
 
+
 @media(max-width: 450px) {
 
-    /* display is set to grid to overide flex. not the best solution */
+    .infoContainer div img {
+        width: 60%;
+    }
+
     .infoContainer {
         display: block;
     }
@@ -51,9 +55,3 @@
         margin-left: 50px;
     }
 }
-/* 
-@media(min-width: 900px) {
-    .infoContainer {
-        width: 29%;
-    }
-} */
