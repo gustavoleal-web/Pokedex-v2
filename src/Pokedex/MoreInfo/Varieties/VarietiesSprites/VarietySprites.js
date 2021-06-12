@@ -9,15 +9,11 @@ const VarietySprites = ( { url, retrieveById } ) => {
         const fetchData = async () => {
             if ( isMounted ) {
                 try {
-                    let pokemon = await axios.get(
-                        url,
-                        { 'headers': { 'Access-Control-Allow-Origin': '*' } } );
+                    let pokemon = await axios.get( url );
 
                     if ( pokemon.status === 200 ) {
                         setSprites( pokemon.data.sprites.front_default )
                     }
-
-
                 }
                 catch ( e ) {
                     console.log( e )
@@ -33,7 +29,7 @@ const VarietySprites = ( { url, retrieveById } ) => {
     }, [ url ] );
 
     if ( sprite !== null ) {
-        return <img src={ sprite } alt={ sprite } onClick={ () => retrieveById( url ) } />
+        return <img src={ sprite } alt={ sprite } onClick={ () => retrieveById( url ) } style={ { marginLeft: '20px' } } />
     }
     else return null;
 }
