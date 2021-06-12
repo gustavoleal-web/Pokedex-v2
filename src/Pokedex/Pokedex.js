@@ -6,7 +6,7 @@ import axios from 'axios';
 import styles from './Pokedex.module.css';
 import stylesTypes from './pokeTypes.module.css'
 import backgroundTypes from './pokeTypesBackgrondColor.module.css'
-import { Spinner, } from 'reactstrap';
+import  Spinner from 'react-bootstrap/Spinner';
 //import Button from 'react-bootstrap/Button';
 
 const Pokedex = ( { id } ) => {
@@ -46,14 +46,11 @@ const Pokedex = ( { id } ) => {
             if ( isMounted ) {
                 try {
                     let pokemon = await axios.get(
-                        `https://pokeapi.co/api/v2/pokemon/${ id }/`,
-                        { 'headers': { 'Access-Control-Allow-Origin': '*' } } );
+                        `https://pokeapi.co/api/v2/pokemon/${ id }/` );
 
                     if ( pokemon.status === 200 ) {
                         setStateFromReq( pokemon.data )
                     }
-
-
                 }
                 catch ( e ) {
                     let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon/${ id }/` );
@@ -76,7 +73,7 @@ const Pokedex = ( { id } ) => {
     return (
 
         <>
-            { Object.keys( state ).length === 0 ? <Spinner color='primary' style={ { display: 'flex' } } /> :
+            { Object.keys( state ).length === 0 ? <Spinner animation='grow' style={ {justifySelf: 'center'} } /> :
 
                 <div className={ `${ styles.infoContainer } ${ typeColorBackground }` }>
                     <div>
