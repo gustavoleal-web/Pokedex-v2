@@ -8,10 +8,14 @@
     margin-bottom: 20px;
 }
 
-.test {
+.basePokemonContainer {
     display: flex;
     align-items: flex-end;
     justify-content: center;
+}
+
+.card:hover {
+    cursor: pointer;
 }
 
 
