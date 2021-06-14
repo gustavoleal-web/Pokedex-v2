@@ -5,7 +5,8 @@ import styles from './EvosMethods.module.css';
 import axios from 'axios';
 import Card from 'react-bootstrap/Card';
 
-const EvosMethods = ( { methods } ) => {
+const EvosMethods = ( { methods, id } ) => {
+    console.log( methods )
     const [ sprite, setSprite ] = useState( null );
     const [ clickedPokemon, setClickedPokemon ] = useState( null );
 
@@ -78,7 +79,7 @@ const EvosMethods = ( { methods } ) => {
                     onClick={ () => onClickHandler( methods[ 0 ].name ) }
                     className={ styles.pokeSprite }
                 />
-                <Card.Body className={ styles.test }>
+                <Card.Body className={ styles.basePokemonContainer }>
                     <Card.Title>{ basePokemon }</Card.Title>
                 </Card.Body>
             </Card>
@@ -87,7 +88,7 @@ const EvosMethods = ( { methods } ) => {
 
             {
                 allWaysToEvolve.length === 0 ? null : allWaysToEvolve.map( ( object, i ) =>
-                    <IndividualMethods obj={ object } key={ i } /> )
+                    <IndividualMethods obj={ object } key={ i } id={id}/> )
             }
         </div >
     )

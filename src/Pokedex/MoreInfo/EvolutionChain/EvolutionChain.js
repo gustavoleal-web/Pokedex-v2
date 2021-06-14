@@ -3,7 +3,8 @@ import filterEvolutionsTriggers from './filterEvolutionsTriggers';
 import EvosMethods from './EvosMethods/EvosMethods';
 import axios from 'axios';
 
-const EvolutionChain = ( { evolutionChainUrl, clickedPoke } ) => {
+const EvolutionChain = ( { evolutionChainUrl, clickedPoke, id } ) => {
+   
     const [ methods, setMethods ] = useState( [] );
 
     useEffect( () => {
@@ -14,7 +15,7 @@ const EvolutionChain = ( { evolutionChainUrl, clickedPoke } ) => {
                 try {
                     let pokemon = await axios.get( evolutionChainUrl );
                     let fetchedEvoChain = pokemon.data.chain;
-
+                   
                     //testing all evolutions and alternative evolutions
                     if ( fetchedEvoChain !== undefined ) {
                         evosAndAlternative = filterEvolutionsTriggers( fetchedEvoChain );
@@ -39,7 +40,7 @@ const EvolutionChain = ( { evolutionChainUrl, clickedPoke } ) => {
     }
 
     else {
-        return <EvosMethods methods={ methods } clickedPoke={ clickedPoke } />
+        return <EvosMethods methods={ methods } clickedPoke={ clickedPoke } id={id}/>
     }
 
 

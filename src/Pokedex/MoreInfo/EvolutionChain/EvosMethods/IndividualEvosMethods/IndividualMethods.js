@@ -6,8 +6,8 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import Card from 'react-bootstrap/Card';
 
-const IndividualMethods = ( { obj } ) => {
-
+const IndividualMethods = ( { obj, id } ) => {
+    console.log( id )
     const [ clickedPokemon, setClickedPokemon ] = useState( null );
     const [ sprite, setSprite ] = useState( null );
     const [ itemSprite, setItemSprite ] = useState( null );
@@ -15,6 +15,8 @@ const IndividualMethods = ( { obj } ) => {
     let evolutionInfo;
 
     const onClickHandler = ( name ) => {
+        //TODO: see if there's a way to remove the previously displayed pokemon
+
         setClickedPokemon(
             <div>
                 <Pokedex id={ name } />
@@ -50,7 +52,13 @@ const IndividualMethods = ( { obj } ) => {
                     setSprite( pokemon.data.sprites.front_default )
                 }
                 catch ( e ) {
-                    console.log( e );
+                    try {
+                        let pokemon = await axios.get( ` https://pokeapi.co/api/v2/pokemon-form/${ id }/` );
+                        setSprite( pokemon.data.sprites.front_default )
+                    }
+                    catch ( e ) {
+                        console.log( e )
+                    }
                 }
             }
 
@@ -60,7 +68,7 @@ const IndividualMethods = ( { obj } ) => {
         return () => {
             isMounted = false;
         };
-    }, [ renamedObj.evolution ] );
+    }, [ renamedObj.evolution, id ] );
 
 
     //ITMES
@@ -155,7 +163,7 @@ const IndividualMethods = ( { obj } ) => {
             </Card>
 
             { clickedPokemon }
-          
+
         </>
     )
 }
