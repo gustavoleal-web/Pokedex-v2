@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import PokedexEntries from './PokedexEntries/PokedexEntries'
 import Abilities from './Abilities/Abilities';
 import Training from './Training/Training';
@@ -20,6 +20,7 @@ import Modal from 'react-bootstrap/Modal';
 import Nav from 'react-bootstrap/Nav';
 
 const MoreInfo = ( {
+    id,
     name,
     abilities,
     sprites,
@@ -35,16 +36,22 @@ const MoreInfo = ( {
     showModal,
     showModalHandler
 } ) => {
-
-    const [ evolutionChainUrl, setUrl ] = useState( '' );
+    //const [ evolutionChainUrl, setUrl ] = useState( '' );
     const [ varieties, setVarieties ] = useState( '' );
-    const [ trainingData, setTrainigData ] = useState( {} );
-    const [ pekedexEntries, setPokedexEntries ] = useState( {} );
+    //const [ trainingData, setTrainigData ] = useState( {} );
+    //const [ pekedexEntries, setPokedexEntries ] = useState( {} );
     const [ gender, setGender ] = useState( {} );
-    const [ eggData, setEggData ] = useState( {} );
+    //const [ eggData, setEggData ] = useState( {} );
     const [ error, setError ] = useState( false )
     const commonAbilities = [];
     const hiddenAbilities = [];
+
+    const [ state, setState ] = useState( {
+        evolutionChainUrl: '',
+        trainingData: {},
+        eggData: {},
+        pokedexEntries: ''
+    } )
 
 
     const [ showSelected, setShowSelected ] = useState( null )
@@ -94,60 +101,80 @@ const MoreInfo = ( {
     //     console.log(name)
     // }
 
+
+    const getAndSetState = useCallback (( pokemon ) => {
+      
+        let fetchedEvoChainURL = pokemon.data.evolution_chain.url;
+
+        if ( pokemon.data.gender_rate === -1 ) {
+            setGender( 'genderless' )
+        }
+        else {
+            let genderRate = {};
+            let female = ( 12.5 * pokemon.data.gender_rate );
+            let male = 100 - female;
+            genderRate.male = male;
+            genderRate.female = female;
+            setGender( genderRate );
+        }
+
+        let fetechedTraining = {};
+        ( {
+            base_happiness: fetechedTraining.baseHappiness,
+            capture_rate: fetechedTraining.captureRate,
+            growth_rate: fetechedTraining.grouthRate
+        } = pokemon.data );
+
+
+        let fetchedPokedEntries = {};
+        ( {
+            flavor_text_entries: fetchedPokedEntries.pokedexTextEntries,
+            genera: fetchedPokedEntries.genus,
+            generation: fetchedPokedEntries.generation
+        } = pokemon.data );
+
+        let fetchedEggData = {};
+
+        ( {
+            egg_groups: fetchedEggData.eggGroups,
+            hatch_counter: fetchedEggData.hatchCounter
+        } = pokemon.data )
+
+        // setTrainigData( fetechedTraining );
+        // setPokedexEntries( fetchedPokedEntries );
+        // setEggData( fetchedEggData );
+        // setUrl( fetchedEvoChainURL );
+
+        setState( {
+            ...state,
+            evolutionChainUrl: fetchedEvoChainURL,
+            trainingData: fetechedTraining,
+            eggData: fetchedEggData,
+            pokedexEntries: fetchedPokedEntries
+        } )
+
+        pokemon.data.varieties ? setVarieties( pokemon.data.varieties ) : setVarieties( '' );
+    }, [state])
+
+
     useEffect( () => {
         let isMounted = true;
         const fetchData = async () => {
             if ( isMounted ) {
                 try {
+                    let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon-species/${ name }/` );
+                    getAndSetState( pokemon );
 
-                    let pokemon = await axios.get(
-                        `https://pokeapi.co/api/v2/pokemon-species/${ name }/`
-                        , { headers: { 'X-Custom-Header': '*' } } );
-                    let fetchedEvoChainURL = pokemon.data.evolution_chain.url;
-
-                    if ( pokemon.data.gender_rate === -1 ) {
-                        setGender( 'genderless' )
-                    }
-                    else {
-                        let genderRate = {};
-                        let female = ( 12.5 * pokemon.data.gender_rate );
-                        let male = 100 - female;
-                        genderRate.male = male;
-                        genderRate.female = female;
-                        setGender( genderRate );
-                    }
-
-                    let fetechedTraining = {};
-                    ( {
-                        base_happiness: fetechedTraining.baseHappiness,
-                        capture_rate: fetechedTraining.captureRate,
-                        growth_rate: fetechedTraining.grouthRate
-                    } = pokemon.data );
-
-
-                    let fetchedPokedEntries = {};
-                    ( {
-                        flavor_text_entries: fetchedPokedEntries.pokedexTextEntries,
-                        genera: fetchedPokedEntries.genus,
-                        generation: fetchedPokedEntries.generation
-                    } = pokemon.data );
-
-                    let fetchedEggData = {};
-
-                    ( {
-                        egg_groups: fetchedEggData.eggGroups,
-                        hatch_counter: fetchedEggData.hatchCounter
-                    } = pokemon.data )
-
-                    setTrainigData( fetechedTraining );
-                    setPokedexEntries( fetchedPokedEntries );
-                    setEggData( fetchedEggData );
-                    setUrl( fetchedEvoChainURL );
-
-                    pokemon.data.varieties ? setVarieties( pokemon.data.varieties ) : setVarieties( '' );
                 }
                 catch ( e ) {
-                    setError( true );
+                    try {
+                        let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon-species/${ id }/` );
+                        getAndSetState( pokemon );
+
+                    }
+                    catch ( e ) {
+                        setError( true );
+                    }
                 }
             }
         }
@@ -156,7 +183,7 @@ const MoreInfo = ( {
             isMounted = false;
         };
 
-    }, [ name ] );
+    }, [ id, name, getAndSetState ] );
 
 
     let showSpritesVersion = null;
@@ -227,19 +254,19 @@ const MoreInfo = ( {
 
     </Modal.Body>
 
-    if ( Object.keys( trainingData ).length !== 0 ) {
+    if ( Object.keys( state.trainingData ).length !== 0 ) {
         showTraining =
             <Modal.Body>
                 <hr className={ `${ styles.hrTraining } ${ styles.hrMargin }` } />
-                <Training data={ trainingData } />
+                <Training data={ state.trainingData } />
             </Modal.Body>
     }
 
-    if ( Object.keys( eggData ).length !== 0 ) {
+    if ( Object.keys( state.eggData ).length !== 0 ) {
         showBreeding =
             <Modal.Body>
                 <hr className={ `${ styles.hrBreeding } ${ styles.hrMargin }` } />
-                <Breeding eggData={ eggData } />
+                <Breeding eggData={ state.eggData } />
             </Modal.Body>
     }
 
@@ -283,7 +310,7 @@ const MoreInfo = ( {
     showEvolution =
         <Modal.Body style={ { display: 'block' } }>
             <hr className={ `${ styles.hrEvolution } ${ styles.hrMargin }` } />
-            <EvolutionChain evolutionChainUrl={ evolutionChainUrl } />
+            <EvolutionChain evolutionChainUrl={ state.evolutionChainUrl } id={ id } />
         </Modal.Body>
 
     if ( moves.length !== 0 ) {
@@ -303,6 +330,7 @@ const MoreInfo = ( {
     return (
 
         <div>
+            { console.log( state ) }
             <Modal
                 centered
                 size="lg"
@@ -343,9 +371,9 @@ const MoreInfo = ( {
                     <Modal.Body>
                         <hr className={ `${ styles.hrGeneral } ${ styles.hrMargin }` } />
                         {
-                            Object.keys( pekedexEntries ).length !== 0
-                                ? <PokedexEntries pokedexData={ pekedexEntries } />
-                                : <h5>No Data</h5>
+                            Object.keys( state.pokedexEntries ).length !== 0
+                                ? <PokedexEntries pokedexData={ state.pokedexEntries } />
+                                : <h5>No data to display at this time. Check back for future updates.</h5>
                         }
 
                         { showTypes }
