@@ -132,9 +132,7 @@ const App2 = () => {
             if ( isMounted && selectedType !== null ) {
                 try {
                     let pokemon = await axios.get(
-                        `https://pokeapi.co/api/v2/type/${ selectedType }`,
-                        { headers: { 'Access-Control-Allow-Origin': '*' } }
-                    );
+                        `https://pokeapi.co/api/v2/type/${ selectedType }` );
                     setPokemonByType( pokemon.data.pokemon )
                 } catch ( e ) {
                     console.log( e );
@@ -154,9 +152,7 @@ const App2 = () => {
             if ( isMounted && selectedColor !== null ) {
                 try {
                     let pokemon = await axios.get(
-                        `https://pokeapi.co/api/v2/pokemon-color/${ selectedColor }`,
-                        { headers: { 'Access-Control-Allow-Origin': '*' } }
-                    );
+                        `https://pokeapi.co/api/v2/pokemon-color/${ selectedColor }` );
                     console.log( 'color', pokemon.data.pokemon_species )
                     for ( let p of pokemon.data.pokemon_species ) {
                         let url = p.url;
@@ -186,9 +182,7 @@ const App2 = () => {
             if ( isMounted && eggGroup !== null ) {
                 try {
                     let pokemon = await axios.get(
-                        `https://pokeapi.co/api/v2/egg-group/${ eggGroup }/`,
-                        { headers: { 'Access-Control-Allow-Origin': '*' } }
-                    );
+                        `https://pokeapi.co/api/v2/egg-group/${ eggGroup }/` );
 
                     for ( let p of pokemon.data.pokemon_species ) {
                         let url = p.url;
