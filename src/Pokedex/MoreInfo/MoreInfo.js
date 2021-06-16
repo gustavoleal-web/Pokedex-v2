@@ -18,6 +18,7 @@ import { v4 as uuidv4 } from 'uuid';
 // import { Route, Link } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 import Nav from 'react-bootstrap/Nav';
+import Button from 'react-bootstrap/Button'
 
 const MoreInfo = ( {
     id,
@@ -102,8 +103,8 @@ const MoreInfo = ( {
     // }
 
 
-    const getAndSetState = useCallback (( pokemon ) => {
-      
+    const getAndSetState = useCallback( ( pokemon ) => {
+
         let fetchedEvoChainURL = pokemon.data.evolution_chain.url;
 
         if ( pokemon.data.gender_rate === -1 ) {
@@ -154,7 +155,7 @@ const MoreInfo = ( {
         } )
 
         pokemon.data.varieties ? setVarieties( pokemon.data.varieties ) : setVarieties( '' );
-    }, [state])
+    }, [ state ] )
 
 
     useEffect( () => {
@@ -346,24 +347,21 @@ const MoreInfo = ( {
                 </Modal.Header>
 
 
-                <Nav fill variant='tabs' style={ { fontSize: '20px' } }>
-                    <Nav.Item className={ styles.navBorder }>
-                        <Nav.Link onClick={ () => showSelectedHandler( showVarieties ) } >Varieties</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item className={ styles.navBorder }>
-                        <Nav.Link onClick={ () => showSelectedHandler( showForms ) }>Forms</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item className={ styles.navBorder }>
-                        <Nav.Link onClick={ () => showSelectedHandler( showStats ) }>Stats</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item className={ styles.navBorder }>
-                        <Nav.Link onClick={ () => showSelectedHandler( showDamage ) }>Resistance & Weakness</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item className={ styles.navBorder }>
-                        <Nav.Link onClick={ () => showSelectedHandler( showMoves ) }>Moves</Nav.Link>
-                    </Nav.Item>
+                <div className={ styles.buttonContainer }>
 
-                </Nav>
+                    <Button onClick={ () => showSelectedHandler( showVarieties ) } bsPrefix={ styles.categoryButton }>Varieties</Button>
+
+
+                    <Button onClick={ () => showSelectedHandler( showForms ) } bsPrefix={ styles.categoryButton }>Forms</Button>
+
+
+                    <Button onClick={ () => showSelectedHandler( showStats ) } bsPrefix={ styles.categoryButton }>Stats</Button>
+
+
+                    <Button onClick={ () => showSelectedHandler( showDamage ) } bsPrefix={ styles.categoryButton }>Resistance & Weakness</Button>
+
+                    <Button onClick={ () => showSelectedHandler( showMoves ) } bsPrefix={ styles.categoryButton }>Moves</Button>
+                </div>
 
                 { showSelected }
 
