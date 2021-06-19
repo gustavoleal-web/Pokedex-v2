@@ -17,7 +17,6 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 // import { Route, Link } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
-import Nav from 'react-bootstrap/Nav';
 import Button from 'react-bootstrap/Button'
 
 const MoreInfo = ( {
@@ -37,15 +36,19 @@ const MoreInfo = ( {
     showModal,
     showModalHandler
 } ) => {
-    //const [ evolutionChainUrl, setUrl ] = useState( '' );
     const [ varieties, setVarieties ] = useState( '' );
-    //const [ trainingData, setTrainigData ] = useState( {} );
-    //const [ pekedexEntries, setPokedexEntries ] = useState( {} );
     const [ gender, setGender ] = useState( {} );
-    //const [ eggData, setEggData ] = useState( {} );
     const [ error, setError ] = useState( false )
     const commonAbilities = [];
     const hiddenAbilities = [];
+
+    const [ disabled, setDissabled ] = useState( {
+        varieties: false,
+        forms: false,
+        stats: false,
+        damage: false,
+        moves: false
+    } );
 
     const [ state, setState ] = useState( {
         evolutionChainUrl: '',
@@ -141,11 +144,6 @@ const MoreInfo = ( {
             hatch_counter: fetchedEggData.hatchCounter
         } = pokemon.data )
 
-        // setTrainigData( fetechedTraining );
-        // setPokedexEntries( fetchedPokedEntries );
-        // setEggData( fetchedEggData );
-        // setUrl( fetchedEvoChainURL );
-
         setState( {
             ...state,
             evolutionChainUrl: fetchedEvoChainURL,
@@ -206,7 +204,7 @@ const MoreInfo = ( {
         showSpritesVersion =
             <img
                 src={ `${ sprites.versions[ 'generation-viii' ].icons.front_default }` }
-                alt={ { name } }
+                alt={ name }
             />
     }
 
@@ -324,14 +322,23 @@ const MoreInfo = ( {
     }
 
 
-    const showSelectedHandler = ( component ) => {
+    const showSelectedHandler = ( component, name ) => {
+        let disabledCopy = { ...disabled };
+        for ( let key in disabledCopy ) {
+            if ( name === key ) {
+                disabledCopy[ key ] = true;
+            }
+            else {
+                disabledCopy[ key ] = false;
+            }
+        }
+        setDissabled( disabledCopy )
         setShowSelected( component );
     }
 
     return (
 
         <div>
-            { console.log( state ) }
             <Modal
                 centered
                 size="lg"
@@ -349,18 +356,37 @@ const MoreInfo = ( {
 
                 <div className={ styles.buttonContainer }>
 
-                    <Button onClick={ () => showSelectedHandler( showVarieties ) } bsPrefix={ styles.categoryButton }>Varieties</Button>
+                    <Button
+                        onClick={ () => showSelectedHandler( showVarieties, name = 'varieties' ) }
+                        disabled={ disabled.varieties }
+                        bsPrefix={ styles.categoryButton }>
+                        Varieties
+                    </Button>
 
 
-                    <Button onClick={ () => showSelectedHandler( showForms ) } bsPrefix={ styles.categoryButton }>Forms</Button>
+                    <Button
+                        onClick={ () => showSelectedHandler( showForms, name = 'forms' ) }
+                        disabled={ disabled.forms }
+                        bsPrefix={ styles.categoryButton }>
+                        Forms
+                    </Button>
 
 
-                    <Button onClick={ () => showSelectedHandler( showStats ) } bsPrefix={ styles.categoryButton }>Stats</Button>
+                    <Button
+                        onClick={ () => showSelectedHandler( showStats, name = 'stats' ) }
+                        disabled={ disabled.stats }
+                        bsPrefix={ styles.categoryButton }>Stats</Button>
 
 
-                    <Button onClick={ () => showSelectedHandler( showDamage ) } bsPrefix={ styles.categoryButton }>Resistance & Weakness</Button>
+                    <Button
+                        onClick={ () => showSelectedHandler( showDamage, name = 'damage' ) }
+                        disabled={ disabled.damage }
+                        bsPrefix={ styles.categoryButton }>Resistance & Weakness</Button>
 
-                    <Button onClick={ () => showSelectedHandler( showMoves ) } bsPrefix={ styles.categoryButton }>Moves</Button>
+                    <Button
+                        onClick={ () => showSelectedHandler( showMoves, name = 'moves' ) }
+                        disabled={ disabled.moves }
+                        bsPrefix={ styles.categoryButton }>Moves</Button>
                 </div>
 
                 { showSelected }
@@ -377,7 +403,7 @@ const MoreInfo = ( {
                         { showTypes }
 
                         <span className={ styles.pokedexSizeWeight }>
-                            <span>
+                            <span style={ { borderRight: '1px solid lightgray' } }>
                                 <h5>Size</h5>
                                 <p>Weight: { weightInKg } kg / { pounds } lbs</p>
                                 <p>Height: { meters } m / { feet } ft</p>
