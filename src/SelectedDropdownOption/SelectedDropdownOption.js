@@ -12,76 +12,91 @@ const SelectedSearchOption = ( {
 
 } ) => {
 
+ 
+
   return (
-    <BrowserRouter>
-      <div className={ styles.container }>
 
-        <div className={ styles.pokemonsContainer }>
-          { selectedPokedex.length !== 0
-            ? selectedPokedex.map( pokemon =>
-              <Pokedex
-                key={ pokemon.pokemon_species.url }
-                id={ pokemon.entry_number }
+    <div className={ styles.container }>
 
+      { selectedPokedex.length !== 0
+        ? <div className={ styles.pokemonsContainer } >
 
-              /> )
-            : null
+          { selectedPokedex.map( pokemon =>
+            <Pokedex
+              key={ pokemon.pokemon_species.url }
+              id={ pokemon.entry_number }
+            /> )
           }
 
         </div>
 
-        <div className={ styles.pokemonsContainer }>
-          { pokedexByType.length !== 0
-            ? pokedexByType.map( pokemon =>
-              <Pokedex
-                key={ pokemon.pokemon.name }
-                id={ pokemon.pokemon.name }
+        : null
+      }
 
-              /> )
-            : null
+
+
+
+      { pokedexByType.length !== 0
+        ? <div className={ styles.pokemonsContainer }>
+
+          { pokedexByType.map( pokemon =>
+            <Pokedex
+              key={ pokemon.pokemon.name }
+              id={ pokemon.pokemon.name }
+
+            /> )
           }
 
         </div>
 
+        : null
+      }
 
 
-        <div className={ styles.pokemonsContainer }>
-          { pokedexByColor.length !== 0
-            ? pokedexByColor.pokemon_species.map( ( pokemon, i ) =>
-              <Pokedex
-                key={ i }
-                id={ pokemon.pokedexNumber }
 
-              /> )
-            : null
+
+
+
+      { pokedexByColor.length !== 0
+        ? <div className={ styles.pokemonsContainer }>
+
+          { pokedexByColor.pokemon_species.map( ( pokemon, i ) =>
+            <Pokedex
+              key={ i }
+              id={ pokemon.pokedexNumber }
+
+            /> )
           }
 
         </div>
 
-        <div className={ styles.pokemonsContainer }>
-          { Object.keys( pokedexByEggGroup ).length !== 0
-            ? pokedexByEggGroup.pokemon_species.map( ( pokemon, i ) =>
-              <Pokedex
-                key={ i }
-                id={ pokemon.pokedexNumber }
+        : null
+      }
 
-              /> )
-            : null
+
+
+
+      { Object.keys( pokedexByEggGroup ).length !== 0
+
+        ? <div className={ styles.pokemonsContainer }>
+
+          { pokedexByEggGroup.pokemon_species.map( ( pokemon, i ) =>
+            <Pokedex
+              key={ i }
+              id={ pokemon.pokedexNumber }
+
+            /> )
           }
+
         </div>
 
+        : null
+      }
 
 
-        <div>
-          Icons made by <a href='https://www.freepik.com' title='Freepik'>Freepik
-        </a> from <a href='https://www.flaticon.com/' title='Flaticon'>www.flaticon.com</a>
-        </div>
-        <div>
-          Icons made by <a href="https://www.flaticon.com/authors/iconixar" title="iconixar">iconixar
-        </a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
-        </div>
-      </div>
-    </BrowserRouter>
+    
+
+    </div>
   )
 
 }
