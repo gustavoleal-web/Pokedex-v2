@@ -131,17 +131,14 @@ hr:after {
 
 .categoryButton {
     font-weight     : bold;
+    border          : 1px solid black;
     border-radius   : 20px;
-    text-align      : center;
-    vertical-align  : middle;
     background-color: transparent;
     font-size       : 1rem;
-    line-height     : 1.5;
     margin-top      : 15px;
     max-width       : 300px;
     min-width       : 250px;
     height          : 27px;
-    margin-top      : 10px;
     padding         : 0;
 }
 
