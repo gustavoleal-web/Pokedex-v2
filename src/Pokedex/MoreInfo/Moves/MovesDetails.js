@@ -17,11 +17,8 @@ const MoveDetails = ( { name, level, learnMethod } ) => {
                         `https://pokeapi.co/api/v2/move/${ name }/` );
 
                     if ( pokemon.status === 200 ) {
-                        //console.log( pokemon.data );
                         setAllMoveInfo( pokemon.data )
                     }
-
-
                 }
                 catch ( e ) {
                     console.log( e )
