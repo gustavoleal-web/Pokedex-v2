@@ -7,7 +7,6 @@ import { v4 as uuidv4 } from 'uuid';
 import Card from 'react-bootstrap/Card';
 
 const IndividualMethods = ( { obj, id } ) => {
-    console.log( id )
     const [ clickedPokemon, setClickedPokemon ] = useState( null );
     const [ sprite, setSprite ] = useState( null );
     const [ itemSprite, setItemSprite ] = useState( null );

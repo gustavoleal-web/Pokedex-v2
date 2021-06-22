@@ -6,7 +6,6 @@ import axios from 'axios';
 import Card from 'react-bootstrap/Card';
 
 const EvosMethods = ( { methods, id } ) => {
-    console.log( methods )
     const [ sprite, setSprite ] = useState( null );
     const [ clickedPokemon, setClickedPokemon ] = useState( null );
 

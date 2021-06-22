@@ -24,7 +24,6 @@ const Varieties = ( { varieties } ) => {
 
     }
 
-    console.log( varietiesCopy )
     const retrieveById = ( url ) => {
         //extracted only the id from the url b/c using the Pokemon name doesn't always work
         let id = url.slice( 34, url.length - 1 );
