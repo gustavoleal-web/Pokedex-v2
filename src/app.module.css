@@ -1,23 +1,24 @@
 .masterContainer {
-    height: 100vh;
-
-    background-image : url('https://wall.bestcarmagz.net/sites/default/files/pokemon-wallpapers-34898-6225497.png');
-    background-repeat: no-repeat;
-    background-size  : cover;
+    min-height          : 100vh;
 }
 
 .inputContainer {
     margin-top: 40px;
 }
 
+.titleContainer {
+    background-image : url('https://wall.bestcarmagz.net/sites/default/files/pokemon-wallpapers-34898-6225497.png');
+    background-repeat: no-repeat;
+    background-size  : cover;
+}
+
 
 .title {
     display        : flex;
     justify-content: center;
-    align-items    : center;
-    margin-top     : auto;
-    height         : 200px;
-    font-size      : 80px;
+    font-size      : 4rem;
+    line-height    : 30vh;
+    font-family    : 'Niconne', cursive;
     color          : white;
     text-shadow    : black 0px 0px 10px;
     font-weight    : 700;
@@ -42,9 +43,10 @@ p {
     text-align: center;
 }
 
-@media (max-width: 400px) {
+
+@media (max-width: 300px) {
     .title {
-        font-size: 4.5rem;
+        font-size: 5rem;
     }
 }
 
@@ -53,6 +55,11 @@ p {
 @media (min-width: 700px) {
     .introInfo {
         font-size: 24px;
+    }
+
+    .titleContainer {
+        background-size  : contain;
+        background-repeat: repeat-x;
     }
 }
 
