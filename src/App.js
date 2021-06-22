@@ -83,8 +83,6 @@ const App2 = () => {
 
     }
 
-
-
     const searchPokemon = ( name ) => {
         name = name.toLowerCase();
 
@@ -153,7 +151,7 @@ const App2 = () => {
                 try {
                     let pokemon = await axios.get(
                         `https://pokeapi.co/api/v2/pokemon-color/${ selectedColor }` );
-                    console.log( 'color', pokemon.data.pokemon_species )
+
                     for ( let p of pokemon.data.pokemon_species ) {
                         let url = p.url;
                         let id = url.slice( 41 );
@@ -233,15 +231,19 @@ const App2 = () => {
     }
 
     else if ( selectedPokedex === null ) {
-        main = <div className={ styles.centerElements }>
-            <div>
+        main = <div>
+            <div className={styles.titleContainer}>
                 <h1 className={ styles.title }>POKEDEX</h1>
             </div>
 
-            <p className={ styles.introInfo }>Welcome to the Pokemon Search Tool.</p>
-            <p className={ styles.introInfo }>Here you can search for your favorite pokemon in various ways.</p>
+
+
+
 
             <div className={ styles.center }>
+                <p className={ styles.introInfo }>Welcome to the Pokemon Search Tool.</p>
+                <p className={ styles.introInfo }>Here you can search for your favorite pokemon in various ways.</p>
+
                 {
                     nationalPokedex === null ? null : <Search nationalPokedex={ nationalPokedex } searchPokemon={ searchPokemon } />
                 }
@@ -252,7 +254,7 @@ const App2 = () => {
 
     else {
         main = <>
-            <div className={styles.inputContainer}>
+            <div className={ styles.inputContainer }>
                 <Search nationalPokedex={ nationalPokedex } searchPokemon={ searchPokemon } />
             </div>
             <SelectedDropdownOption
@@ -265,8 +267,6 @@ const App2 = () => {
 
             />
         </>
-
-
     }
 
     return (
@@ -275,7 +275,6 @@ const App2 = () => {
             <div className={ styles.fullBackground }>
                 { main }
             </div>
-
         </div>
     )
 
