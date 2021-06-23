@@ -7,14 +7,7 @@ import FormControl from 'react-bootstrap/FormControl';
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 import styles from './Search.module.css';
-
-
 import Text from './Text/Text'
-//TODO: shrink auto suggestions to 4–8
-// //Highlight the Differences, Not What Users Just Typed
-//avoid scrollbars / optimized to fit within the viewport
-//try dimming the page when the scroll bar is active
-//provide visual hints that the list is scrollable
 
 const Search = ( { nationalPokedex, searchPokemon } ) => {
     const [ state, setState ] = useState( {
@@ -86,6 +79,15 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
     }
 
 
+    const buttonHandler = () => {
+        searchPokemon( state.userInput );
+        setState( {
+            filteredOptions: [],
+            showOptions: false,
+            userInput: ''
+        } );
+    }
+
     const onKeyDownHandler = ( e ) => {
         if ( state.filteredOptions.length === 0 ) {
             return;
@@ -93,6 +95,11 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
 
         if ( e.key === 'Enter' ) {
             searchPokemon( state.userInput );
+            setState( {
+                filteredOptions: [],
+                showOptions: false,
+                userInput: ''
+            } );
         }
 
     }
@@ -166,7 +173,7 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
                     <Button
                         style={ varStyles }
                         disabled={ isDisbled }
-                        onClick={ () => searchPokemon( state.userInput ) }>
+                        onClick={ buttonHandler }>
                         Search
                     </Button>
                 </InputGroup.Append>
