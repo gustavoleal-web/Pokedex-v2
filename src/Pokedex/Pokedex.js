@@ -6,7 +6,7 @@ import axios from 'axios';
 import styles from './Pokedex.module.css';
 import stylesTypes from './pokeTypes.module.css'
 import backgroundTypes from './pokeTypesBackgrondColor.module.css'
-import  Spinner from 'react-bootstrap/Spinner';
+import Spinner from 'react-bootstrap/Spinner';
 //import Button from 'react-bootstrap/Button';
 
 const Pokedex = ( { id } ) => {
@@ -15,6 +15,8 @@ const Pokedex = ( { id } ) => {
     const [ type2, setType2 ] = useState( '' );
     const [ typeColorBackground, setBackground ] = useState( '' );
     const [ pokeForms, setPokeForms ] = useState( '' );
+    let globalRearangedName = null;
+
 
     //from react-strap
     const [ lgShow, setLgShow ] = useState( false );
@@ -45,8 +47,7 @@ const Pokedex = ( { id } ) => {
         const fetchData = async () => {
             if ( isMounted ) {
                 try {
-                    let pokemon = await axios.get(
-                        `https://pokeapi.co/api/v2/pokemon/${ id }/` );
+                    let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon/${ id }/` );
 
                     if ( pokemon.status === 200 ) {
                         setStateFromReq( pokemon.data )
@@ -70,15 +71,43 @@ const Pokedex = ( { id } ) => {
     }, [ id ] );
 
 
+    //some pokemon had thier name rearanged for better reading clarity this includes pokemon with 'mega' in their name.
+    //ex charizard-gmax will display gmax charizard
+    //the state is not modified. 
+    if ( state.length !== 0 ) {
+        const stateCopy = { ...state }
+        for ( let key in stateCopy ) {
+            if ( key === 'is_default' && !stateCopy[ key ] ) {
+
+                let updateName = stateCopy.name.split( '-' );
+
+                if ( updateName.length === 3 ) {
+                    globalRearangedName = `${ updateName[ 1 ] } ${ updateName[ 0 ] } ${ updateName[ 2 ] }`
+                }
+                else if ( updateName.length === 2 ) {
+                    globalRearangedName = `${ updateName[ 1 ] } ${ updateName[ 0 ] }`;
+                }
+
+            }
+        }
+    }
+
+
     return (
 
         <>
-            { Object.keys( state ).length === 0 ? <Spinner animation='grow' style={ {justifySelf: 'center'} } /> :
+            { Object.keys( state ).length === 0 ? <Spinner animation='grow' style={ { justifySelf: 'center' } } /> :
 
                 <div className={ `${ styles.infoContainer } ${ typeColorBackground }` }>
                     <div>
+
                         <Sprites pokeImg={ state.sprites } name={ state.name } showModalHandler={ showModalHandler } />
-                        <p>No.{ state.id }:  { state.name.toUpperCase() }</p>
+                        {
+                            globalRearangedName === null
+                                ? <p>No.{ state.id }:  { state.name.toUpperCase() }</p>
+                                : <p>No.{ state.id }:  { globalRearangedName.toUpperCase() }</p>
+                        }
+
 
                         { lgShow ?
                             <MoreInfo
