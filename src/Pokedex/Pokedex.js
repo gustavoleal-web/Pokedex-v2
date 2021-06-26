@@ -54,7 +54,8 @@ const Pokedex = ( { id } ) => {
                     }
                 }
                 catch ( e ) {
-                    let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon/${ id }/` );
+                    let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon/${ id }` );
+                    
                     if ( pokemon.status === 200 ) {
                         setStateFromReq( pokemon.data )
                     }
@@ -71,18 +72,19 @@ const Pokedex = ( { id } ) => {
     }, [ id ] );
 
 
-    //some pokemon had thier name rearanged for better reading clarity this includes pokemon with 'mega' in their name.
+    //some pokemon had their name rearranged for better reading clarity this includes pokemon with 'mega' in their name.
     //ex charizard-gmax will display gmax charizard
     //the state is not modified. 
-    if ( state.length !== 0 ) {
-        const stateCopy = { ...state }
-        for ( let key in stateCopy ) {
-            if ( key === 'is_default' && !stateCopy[ key ] ) {
 
+    if ( Object.keys( state ).length !== 0 ) {
+        const stateCopy = { ...state }
+
+        for ( let key in stateCopy ) {
+            if ( key === 'is_default' && stateCopy[ 'is_default' ] === false ) {
                 let updateName = stateCopy.name.split( '-' );
 
                 if ( updateName.length === 3 ) {
-                    globalRearangedName = `${ updateName[ 1 ] } ${ updateName[ 0 ] } ${ updateName[ 2 ] }`
+                    globalRearangedName = `${ updateName[ 1 ] } ${ updateName[ 0 ] } ${ updateName[ 2 ] }`;
                 }
                 else if ( updateName.length === 2 ) {
                     globalRearangedName = `${ updateName[ 1 ] } ${ updateName[ 0 ] }`;
@@ -102,6 +104,7 @@ const Pokedex = ( { id } ) => {
                     <div>
 
                         <Sprites pokeImg={ state.sprites } name={ state.name } showModalHandler={ showModalHandler } />
+
                         {
                             globalRearangedName === null
                                 ? <p>No.{ state.id }:  { state.name.toUpperCase() }</p>
