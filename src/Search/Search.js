@@ -30,7 +30,9 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
 
         if ( userInput.length > 2 && state.filteredOptions.length !== 0 ) {
             setIsDisabled( false );
-
+        }
+        else {
+            setIsDisabled( true );
         }
 
         if ( userInput.length === 0 ) {
@@ -39,11 +41,8 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
                 showOptions: true,
                 userInput: ''
             } );
-
             setIsDisabled( true );
         }
-
-
 
         else {
             const filteredSuggestions = nationalPokedex.filter( pokemon => {
@@ -89,19 +88,20 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
     }
 
     const onKeyDownHandler = ( e ) => {
-        if ( state.filteredOptions.length === 0 ) {
-            return;
-        }
-
         if ( e.key === 'Enter' ) {
-            searchPokemon( state.userInput );
-            setState( {
-                filteredOptions: [],
-                showOptions: false,
-                userInput: ''
-            } );
+            //prevents the display of all pokemon that match less than 3 characters when the user presses enter.
+            if ( state.userInput.length < 3 ) {
+                return;
+            }
+            else {
+                searchPokemon( state.userInput );
+                setState( {
+                    filteredOptions: [],
+                    showOptions: false,
+                    userInput: ''
+                } );
+            }
         }
-
     }
 
     const highlightDifferences = ( pokemonName ) => {
