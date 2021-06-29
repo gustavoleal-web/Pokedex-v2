@@ -16,7 +16,7 @@
     height          : 30px;
     background-color: #fff;
     border          : 1px solid rgba(0, 0, 0, .125);
-    border-radius   : 3px;
+    border-radius   : 1px;
 
 }
 
@@ -34,3 +34,4 @@
     font-weight: bold;
     text-shadow: black 0px 0px 10px;
 }
+
