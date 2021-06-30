@@ -83,98 +83,82 @@ const MoreInfo = ( {
     //ex: raichu will keep its raichu-alolan name   
     const pokeName = name;
 
-    //these pokemon originally come with a - in their name so their name should not be modified
-    // if ( name !== 'mr-mime'
-    //     && name !== 'mime-jr'
-    //     && name !== 'mr-rime'
-    //     && name !== 'nidoran-f'
-    //     && name !== 'nidoran-m'
-    //     && name !== 'ho-oh'
-    //     && name !== 'porygon-z'
-    //     && name !== 'tapu-bulu'
-    //     && name !== 'tapu-koko'
-    //     && name !== 'tapu-lele'
-    //     && name !== 'tapu-fini'
-    //     && name !== 'jangmo-o'
-    //     && name !== 'hakamo-o'
-    //     && name !== 'kommo-o'
-    //     && name.includes( '-' ) ) {
-
-    //     let end = name.indexOf( '-' );
-    //     name = name.substring( 0, end );
-    //     console.log(name)
-    // }
-
-
-    const getAndSetState = useCallback( ( pokemon ) => {
-
-        let fetchedEvoChainURL = pokemon.data.evolution_chain.url;
-
-        if ( pokemon.data.gender_rate === -1 ) {
-            setGender( 'genderless' )
-        }
-        else {
-            let genderRate = {};
-            let female = ( 12.5 * pokemon.data.gender_rate );
-            let male = 100 - female;
-            genderRate.male = male;
-            genderRate.female = female;
-            setGender( genderRate );
-        }
-
-        let fetechedTraining = {};
-        ( {
-            base_happiness: fetechedTraining.baseHappiness,
-            capture_rate: fetechedTraining.captureRate,
-            growth_rate: fetechedTraining.grouthRate
-        } = pokemon.data );
-
-
-        let fetchedPokedEntries = {};
-        ( {
-            flavor_text_entries: fetchedPokedEntries.pokedexTextEntries,
-            genera: fetchedPokedEntries.genus,
-            generation: fetchedPokedEntries.generation
-        } = pokemon.data );
-
-        let fetchedEggData = {};
-
-        ( {
-            egg_groups: fetchedEggData.eggGroups,
-            hatch_counter: fetchedEggData.hatchCounter
-        } = pokemon.data )
-
-        setState( {
-            ...state,
-            evolutionChainUrl: fetchedEvoChainURL,
-            trainingData: fetechedTraining,
-            eggData: fetchedEggData,
-            pokedexEntries: fetchedPokedEntries
-        } )
-
-        pokemon.data.varieties ? setVarieties( pokemon.data.varieties ) : setVarieties( '' );
-    }, [ state ] )
-
 
     useEffect( () => {
         let isMounted = true;
         const fetchData = async () => {
             if ( isMounted ) {
+                let pokemon;
                 try {
-                    let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon-species/${ name }/` );
-                    getAndSetState( pokemon );
-
+                    pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon-species/${ id }/` );
+                    //getAndSetState( pokemon );
                 }
-                catch ( e ) {
+                catch {
                     try {
-                        let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon-species/${ id }/` );
-                        getAndSetState( pokemon );
-
+                        pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon-species/${ name }/` );
+                        //getAndSetState( pokemon );
                     }
-                    catch ( e ) {
+                    catch {
                         setError( true );
                     }
                 }
+                if ( pokemon === undefined ) {
+                    return false;
+                }
+                let fetchedEvoChainURL = pokemon.data.evolution_chain.url;
+
+                if ( pokemon.data.gender_rate === -1 ) {
+                    setGender( 'genderless' )
+                }
+                else {
+                    let genderRate = {};
+                    let female = ( 12.5 * pokemon.data.gender_rate );
+                    let male = 100 - female;
+                    genderRate.male = male;
+                    genderRate.female = female;
+                    setGender( genderRate );
+                }
+
+                let fetechedTraining = {};
+                ( {
+                    base_happiness: fetechedTraining.baseHappiness,
+                    capture_rate: fetechedTraining.captureRate,
+                    growth_rate: fetechedTraining.grouthRate
+                } = pokemon.data );
+
+
+                let fetchedPokedEntries = {};
+                ( {
+                    flavor_text_entries: fetchedPokedEntries.pokedexTextEntries,
+                    genera: fetchedPokedEntries.genus,
+                    generation: fetchedPokedEntries.generation
+                } = pokemon.data );
+
+                let fetchedEggData = {};
+
+                ( {
+                    egg_groups: fetchedEggData.eggGroups,
+                    hatch_counter: fetchedEggData.hatchCounter
+                } = pokemon.data )
+
+                // setState( {
+                //     ...state,
+                //     evolutionChainUrl: fetchedEvoChainURL,
+                //     trainingData: fetechedTraining,
+                //     eggData: fetchedEggData,
+                //     pokedexEntries: fetchedPokedEntries
+                // } )
+
+                setState( state => (
+                    {
+                        ...state, evolutionChainUrl: fetchedEvoChainURL,
+                        trainingData: fetechedTraining,
+                        eggData: fetchedEggData,
+                        pokedexEntries: fetchedPokedEntries
+                    }
+                ) );
+
+                pokemon.data.varieties ? setVarieties( pokemon.data.varieties ) : setVarieties( '' );
             }
         }
         fetchData();
@@ -182,11 +166,11 @@ const MoreInfo = ( {
             isMounted = false;
         };
 
-    }, [ id, name, getAndSetState ] );
+    }, [ id, name ] );
+
 
 
     let showSpritesVersion = null;
-    //let showGeneralData = null;
     let showTypes = null;
     let showGender = null;
     let shoWabilities = null;
@@ -397,7 +381,7 @@ const MoreInfo = ( {
                         {
                             Object.keys( state.pokedexEntries ).length !== 0
                                 ? <PokedexEntries pokedexData={ state.pokedexEntries } />
-                                : <h5>No data to display at this time. Check back for future updates.</h5>
+                                : <h5>Loading...</h5>
                         }
 
                         { showTypes }
