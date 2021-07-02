@@ -1,0 +1,9 @@
+.sprite {
+    display: flex;
+    margin : auto;
+
+}
+
+.sprite:hover {
+    cursor: pointer;
+}

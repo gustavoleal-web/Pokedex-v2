@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import styles from './Sprites.module.css';
 
-const VarietySprites = ( { url, retrieveById } ) => {
+const Sprites = ( { url, retrieveById } ) => {
     const [ sprite, setSprites ] = useState( null );
 
     useEffect( () => {
@@ -29,9 +30,14 @@ const VarietySprites = ( { url, retrieveById } ) => {
     }, [ url ] );
 
     if ( sprite !== null ) {
-        return <img src={ sprite } alt={ sprite } onClick={ () => retrieveById( url ) } style={ { marginLeft: '20px' } } />
+        return <img
+            src={ sprite }
+            alt={ sprite }
+            onClick={ () => retrieveById( url ) }
+            className={ styles.sprite }
+        />
     }
     else return null;
 }
 
-export default VarietySprites;
+export default Sprites;
