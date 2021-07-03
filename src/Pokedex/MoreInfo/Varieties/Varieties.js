@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
 import Pokedex from '../../Pokedex';
-import VarietiesSprites from './VarietiesSprites/VarietySprites'
+import Sprites from './Sprites/Sprites'
 import styles from './varieties.module.css'
 
 const Varieties = ( { varieties } ) => {
     const [ form, setForms ] = useState( null );
     const varietiesCopy = [ ...varieties ];
 
-
     for ( let key in varietiesCopy ) {
         if ( !varieties[ key ].is_default ) {
             let updateName = varieties[ key ].pokemon.name.split( '-' );
             let rearrangedName;
 
-            if ( updateName.length === 3 ) {
+            if ( updateName.length === 4 ) {
+                rearrangedName = `${ updateName[ 3 ] } ${ updateName[ 0 ] } ${ updateName[ 1 ] } ${ updateName[ 2 ] }`
+            }
+
+            else if ( updateName.length === 3 ) {
                 rearrangedName = `${ updateName[ 1 ] } ${ updateName[ 0 ] } ${ updateName[ 2 ] }`
             }
             else if ( updateName.length === 2 ) {
@@ -38,8 +41,8 @@ const Varieties = ( { varieties } ) => {
                         return (
                             <span key={ form.pokemon.name }>
 
-                                <VarietiesSprites url={ form.pokemon.url } retrieveById={ retrieveById } />
-                                <p className={ styles.cursor } >
+                                <Sprites url={ form.pokemon.url } retrieveById={ retrieveById } />
+                                <p className={ styles.name }>
                                     { form.pokemon.rearrangedName }
                                 </p>
                             </span>
