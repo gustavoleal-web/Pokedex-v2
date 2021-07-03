@@ -3,12 +3,11 @@
     justify-content: space-evenly;
     flex-wrap      : wrap;
     margin         : auto;
-    max-width      : 700px;
+    /* max-width      : 700px; */
 }
 
-
-.cursor:hover {
-    cursor: pointer;
+.name {
+    font-weight: 500;
 }
 
 @media (max-width: 500px) {
