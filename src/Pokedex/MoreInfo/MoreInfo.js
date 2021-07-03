@@ -32,6 +32,7 @@ const MoreInfo = ( {
     types,
     type1,
     type2,
+    globalRearangedId,
     backgroundColor,
     showModal,
     showModalHandler
@@ -91,6 +92,7 @@ const MoreInfo = ( {
                 let pokemon;
                 try {
                     pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon-species/${ id }/` );
+                    
                     //getAndSetState( pokemon );
                 }
                 catch {
@@ -99,7 +101,14 @@ const MoreInfo = ( {
                         //getAndSetState( pokemon );
                     }
                     catch {
-                        setError( true );
+                        try {
+                            pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon-species/${ globalRearangedId }/` );
+                            //getAndSetState( pokemon );
+                        }
+                        catch {
+                             setError( true );
+                        }
+                       
                     }
                 }
                 if ( pokemon === undefined ) {
@@ -148,7 +157,7 @@ const MoreInfo = ( {
                 //     eggData: fetchedEggData,
                 //     pokedexEntries: fetchedPokedEntries
                 // } )
-
+                
                 setState( state => (
                     {
                         ...state, evolutionChainUrl: fetchedEvoChainURL,

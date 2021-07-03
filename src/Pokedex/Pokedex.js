@@ -16,6 +16,7 @@ const Pokedex = ( { id } ) => {
     const [ typeColorBackground, setBackground ] = useState( '' );
     const [ pokeForms, setPokeForms ] = useState( '' );
     let globalRearangedName = null;
+    let globalRearangedId = null;
 
 
     //from react-strap
@@ -47,15 +48,19 @@ const Pokedex = ( { id } ) => {
         const fetchData = async () => {
             if ( isMounted ) {
                 try {
+                     //some file paths need the / at the end
+                     //the api has some pokemon without the / at the end
+                     //this is why 2 different get request are used
                     let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon/${ id }/` );
-
+                   
                     if ( pokemon.status === 200 ) {
                         setStateFromReq( pokemon.data )
                     }
                 }
                 catch ( e ) {
+                   
                     let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon/${ id }` );
-                    
+
                     if ( pokemon.status === 200 ) {
                         setStateFromReq( pokemon.data )
                     }
@@ -74,6 +79,8 @@ const Pokedex = ( { id } ) => {
 
     //some pokemon had their name rearranged for better reading clarity this includes pokemon with 'mega' in their name.
     //ex charizard-gmax will display gmax charizard
+    //Pokemon with other forms display and id from the API resulting in an incorrect national Pokedex number
+    //The correct id is extrated from the url in the species (state.species.url)
     //the state is not modified. 
 
     if ( Object.keys( state ).length !== 0 ) {
@@ -82,6 +89,8 @@ const Pokedex = ( { id } ) => {
         for ( let key in stateCopy ) {
             if ( key === 'is_default' && stateCopy[ 'is_default' ] === false ) {
                 let updateName = stateCopy.name.split( '-' );
+                let end = stateCopy.species.url.length - 1;
+                globalRearangedId = stateCopy.species.url.slice( 42, end );
 
                 if ( updateName.length === 3 ) {
                     globalRearangedName = `${ updateName[ 1 ] } ${ updateName[ 0 ] } ${ updateName[ 2 ] }`;
@@ -108,7 +117,7 @@ const Pokedex = ( { id } ) => {
                         {
                             globalRearangedName === null
                                 ? <p>No.{ state.id }:  { state.name.toUpperCase() }</p>
-                                : <p>No.{ state.id }:  { globalRearangedName.toUpperCase() }</p>
+                                : <p>No.{ globalRearangedId }:  { globalRearangedName.toUpperCase() }</p>
                         }
 
 
@@ -126,6 +135,7 @@ const Pokedex = ( { id } ) => {
                                 types={ state.types }
                                 type1={ type1 }
                                 type2={ type2 }
+                                globalRearangedId={ globalRearangedId }
                                 backgroundColor={ typeColorBackground }
                                 showModal={ lgShow }
                                 showModalHandler={ showModalHandler }
