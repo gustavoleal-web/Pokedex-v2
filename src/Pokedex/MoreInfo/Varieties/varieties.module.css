@@ -3,7 +3,6 @@
     justify-content: space-evenly;
     flex-wrap      : wrap;
     margin         : auto;
-    /* max-width      : 700px; */
 }
 
 .name {
