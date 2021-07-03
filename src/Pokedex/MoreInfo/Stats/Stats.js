@@ -17,7 +17,7 @@ const Stats = ( { stats } ) => {
     }
 
     return (
-        <>
+        <div className={ styles.container }>
             {
                 stats.map( ( stat ) =>
 
@@ -42,7 +42,12 @@ const Stats = ( { stats } ) => {
                 <p>Max</p>
             </span>
             {
-                stats.map( stat => <MinAndMaxStats stat={ stat.base_stat } name={ stat.stat.name } key={stat.stat.name}/> )
+                stats.map( stat => <MinAndMaxStats
+                    stat={ stat.base_stat }
+                    name={ stat.stat.name }
+                    key={ stat.stat.name }
+                />
+                )
             }
 
             <p className={ styles.minMaxStatement }>
@@ -53,7 +58,7 @@ const Stats = ( { stats } ) => {
 
 
 
-        </>
+        </div>
     )
 }
 
