@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import NotFound from './PokemonNotFound/notFound';
+import React, { useEffect, useState, useRef } from 'react';
+import NotFound from './NotFound/notFound';
 import styles from './app.module.css'
-
 import axios from 'axios'
 import Search from './Search/Search';
 import SelectedDropdownOption from './SelectedDropdownOption/SelectedDropdownOption';
@@ -9,7 +8,8 @@ import Navbar from 'react-bootstrap/NavBar'
 import Nav from 'react-bootstrap/Nav'
 import Dropdowns from './Dropdown/Dropdowns';
 
-const App2 = () => {
+const App = () => {
+    const isMounted = useRef( false );
     const [ nationalPokedex, setNationalPokedex ] = useState( null );
     const [ selectedPokedex, setSelectedPokedex ] = useState( null );
 
@@ -22,7 +22,7 @@ const App2 = () => {
     const [ selectedColor, setSelectedColor ] = useState( null );
     const [ pokemonByColor, setPokemonByColor ] = useState( [] );
 
-    const [ notFound, setNoPkmFound ] = useState( null );
+    const [ notFound, setNotFound ] = useState( false );
 
     const types = [ 'fire', 'water', 'grass',
         'normal', 'electric', 'ice',
@@ -56,19 +56,21 @@ const App2 = () => {
     const fetchSelectedPokedex = ( pokedex ) => {
         let cutPokedex = nationalPokedex.slice( pekedexStart[ pokedex ][ 0 ], pekedexStart[ pokedex ][ 1 ] );
         setSelectedPokedex( cutPokedex );
-        setNoPkmFound( null );
+        setNotFound( false );
         setPokemonByType( [] );
         setSelectedType( null );
         setPokemonByColor( [] );
     }
 
     const setPokedexByTypeHandler = ( type ) => {
+        setNotFound( false );
         setSelectedPokedex( [] );
         setPokemonByColor( [] );
         setSelectedType( type );
     }
 
     const setPokemonByColorHandler = ( color ) => {
+        setNotFound( false );
         setSelectedPokedex( [] );
         setPokemonByType( [] );
         setSelectedColor( color );
@@ -76,6 +78,7 @@ const App2 = () => {
     }
 
     const setPokemonByEggHandler = ( egg ) => {
+        setNotFound( false );
         setSelectedPokedex( [] );
         setPokemonByType( [] );
         setPokemonByColor( [] );
@@ -95,17 +98,17 @@ const App2 = () => {
             return found;
         } );
 
-        foundMatches.length === 0 ? setNoPkmFound( true ) : setNoPkmFound( null )
+        foundMatches.length === 0 ? setNotFound( true ) : setNotFound( false );
 
         setSelectedPokedex( foundMatches );
     }
 
     //NATIONAL POKEDEX 
     useEffect( () => {
-        let isMounted = true;
+        isMounted.current = true;
 
         const fetchData = async () => {
-            if ( isMounted ) {
+            if ( isMounted.current ) {
                 try {
                     let pokemon = await axios.get( ` https://pokeapi.co/api/v2/pokedex/national/ ` );
                     let pokemonEntries = pokemon.data.pokemon_entries;
@@ -119,33 +122,33 @@ const App2 = () => {
         }
         fetchData();
         return () => {
-            isMounted = false;
+            isMounted.current = false;
         };
     }, [] );
 
     //TYPES
     useEffect( () => {
-        let isMounted = true;
+        isMounted.current = true;
         const fetchData = async () => {
             if ( isMounted && selectedType !== null ) {
                 try {
-                    let pokemon = await axios.get(
-                        `https://pokeapi.co/api/v2/type/${ selectedType }` );
-                    setPokemonByType( pokemon.data.pokemon )
-                } catch ( e ) {
-                    console.log( e );
+                    let pokemon = await axios.get( `https://pokeapi.co/api/v2/type/${ selectedType }` );
+                    setPokemonByType( pokemon.data.pokemon );
+                }
+                catch ( e ) {
+                    setNotFound( true );
                 }
             } else return;
         };
         fetchData();
         return () => {
-            isMounted = false;
+            isMounted.current = false;
         };
     }, [ selectedType ] );
 
     //COLOR
     useEffect( () => {
-        let isMounted = true;
+        isMounted.current = true;
         const fetchData = async () => {
             if ( isMounted && selectedColor !== null ) {
                 try {
@@ -162,20 +165,20 @@ const App2 = () => {
                     setPokemonByColor( pokemon.data );
 
                 } catch ( e ) {
-                    console.log( e );
+                    setNotFound( true );
                 }
             } else return;
         };
         fetchData();
         return () => {
-            isMounted = false;
+            isMounted.current = false;
         };
     }, [ selectedColor ] );
 
 
     //EGG GROUPS
     useEffect( () => {
-        let isMounted = true;
+        isMounted.current = true;
         const fetchData = async () => {
             if ( isMounted && eggGroup !== null ) {
                 try {
@@ -193,18 +196,15 @@ const App2 = () => {
                     setPokemonEggGroup( pokemon.data );
 
                 } catch ( e ) {
-                    console.log( e );
+                    setNotFound( true );
                 }
             } else return;
         };
         fetchData();
         return () => {
-            isMounted = false;
+            isMounted.current = false;
         };
     }, [ eggGroup ] );
-
-
-
 
 
     const navigation = <div>
@@ -225,20 +225,15 @@ const App2 = () => {
 
     let main = null;
 
-
     if ( notFound ) {
         main = <NotFound nationalPokedex={ nationalPokedex } searchPokemon={ searchPokemon } />
     }
 
     else if ( selectedPokedex === null ) {
         main = <div>
-            <div className={styles.titleContainer}>
+            <div className={ styles.titleContainer }>
                 <h1 className={ styles.title }>POKEDEX</h1>
             </div>
-
-
-
-
 
             <div className={ styles.center }>
                 <p className={ styles.introInfo }>Welcome to the Pokemon Search Tool.</p>
@@ -280,4 +275,4 @@ const App2 = () => {
 
 }
 
-export default App2;
+export default App;
