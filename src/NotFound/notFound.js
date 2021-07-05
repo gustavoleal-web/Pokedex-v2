@@ -1,7 +1,5 @@
 import React from 'react';
-//import Autocomplete from '../Autocomplete';
 import Search from '../Search/Search'
-import notFoundImg from '../img/surprised_pikachu.jpg'
 import styles from './notFound.module.css'
 
 
@@ -12,14 +10,10 @@ const notFound = ( { nationalPokedex, searchPokemon } ) => {
                 <Search nationalPokedex={ nationalPokedex } searchPokemon={ searchPokemon } />
             </div>
 
-
             <div className={ styles.container }>
-                <img src={ notFoundImg } alt='No pokemon found.' className={ styles.border } />
-                <div>
-                    <h1> Oops!</h1>
-                    <h3>NO POKEMON FOUND</h3>
-                </div>
-
+                <h1 className={ styles.containerText }> 404</h1>
+                <h4 className={ styles.containerText2 }>Oops! Page not found.</h4>
+                <h6 className={ styles.containerText3 }>Something whent wrong. Try again later.</h6>
             </div>
 
         </>

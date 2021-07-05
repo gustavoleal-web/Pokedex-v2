@@ -1,0 +1,51 @@
+.search {
+    max-width : 700px;
+    margin    : auto;
+    margin-top: 30px;
+    padding   : 0 10px;
+}
+
+.container {
+    display        : flex;
+    justify-content: center;
+    flex-direction : column;
+    font-family    : 'Andika New Basic', sans-serif;
+    text-align     : center;
+}
+
+.container img {
+    width: 50%;
+}
+
+.containerText {
+    font-size: 8em;
+    color    : rgb(73, 208, 236);
+}
+
+.border {
+    border-radius: 50%;
+}
+
+
+
+@media(min-width: 500px) {
+    .containerText {
+        font-size: 12em;
+    }
+}
+
+
+@media(min-width: 900px) {
+
+    .container img {
+        width: auto;
+    }
+
+    .containerText2 {
+        font-size: 2em;
+    }
+
+    .containerText3 {
+        font-size: 1.5em;
+    }
+}
