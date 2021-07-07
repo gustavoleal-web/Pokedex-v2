@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import styles from './MoveDetails.module.css';
 
 const MoveDetails = ( { name, level, learnMethod } ) => {
+    const isMounted = useRef(false);
     const [ allMoveInfo, setAllMoveInfo ] = useState( {} );
     const [ tm, setTm ] = useState( {} );
     //these tables are shortes so the appropriate container class will accommodate for it
     let tableSize = ( learnMethod === 'tutor' || learnMethod === 'egg' ) ? styles.container2 : styles.container;
 
     useEffect( () => {
-        let isMounted = true;
+         isMounted.current = true;
         const fetchData = async () => {
             if ( isMounted ) {
                 try {
@@ -25,7 +26,7 @@ const MoveDetails = ( { name, level, learnMethod } ) => {
                 }
             }
             return () => {
-                isMounted = false;
+                isMounted.current = false;
             };
 
         }
@@ -35,7 +36,7 @@ const MoveDetails = ( { name, level, learnMethod } ) => {
 
 
     useEffect( () => {
-        let isMounted = true;
+         isMounted.current = true;
         const fetchData = async () => {
             if ( isMounted && Object.keys( allMoveInfo ).length !== 0 && learnMethod === 'machine' ) {
 
@@ -53,7 +54,7 @@ const MoveDetails = ( { name, level, learnMethod } ) => {
                 }
             }
             return () => {
-                isMounted = false;
+                isMounted.current = false;
             };
 
         }

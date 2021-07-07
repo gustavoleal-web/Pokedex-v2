@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Pokedex from '../../../../Pokedex'
 import styles from './individualMethos.module.css'
 
@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import Card from 'react-bootstrap/Card';
 
 const IndividualMethods = ( { obj, id } ) => {
+    const isMounted = useRef(false);
     const [ clickedPokemon, setClickedPokemon ] = useState( null );
     const [ sprite, setSprite ] = useState( null );
     const [ itemSprite, setItemSprite ] = useState( null );
@@ -14,8 +15,6 @@ const IndividualMethods = ( { obj, id } ) => {
     let evolutionInfo;
 
     const onClickHandler = ( name ) => {
-        //TODO: see if there's a way to remove the previously displayed pokemon
-
         setClickedPokemon(
             <div>
                 <Pokedex id={ name } />
@@ -42,7 +41,7 @@ const IndividualMethods = ( { obj, id } ) => {
     const renamedObj = renameKeys( obj, newKeys );
 
     useEffect( () => {
-        let isMounted = true;
+        isMounted.current = true;
 
         const fetchData = async () => {
             if ( isMounted ) {
@@ -65,14 +64,14 @@ const IndividualMethods = ( { obj, id } ) => {
         fetchData();
 
         return () => {
-            isMounted = false;
+            isMounted.current = false;
         };
     }, [ renamedObj.evolution, id ] );
 
 
     //ITMES
     useEffect( () => {
-        let isMounted = true;
+        isMounted.current = true;
 
         const fetchData = async () => {
 
@@ -85,12 +84,11 @@ const IndividualMethods = ( { obj, id } ) => {
                     console.log( e );
                 }
             }
-
         }
         fetchData();
 
         return () => {
-            isMounted = false;
+            isMounted.current = false;
         };
     }, [ obj, obj.item ] );
 

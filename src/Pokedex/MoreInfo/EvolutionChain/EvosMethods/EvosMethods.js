@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import IndividualMethods from './IndividualEvosMethods/IndividualMethods';
 import Pokedex from '../../../Pokedex';
 import styles from './EvosMethods.module.css';
@@ -6,6 +6,7 @@ import axios from 'axios';
 import Card from 'react-bootstrap/Card';
 
 const EvosMethods = ( { methods, id } ) => {
+    const isMounted = useRef(false);
     const [ sprite, setSprite ] = useState( null );
     const [ clickedPokemon, setClickedPokemon ] = useState( null );
 
@@ -22,7 +23,7 @@ const EvosMethods = ( { methods, id } ) => {
 
 
     useEffect( () => {
-        let isMounted = true;
+        isMounted.current = true;
 
         const fetchData = async () => {
             if ( isMounted ) {
@@ -34,12 +35,11 @@ const EvosMethods = ( { methods, id } ) => {
                     console.log( e );
                 }
             }
-
         }
         fetchData();
 
         return () => {
-            isMounted = false;
+            isMounted.current = false;
         };
     }, [ methods ] );
 

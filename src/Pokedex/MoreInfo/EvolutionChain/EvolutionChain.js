@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import filterEvolutionsTriggers from './filterEvolutionsTriggers';
 import EvosMethods from './EvosMethods/EvosMethods';
 import axios from 'axios';
 
 const EvolutionChain = ( { evolutionChainUrl, clickedPoke, id } ) => {
-   
+    const isMounted = useRef( false );
     const [ methods, setMethods ] = useState( [] );
 
     useEffect( () => {
-        let isMounted = true;
+        isMounted.current = true;
         const fetchData = async () => {
             if ( isMounted ) {
                 let evosAndAlternative;
                 try {
                     let pokemon = await axios.get( evolutionChainUrl );
                     let fetchedEvoChain = pokemon.data.chain;
-                   
+
                     //testing all evolutions and alternative evolutions
                     if ( fetchedEvoChain !== undefined ) {
                         evosAndAlternative = filterEvolutionsTriggers( fetchedEvoChain );
@@ -30,7 +30,7 @@ const EvolutionChain = ( { evolutionChainUrl, clickedPoke, id } ) => {
         }
         fetchData();
         return () => {
-            isMounted = false;
+            isMounted.current = false;
         };
 
     }, [ evolutionChainUrl ] );
@@ -40,7 +40,7 @@ const EvolutionChain = ( { evolutionChainUrl, clickedPoke, id } ) => {
     }
 
     else {
-        return <EvosMethods methods={ methods } clickedPoke={ clickedPoke } id={id}/>
+        return <EvosMethods methods={ methods } clickedPoke={ clickedPoke } id={ id } />
     }
 
 
