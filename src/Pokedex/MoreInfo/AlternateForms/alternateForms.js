@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 
 const AlternateForms = ( { pokeForms } ) => {
+    const isMounted = useRef(false);
     const [ alternatives, setAlternatives ] = useState( '' );
     let formName = 'normal';
 
     useEffect( () => {
-        let isMounted = true;
+       isMounted.current = true;
 
         const fetchData = async () => {
             if ( isMounted ) {
@@ -23,7 +24,7 @@ const AlternateForms = ( { pokeForms } ) => {
         }
         fetchData();
         return () => {
-            isMounted = false;
+            isMounted.current = false;
         };
 
     }, [ pokeForms ] )

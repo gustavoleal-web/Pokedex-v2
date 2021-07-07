@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import MoreInfo from './MoreInfo/MoreInfo';
 import Sprites from './Sprites/Sprites';
 import axios from 'axios';
@@ -10,6 +10,7 @@ import Spinner from 'react-bootstrap/Spinner';
 //import Button from 'react-bootstrap/Button';
 
 const Pokedex = ( { id } ) => {
+    const isMounted = useRef(false);
     const [ state, setState ] = useState( [] );
     const [ type1, setType1 ] = useState( '' );
     const [ type2, setType2 ] = useState( '' );
@@ -44,21 +45,21 @@ const Pokedex = ( { id } ) => {
     }
 
     useEffect( () => {
-        let isMounted = true;
+        isMounted.current = true;
         const fetchData = async () => {
             if ( isMounted ) {
                 try {
-                     //some file paths need the / at the end
-                     //the api has some pokemon without the / at the end
-                     //this is why 2 different get request are used
+                    //some file paths need the / at the end
+                    //the api has some pokemon without the / at the end
+                    //this is why 2 different get request are used
                     let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon/${ id }/` );
-                   
+
                     if ( pokemon.status === 200 ) {
                         setStateFromReq( pokemon.data )
                     }
                 }
                 catch ( e ) {
-                   
+
                     let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon/${ id }` );
 
                     if ( pokemon.status === 200 ) {
@@ -68,7 +69,7 @@ const Pokedex = ( { id } ) => {
                 }
             }
             return () => {
-                isMounted = false;
+                isMounted.current = false;
             };
 
         }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PokedexEntries from './PokedexEntries/PokedexEntries'
 import Abilities from './Abilities/Abilities';
 import Training from './Training/Training';
@@ -37,6 +37,7 @@ const MoreInfo = ( {
     showModal,
     showModalHandler
 } ) => {
+    const isMounted = useRef( false );
     const [ varieties, setVarieties ] = useState( '' );
     const [ gender, setGender ] = useState( {} );
     const [ error, setError ] = useState( false )
@@ -86,13 +87,14 @@ const MoreInfo = ( {
 
 
     useEffect( () => {
-        let isMounted = true;
+        // let isMounted = true;
+        isMounted.current = true;
         const fetchData = async () => {
-            if ( isMounted ) {
+            if ( isMounted.current ) {
                 let pokemon;
                 try {
                     pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon-species/${ id }/` );
-                    
+
                     //getAndSetState( pokemon );
                 }
                 catch {
@@ -106,9 +108,9 @@ const MoreInfo = ( {
                             //getAndSetState( pokemon );
                         }
                         catch {
-                             setError( true );
+                            setError( true );
                         }
-                       
+
                     }
                 }
                 if ( pokemon === undefined ) {
@@ -157,7 +159,7 @@ const MoreInfo = ( {
                 //     eggData: fetchedEggData,
                 //     pokedexEntries: fetchedPokedEntries
                 // } )
-                
+
                 setState( state => (
                     {
                         ...state, evolutionChainUrl: fetchedEvoChainURL,
@@ -172,10 +174,10 @@ const MoreInfo = ( {
         }
         fetchData();
         return () => {
-            isMounted = false;
+            isMounted.current = false;
         };
 
-    }, [ id, name ] );
+    }, [ id, name, globalRearangedId ] );
 
 
 
