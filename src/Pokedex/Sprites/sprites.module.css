@@ -5,3 +5,7 @@
 .pointer:hover {
     cursor: pointer;
 }
+
+.pokeball {
+    margin-top: 20px;
+}
