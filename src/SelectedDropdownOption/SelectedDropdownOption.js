@@ -3,7 +3,6 @@ import Pokedex from '../Pokedex/Pokedex';
 import styles from './SelectedDropdownOption.module.css';
 import { BrowserRouter } from 'react-router-dom';
 
-
 const SelectedSearchOption = ( {
   selectedPokedex,
   pokedexByType,
@@ -11,8 +10,6 @@ const SelectedSearchOption = ( {
   pokedexByEggGroup,
 
 } ) => {
-
- 
 
   return (
 
@@ -34,8 +31,6 @@ const SelectedSearchOption = ( {
       }
 
 
-
-
       { pokedexByType.length !== 0
         ? <div className={ styles.pokemonsContainer }>
 
@@ -51,10 +46,6 @@ const SelectedSearchOption = ( {
 
         : null
       }
-
-
-
-
 
 
       { pokedexByColor.length !== 0
@@ -74,8 +65,6 @@ const SelectedSearchOption = ( {
       }
 
 
-
-
       { Object.keys( pokedexByEggGroup ).length !== 0
 
         ? <div className={ styles.pokemonsContainer }>
@@ -92,9 +81,6 @@ const SelectedSearchOption = ( {
 
         : null
       }
-
-
-    
 
     </div>
   )
