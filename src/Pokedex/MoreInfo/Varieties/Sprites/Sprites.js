@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import styles from './Sprites.module.css';
 
 const Sprites = ( { url, retrieveById } ) => {
+    const isMounted = useRef(false);
     const [ sprite, setSprites ] = useState( null );
 
     useEffect( () => {
-        let isMounted = true;
+         isMounted.current = true;
         const fetchData = async () => {
             if ( isMounted ) {
                 try {
@@ -21,7 +22,7 @@ const Sprites = ( { url, retrieveById } ) => {
                 }
             }
             return () => {
-                isMounted = false;
+                isMounted.current = false;
             };
 
         }

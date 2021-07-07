@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { getAllWeakness, removeDuplicateType, oneFourthAndHalfDamage } from './filterTypeDamageFuncs';
 import Damage from './Damage/Damage';
 import axios from 'axios';
 
 const ResistanceWeakness = ( { type } ) => {
+    const isMounted = useRef( false );
     const [ state, setState ] = useState( [] );
     let oneType;
     let twoTypes;
 
     useEffect( () => {
-        let isMounted = true;
+        isMounted.current = true;
 
         const fetchData = async () => {
+
             if ( isMounted ) {
                 if ( type.length === 1 ) {
                     try {
@@ -48,9 +50,9 @@ const ResistanceWeakness = ( { type } ) => {
         }
 
         fetchData();
-    return () => {
-      isMounted = false;
-    };
+        return () => {
+            isMounted.current = false;
+        };
 
     }, [ type ] );
 
@@ -179,19 +181,19 @@ const ResistanceWeakness = ( { type } ) => {
 
         twoTypes = (
             <div>
-                {damage.oneFourth.length !== 0 ? <Damage damageList={ damage.oneFourth } timesDamage='1/4x' /> : null }
+                { damage.oneFourth.length !== 0 ? <Damage damageList={ damage.oneFourth } timesDamage='1/4x' /> : null }
 
                 <hr />
 
-                {damage.oneHalf.length !== 0 ? <Damage damageList={ damage.oneHalf } timesDamage='1/2x' /> : null }
+                { damage.oneHalf.length !== 0 ? <Damage damageList={ damage.oneHalf } timesDamage='1/2x' /> : null }
 
                 <hr />
 
-                {damage.double.length !== 0 ? <Damage damageList={ damage.double } timesDamage='2x' /> : null }
+                { damage.double.length !== 0 ? <Damage damageList={ damage.double } timesDamage='2x' /> : null }
 
                 <hr />
 
-                {damage.quadruple.length !== 0 ? <Damage damageList={ damage.quadruple } timesDamage='4x' /> : null }
+                { damage.quadruple.length !== 0 ? <Damage damageList={ damage.quadruple } timesDamage='4x' /> : null }
             </div >
         )
     }

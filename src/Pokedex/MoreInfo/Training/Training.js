@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './Training.module.css';
 import axios from 'axios';
 
 const Training = ( { data } ) => {
+    const isMounted = useRef(false);
     const [ maxExperience, setMaxExperience ] = useState( {} );
     let url = data.grouthRate.url;
     let experience;
 
     useEffect( () => {
-        let isMounted = true;
+        isMounted.current = true;
         const fetchData = async () => {
             if ( isMounted ) {
                 try {
@@ -24,7 +25,7 @@ const Training = ( { data } ) => {
         }
         fetchData();
         return () => {
-            isMounted = false;
+            isMounted.current = false;
           };
     }, [ url ] );
 
