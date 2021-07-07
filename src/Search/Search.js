@@ -1,5 +1,3 @@
-//import icon from '../img/icons/loupe.png'
-
 //found the autocomplete logic online
 import React, { useState } from 'react';
 import InputGroup from 'react-bootstrap/InputGroup';
