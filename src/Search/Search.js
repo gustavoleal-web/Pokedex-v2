@@ -21,25 +21,25 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
         fontWeight: '700'
     }
 
-    const [ isDisbled, setIsDisabled ] = useState( true );
+    const [ isDisabled, setIsDisabled ] = useState( true );
 
     const onChangeHandler = ( e ) => {
         let userInput = e.target.value;
 
         if ( userInput.length > 2 && state.filteredOptions.length !== 0 ) {
-            setIsDisabled( false );
+            setIsDisabled( () => ( false ) );
         }
         else {
-            setIsDisabled( true );
+            setIsDisabled( () => ( true ) );
         }
 
         if ( userInput.length === 0 ) {
-            setState( {
+            setState( () => ( {
                 filteredOptions: [],
                 showOptions: true,
                 userInput: ''
-            } );
-            setIsDisabled( true );
+            } ) )
+            setIsDisabled( () => ( true ) );
         }
 
         else {
@@ -54,17 +54,24 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
             } );
 
             if ( onlyUserInputPokemos.length === 0 ) {
-                setIsDisabled( true );
+                setIsDisabled( () => ( true ) );
+            }
+            else if ( onlyUserInputPokemos.length !== 0 && userInput.length > 2 ) {
+                setIsDisabled( () => ( false ) );
             }
 
-            setState( {
+            // setState( {
+            //     filteredOptions: onlyUserInputPokemos,
+            //     showOptions: true,
+            //     userInput: userInput,
+            // } );
+
+            setState( () => ( {
                 filteredOptions: onlyUserInputPokemos,
                 showOptions: true,
-                userInput: userInput,
-            } );
+                userInput: e.target.value
+            } ) );
         }
-
-
     }
 
     const onClickHandler = ( value ) => {
@@ -83,6 +90,7 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
             showOptions: false,
             userInput: ''
         } );
+        setIsDisabled( true );
     }
 
     const onKeyDownHandler = ( e ) => {
@@ -98,6 +106,7 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
                     showOptions: false,
                     userInput: ''
                 } );
+                setIsDisabled( true );
             }
         }
     }
@@ -152,6 +161,7 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
 
 
     return (
+
         <>
             <InputGroup className='mb-3' style={ {
                 margin: 'auto',
@@ -170,7 +180,7 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
                 <InputGroup.Append>
                     <Button
                         style={ varStyles }
-                        disabled={ isDisbled }
+                        disabled={ isDisabled }
                         onClick={ buttonHandler }>
                         Search
                     </Button>
