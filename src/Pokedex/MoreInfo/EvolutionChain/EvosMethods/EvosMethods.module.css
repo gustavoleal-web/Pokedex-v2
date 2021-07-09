@@ -1,11 +1,17 @@
 .pokeSprite {
     width: max-content;
-    margin-left: 55px;
+}
+
+.pokeball {
+    height: 96px;
+    width: 96px;
+    margin-top: 20px;
 }
 
 .card {
     width: 14rem;
     margin-bottom: 20px;
+    align-items: center;
 }
 
 .basePokemonContainer {
