@@ -2,22 +2,23 @@ import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 
 const AlternateForms = ( { pokeForms } ) => {
-    const isMounted = useRef(false);
     const [ alternatives, setAlternatives ] = useState( '' );
+    const [ error, setError ] = useState( false );
+    const isMounted = useRef( false );
     let formName = 'normal';
 
     useEffect( () => {
-       isMounted.current = true;
+        isMounted.current = true;
 
         const fetchData = async () => {
             if ( isMounted ) {
                 try {
-                    let pokemon = await axios.get( `${ pokeForms.url }` )
+                    let pokemon = await axios.get( `${ pokeForms.url }` );
                     let fetchedPokeForm = pokemon.data;
                     setAlternatives( fetchedPokeForm );
                 }
                 catch ( e ) {
-                    console.log( e );
+                    setError( true );
                 }
             }
 
@@ -28,6 +29,10 @@ const AlternateForms = ( { pokeForms } ) => {
         };
 
     }, [ pokeForms ] )
+
+    if ( error ) {
+        return <h6>Something went wrong. Try again later.</h6>
+    }
 
     if ( alternatives.form_name ) {
         formName = alternatives.form_name;
