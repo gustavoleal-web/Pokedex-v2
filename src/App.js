@@ -115,7 +115,7 @@ const App = () => {
                     setNationalPokedex( pokemonEntries );
                 }
                 catch ( e ) {
-                    console.log( e );
+                    setNotFound( true );
                 }
             }
 
