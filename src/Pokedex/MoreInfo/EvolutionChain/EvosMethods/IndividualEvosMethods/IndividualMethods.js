@@ -1,16 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Pokedex from '../../../../Pokedex'
 import styles from './individualMethos.module.css'
+import pokeball from '../../../../../img/icons/pokeball.png';
 
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import Card from 'react-bootstrap/Card';
 
 const IndividualMethods = ( { obj, id } ) => {
-    const isMounted = useRef(false);
+    const isMounted = useRef( false );
     const [ clickedPokemon, setClickedPokemon ] = useState( null );
-    const [ sprite, setSprite ] = useState( null );
+    const [ sprite, setSprite ] = useState( {
+        frontView: null,
+        styles: null
+    } );
+
     const [ itemSprite, setItemSprite ] = useState( null );
+
     let pokemonName;
     let evolutionInfo;
 
@@ -47,15 +53,24 @@ const IndividualMethods = ( { obj, id } ) => {
             if ( isMounted ) {
                 try {
                     let pokemon = await axios.get( ` https://pokeapi.co/api/v2/pokemon-form/${ renamedObj.evolution }/` );
-                    setSprite( pokemon.data.sprites.front_default )
+                    setSprite( {
+                        frontView: pokemon.data.sprites.front_default,
+                        styles: styles.pokeSprite
+                    } );
                 }
                 catch ( e ) {
                     try {
                         let pokemon = await axios.get( ` https://pokeapi.co/api/v2/pokemon-form/${ id }/` );
-                        setSprite( pokemon.data.sprites.front_default )
+                        setSprite( {
+                            frontView: pokemon.data.sprites.front_default,
+                            styles: styles.pokeSprite
+                        } );
                     }
                     catch ( e ) {
-                        console.log( e )
+                        setSprite( {
+                            frontView: pokeball,
+                            styles: styles.pokeball
+                        } );
                     }
                 }
             }
@@ -102,9 +117,9 @@ const IndividualMethods = ( { obj, id } ) => {
                     sprite === null
                         ? null
                         : <Card.Img variant="top"
-                            bsPrefix={ styles.pokeSprite }
-                            className={ styles.pokeSprite }
-                            src={ `${ sprite }` }
+                            bsPrefix={ sprite.styles }
+                            className={ sprite.styles }
+                            src={ `${ sprite.frontView }` }
                             onClick={ () =>
                                 onClickHandler( renamedObj.evolution ) }
 

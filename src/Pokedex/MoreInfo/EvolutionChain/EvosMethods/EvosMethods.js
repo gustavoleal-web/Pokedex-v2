@@ -4,10 +4,14 @@ import Pokedex from '../../../Pokedex';
 import styles from './EvosMethods.module.css';
 import axios from 'axios';
 import Card from 'react-bootstrap/Card';
+import pokeball from '../../../../img/icons/pokeball.png';
 
 const EvosMethods = ( { methods, id } ) => {
-    const isMounted = useRef(false);
-    const [ sprite, setSprite ] = useState( null );
+    const isMounted = useRef( false );
+    const [ sprite, setSprite ] = useState( {
+        frontView: null,
+        styles: null
+    } );
     const [ clickedPokemon, setClickedPokemon ] = useState( null );
 
     let allWaysToEvolve = [];
@@ -21,7 +25,6 @@ const EvosMethods = ( { methods, id } ) => {
         )
     }
 
-
     useEffect( () => {
         isMounted.current = true;
 
@@ -29,10 +32,16 @@ const EvosMethods = ( { methods, id } ) => {
             if ( isMounted ) {
                 try {
                     let pokemon = await axios.get( ` https://pokeapi.co/api/v2/pokemon-form/${ methods[ 0 ].name }/` );
-                    setSprite( pokemon.data.sprites.front_default )
+                    setSprite( {
+                        frontView: pokemon.data.sprites.front_default,
+                        styles: styles.pokeSprite
+                    } )
                 }
                 catch ( e ) {
-                    console.log( e );
+                    setSprite( {
+                        frontView: pokeball,
+                        styles: styles.pokeball
+                    } );
                 }
             }
         }
@@ -73,10 +82,10 @@ const EvosMethods = ( { methods, id } ) => {
         <div className={ styles.flex }>
             <Card className={ styles.card }>
                 <Card.Img
-                    variant="top" src={ `${ sprite }` }
-                    bsPrefix={ styles.pokeSprite }
+                    variant='top' src={ `${ sprite.frontView }` }
+                    bsPrefix={ sprite.styles }
                     onClick={ () => onClickHandler( methods[ 0 ].name ) }
-                    className={ styles.pokeSprite }
+                    className={ sprite.styles }
                 />
                 <Card.Body className={ styles.basePokemonContainer }>
                     <Card.Title>{ basePokemon }</Card.Title>
@@ -87,7 +96,7 @@ const EvosMethods = ( { methods, id } ) => {
 
             {
                 allWaysToEvolve.length === 0 ? null : allWaysToEvolve.map( ( object, i ) =>
-                    <IndividualMethods obj={ object } key={ i } id={id}/> )
+                    <IndividualMethods obj={ object } key={ i } id={ id } /> )
             }
         </div >
     )
