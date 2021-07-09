@@ -94,18 +94,14 @@ const MoreInfo = ( {
                 let pokemon;
                 try {
                     pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon-species/${ id }/` );
-
-                    //getAndSetState( pokemon );
                 }
                 catch {
                     try {
                         pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon-species/${ name }/` );
-                        //getAndSetState( pokemon );
                     }
                     catch {
                         try {
                             pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon-species/${ globalRearangedId }/` );
-                            //getAndSetState( pokemon );
                         }
                         catch {
                             setError( true );
@@ -138,11 +134,11 @@ const MoreInfo = ( {
                 } = pokemon.data );
 
 
-                let fetchedPokedEntries = {};
+                let fetchedPokedexEntries = {};
                 ( {
-                    flavor_text_entries: fetchedPokedEntries.pokedexTextEntries,
-                    genera: fetchedPokedEntries.genus,
-                    generation: fetchedPokedEntries.generation
+                    flavor_text_entries: fetchedPokedexEntries.pokedexTextEntries,
+                    genera: fetchedPokedexEntries.genus,
+                    generation: fetchedPokedexEntries.generation
                 } = pokemon.data );
 
                 let fetchedEggData = {};
@@ -150,22 +146,14 @@ const MoreInfo = ( {
                 ( {
                     egg_groups: fetchedEggData.eggGroups,
                     hatch_counter: fetchedEggData.hatchCounter
-                } = pokemon.data )
-
-                // setState( {
-                //     ...state,
-                //     evolutionChainUrl: fetchedEvoChainURL,
-                //     trainingData: fetechedTraining,
-                //     eggData: fetchedEggData,
-                //     pokedexEntries: fetchedPokedEntries
-                // } )
+                } = pokemon.data );
 
                 setState( state => (
                     {
                         ...state, evolutionChainUrl: fetchedEvoChainURL,
                         trainingData: fetechedTraining,
                         eggData: fetchedEggData,
-                        pokedexEntries: fetchedPokedEntries
+                        pokedexEntries: fetchedPokedexEntries
                     }
                 ) );
 
@@ -179,9 +167,8 @@ const MoreInfo = ( {
 
     }, [ id, name, globalRearangedId ] );
 
-
-
     let showSpritesVersion = null;
+    let showPokedexEntries = null;
     let showTypes = null;
     let showGender = null;
     let shoWabilities = null;
@@ -194,6 +181,15 @@ const MoreInfo = ( {
     let showDamage = null;
     let showMoves = null;
 
+    if ( error ) {
+        showEvolution = <h6>Something went wrong. Try again later.</h6>
+        showPokedexEntries = <h6>Something went wrong. Try again later.</h6>
+    }
+
+    else {
+        showEvolution = <EvolutionChain evolutionChainUrl={ state.evolutionChainUrl } id={ id } />
+
+    }
 
     if ( sprites.versions[ 'generation-viii' ].icons.front_default ) {
         showSpritesVersion =
@@ -217,6 +213,10 @@ const MoreInfo = ( {
                 className={ `${ type1 } ${ styles.fill }` }>
                 { types[ 0 ].type.name }
             </p>
+    }
+
+    if ( Object.keys( state.pokedexEntries ).length !== 0 ) {
+        showPokedexEntries = <PokedexEntries pokedexData={ state.pokedexEntries } />
     }
 
     if ( gender === 'genderless' ) {
@@ -301,21 +301,10 @@ const MoreInfo = ( {
 
     }
 
-    showEvolution =
-        <Modal.Body style={ { display: 'block' } }>
-            <hr className={ `${ styles.hrEvolution } ${ styles.hrMargin }` } />
-            <EvolutionChain evolutionChainUrl={ state.evolutionChainUrl } id={ id } />
-        </Modal.Body>
 
     if ( moves.length !== 0 ) {
         showMoves = <Moves moves={ moves } />
     }
-
-
-    if ( error ) {
-        console.log( 'Oopps something went wrong.' )
-    }
-
 
     const showSelectedHandler = ( component, name ) => {
         let disabledCopy = { ...disabled };
@@ -389,12 +378,7 @@ const MoreInfo = ( {
                 <span style={ { fontSize: '18px', textAlign: 'center' } }>
                     <Modal.Body>
                         <hr className={ `${ styles.hrGeneral } ${ styles.hrMargin }` } />
-                        {
-                            Object.keys( state.pokedexEntries ).length !== 0
-                                ? <PokedexEntries pokedexData={ state.pokedexEntries } />
-                                : <h5>Loading...</h5>
-                        }
-
+                        { showPokedexEntries }
                         { showTypes }
 
                         <span className={ styles.pokedexSizeWeight }>
@@ -410,15 +394,16 @@ const MoreInfo = ( {
                             </span>
 
                         </span>
-
-
                     </Modal.Body>
-
-
 
                     { shoWabilities }
                     { showTraining }
-                    { showEvolution }
+                    
+                    <Modal.Body style={ { display: 'block' } }>
+                        <hr className={ `${ styles.hrEvolution } ${ styles.hrMargin }` } />
+                        { showEvolution }
+                    </Modal.Body>
+
                     { showBreeding }
 
                 </span>
