@@ -10,7 +10,7 @@ import Spinner from 'react-bootstrap/Spinner';
 //import Button from 'react-bootstrap/Button';
 
 const Pokedex = ( { id } ) => {
-    const isMounted = useRef(false);
+    const isMounted = useRef( false );
     const [ state, setState ] = useState( [] );
     const [ type1, setType1 ] = useState( '' );
     const [ type2, setType2 ] = useState( '' );
@@ -68,12 +68,11 @@ const Pokedex = ( { id } ) => {
                     else { throw new Error( 'could not reach url' ) }
                 }
             }
-            return () => {
-                isMounted.current = false;
-            };
-
         }
         fetchData();
+        return () => {
+            isMounted.current = false;
+        };
 
     }, [ id ] );
 
