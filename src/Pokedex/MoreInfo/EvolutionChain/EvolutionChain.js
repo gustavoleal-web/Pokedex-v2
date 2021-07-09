@@ -6,6 +6,7 @@ import axios from 'axios';
 const EvolutionChain = ( { evolutionChainUrl, clickedPoke, id } ) => {
     const isMounted = useRef( false );
     const [ methods, setMethods ] = useState( [] );
+    const [ error, setError ] = useState( false );
 
     useEffect( () => {
         isMounted.current = true;
@@ -24,7 +25,7 @@ const EvolutionChain = ( { evolutionChainUrl, clickedPoke, id } ) => {
 
                 }
                 catch ( e ) {
-                    console.log( e );
+                    setError( true )
                 }
             }
         }
@@ -35,16 +36,17 @@ const EvolutionChain = ( { evolutionChainUrl, clickedPoke, id } ) => {
 
     }, [ evolutionChainUrl ] );
 
-    if ( methods.length === 0 ) {
+    if ( error ) {
+        return <h6>Something went wrong. Try again later.</h6>
+    }
+
+    else if ( methods.length === 0 ) {
         return <p>This Pokemon does not evolve.</p>
     }
 
     else {
         return <EvosMethods methods={ methods } clickedPoke={ clickedPoke } id={ id } />
     }
-
-
 }
-
 
 export default EvolutionChain;
