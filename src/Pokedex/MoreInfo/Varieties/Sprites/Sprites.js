@@ -21,12 +21,12 @@ const Sprites = ( { url, retrieveById } ) => {
                     console.log( e )
                 }
             }
-            return () => {
-                isMounted.current = false;
-            };
-
         }
         fetchData();
+        return () => {
+            isMounted.current = false;
+        };
+
 
     }, [ url ] );
 
