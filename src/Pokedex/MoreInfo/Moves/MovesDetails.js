@@ -25,12 +25,11 @@ const MoveDetails = ( { name, level, learnMethod } ) => {
                     console.log( e )
                 }
             }
-            return () => {
-                isMounted.current = false;
-            };
-
         }
         fetchData();
+        return () => {
+            isMounted.current = false;
+        };
 
     }, [ name ] );
 
@@ -53,12 +52,11 @@ const MoveDetails = ( { name, level, learnMethod } ) => {
                     console.log( e )
                 }
             }
-            return () => {
-                isMounted.current = false;
-            };
-
         }
         fetchData();
+        return () => {
+            isMounted.current = false;
+        };
 
     }, [ allMoveInfo, learnMethod ] );
 
