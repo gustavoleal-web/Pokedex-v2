@@ -6,6 +6,7 @@ const Abilities = ( { abilities } ) => {
     const [ state, setState ] = useState( {
         effect: ''
     } );
+
     const cssStyles = {
         minWidth: '250px',
         maxWidth: '300px',
@@ -14,6 +15,8 @@ const Abilities = ( { abilities } ) => {
         padding: '0',
         fontWeight: 'bold'
     }
+
+    const [ error, setError ] = useState( false );
 
     const fetchAbilityData = async ( url ) => {
         try {
@@ -37,26 +40,35 @@ const Abilities = ( { abilities } ) => {
 
         }
         catch ( e ) {
-            console.log( e );
+            setError( true );
         }
 
 
     }
-    return (
-        <>
-            {
-                abilities.map( ability =>
-                    <Button onClick={ () => fetchAbilityData( ability.url ) }
-                        variant='outline-secondary'
-                        key={ ability.name }
-                        style={ cssStyles }>{ ability.name }
-                    </Button> )
-            }
-            { state ? <p style={ { marginTop: '10px' } }>{ state.effect }</p> : null }
-        </>
+
+    if ( error ) {
+        return <h6>Something went wrong. Try again later.</h6>
+    }
+
+    else {
+        return (
+            <>
+                {
+                    abilities.map( ability =>
+                        <Button onClick={ () => fetchAbilityData( ability.url ) }
+                            variant='outline-secondary'
+                            key={ ability.name }
+                            style={ cssStyles }>{ ability.name }
+                        </Button> )
+                }
+                { state ? <p style={ { marginTop: '10px' } }>{ state.effect }</p> : null }
+            </>
 
 
-    )
+        )
+    }
+
+
 }
 
 export default Abilities;
