@@ -7,6 +7,11 @@ const Varieties = ( { varieties } ) => {
     const [ form, setForms ] = useState( null );
     const varietiesCopy = [ ...varieties ];
 
+    if ( varieties.length === 1 ) {
+        return <h6 className={ styles.noVarieties }>This pokemon does not have different varieties.</h6>;
+    }
+
+
     for ( let key in varietiesCopy ) {
         if ( !varieties[ key ].is_default ) {
             let updateName = varieties[ key ].pokemon.name.split( '-' );
