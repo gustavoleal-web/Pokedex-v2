@@ -57,15 +57,17 @@ const App = () => {
         let cutPokedex = nationalPokedex.slice( pekedexStart[ pokedex ][ 0 ], pekedexStart[ pokedex ][ 1 ] );
         setSelectedPokedex( cutPokedex );
         setNotFound( false );
-        setPokemonByType( [] );
         setSelectedType( null );
+        setPokemonByType( [] );
         setPokemonByColor( [] );
+        setPokemonEggGroup( [] );
     }
 
     const setPokedexByTypeHandler = ( type ) => {
         setNotFound( false );
         setSelectedPokedex( [] );
         setPokemonByColor( [] );
+        setPokemonEggGroup( [] );
         setSelectedType( type );
     }
 
@@ -73,6 +75,7 @@ const App = () => {
         setNotFound( false );
         setSelectedPokedex( [] );
         setPokemonByType( [] );
+        setPokemonEggGroup( [] );
         setSelectedColor( color );
 
     }
@@ -101,6 +104,9 @@ const App = () => {
         foundMatches.length === 0 ? setNotFound( true ) : setNotFound( false );
 
         setSelectedPokedex( foundMatches );
+        setPokemonByType( [] );
+        setPokemonByColor( [] );
+        setPokemonEggGroup( [] );
     }
 
     //NATIONAL POKEDEX 
@@ -130,7 +136,7 @@ const App = () => {
     useEffect( () => {
         isMounted.current = true;
         const fetchData = async () => {
-            if ( isMounted && selectedType !== null ) {
+            if ( isMounted.current && selectedType !== null ) {
                 try {
                     let pokemon = await axios.get( `https://pokeapi.co/api/v2/type/${ selectedType }` );
                     setPokemonByType( pokemon.data.pokemon );
@@ -150,7 +156,7 @@ const App = () => {
     useEffect( () => {
         isMounted.current = true;
         const fetchData = async () => {
-            if ( isMounted && selectedColor !== null ) {
+            if ( isMounted.current && selectedColor !== null ) {
                 try {
                     let pokemon = await axios.get(
                         `https://pokeapi.co/api/v2/pokemon-color/${ selectedColor }` );
@@ -180,8 +186,9 @@ const App = () => {
     useEffect( () => {
         isMounted.current = true;
         const fetchData = async () => {
-            if ( isMounted && eggGroup !== null ) {
+            if ( isMounted.current && eggGroup !== null ) {
                 try {
+                   
                     let pokemon = await axios.get(
                         `https://pokeapi.co/api/v2/egg-group/${ eggGroup }/` );
 
