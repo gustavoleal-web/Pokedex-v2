@@ -6,8 +6,7 @@ import axios from 'axios';
 import styles from './Pokedex.module.css';
 import stylesTypes from './pokeTypes.module.css'
 import backgroundTypes from './pokeTypesBackgrondColor.module.css'
-import Spinner from 'react-bootstrap/Spinner';
-//import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';S
 
 const Pokedex = ( { id } ) => {
     const isMounted = useRef( false );
@@ -23,7 +22,7 @@ const Pokedex = ( { id } ) => {
     //from react-strap
     const [ lgShow, setLgShow ] = useState( false );
     const showModalHandler = ( bool ) => {
-        setLgShow( bool )
+        setLgShow( bool );
     }
 
     const setStateFromReq = ( pokemonData ) => {
@@ -36,18 +35,18 @@ const Pokedex = ( { id } ) => {
         }
 
         if ( fetchedPokemon.types.length === 2 ) {
-            setType1( stylesTypes[ fetchedPokemon.types[ 0 ].type.name ] )
-            setType2( stylesTypes[ fetchedPokemon.types[ 1 ].type.name ] )
+            setType1( stylesTypes[ fetchedPokemon.types[ 0 ].type.name ] );
+            setType2( stylesTypes[ fetchedPokemon.types[ 1 ].type.name ] );
         }
         else {
-            setType1( stylesTypes[ fetchedPokemon.types[ 0 ].type.name ] )
+            setType1( stylesTypes[ fetchedPokemon.types[ 0 ].type.name ] );
         }
     }
 
     useEffect( () => {
         isMounted.current = true;
         const fetchData = async () => {
-            if ( isMounted ) {
+            if ( isMounted.current ) {
                 try {
                     //some file paths need the / at the end
                     //the api has some pokemon without the / at the end
@@ -55,7 +54,7 @@ const Pokedex = ( { id } ) => {
                     let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon/${ id }/` );
 
                     if ( pokemon.status === 200 ) {
-                        setStateFromReq( pokemon.data )
+                        setStateFromReq( pokemon.data );
                     }
                 }
                 catch ( e ) {
@@ -63,7 +62,7 @@ const Pokedex = ( { id } ) => {
                     let pokemon = await axios.get( `https://pokeapi.co/api/v2/pokemon/${ id }` );
 
                     if ( pokemon.status === 200 ) {
-                        setStateFromReq( pokemon.data )
+                        setStateFromReq( pokemon.data );
                     }
                     else { throw new Error( 'could not reach url' ) }
                 }
