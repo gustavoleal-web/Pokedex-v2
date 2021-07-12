@@ -87,7 +87,6 @@ const MoreInfo = ( {
 
 
     useEffect( () => {
-        // let isMounted = true;
         isMounted.current = true;
         const fetchData = async () => {
             if ( isMounted.current ) {
@@ -333,8 +332,11 @@ const MoreInfo = ( {
                 <Modal.Header
                     closeButton
                     className={ backgroundColor }>
-                    <p className={ styles.pokeNameHeader }>{ pokeName.toUpperCase() }</p>
-                    { showSpritesVersion }
+                    <span style={ { display: 'flex', alignItems: 'baseline' } }>
+                        <p className={ styles.pokeNameHeader }>{ pokeName.toUpperCase() }</p>
+                        { showSpritesVersion }
+                    </span>
+
                 </Modal.Header>
 
 
@@ -398,7 +400,7 @@ const MoreInfo = ( {
 
                     { shoWabilities }
                     { showTraining }
-                    
+
                     <Modal.Body style={ { display: 'block' } }>
                         <hr className={ `${ styles.hrEvolution } ${ styles.hrMargin }` } />
                         { showEvolution }
