@@ -11,7 +11,7 @@ const AlternateForms = ( { pokeForms } ) => {
         isMounted.current = true;
 
         const fetchData = async () => {
-            if ( isMounted ) {
+            if ( isMounted.current ) {
                 try {
                     let pokemon = await axios.get( `${ pokeForms.url }` );
                     let fetchedPokeForm = pokemon.data;
