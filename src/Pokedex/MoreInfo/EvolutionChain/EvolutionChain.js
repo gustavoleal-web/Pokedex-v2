@@ -11,7 +11,7 @@ const EvolutionChain = ( { evolutionChainUrl, clickedPoke, id } ) => {
     useEffect( () => {
         isMounted.current = true;
         const fetchData = async () => {
-            if ( isMounted ) {
+            if ( isMounted.current ) {
                 let evosAndAlternative;
                 try {
                     let pokemon = await axios.get( evolutionChainUrl );
