@@ -6,7 +6,7 @@ import axios from 'axios';
 import styles from './Pokedex.module.css';
 import stylesTypes from './pokeTypes.module.css'
 import backgroundTypes from './pokeTypesBackgrondColor.module.css'
-import Spinner from 'react-bootstrap/Spinner';S
+import Spinner from 'react-bootstrap/Spinner';
 
 const Pokedex = ( { id } ) => {
     const isMounted = useRef( false );
