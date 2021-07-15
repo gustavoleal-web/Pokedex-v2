@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Pokedex from '../../../../Pokedex'
 import styles from './individualMethos.module.css'
 import pokeball from '../../../../../img/icons/pokeball.png';
+import smallPokeball from '../../../../../img/icons/small_pokeball.png';
 
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
@@ -50,7 +51,7 @@ const IndividualMethods = ( { obj, id } ) => {
         isMounted.current = true;
 
         const fetchData = async () => {
-            if ( isMounted ) {
+            if ( isMounted.current ) {
                 try {
                     let pokemon = await axios.get( ` https://pokeapi.co/api/v2/pokemon-form/${ renamedObj.evolution }/` );
                     setSprite( {
@@ -84,19 +85,19 @@ const IndividualMethods = ( { obj, id } ) => {
     }, [ renamedObj.evolution, id ] );
 
 
-    //ITMES
+    //ITEMS
     useEffect( () => {
         isMounted.current = true;
 
         const fetchData = async () => {
 
-            if ( isMounted && Object.keys( obj ).includes( 'item' ) ) {
+            if ( isMounted.current && Object.keys( obj ).includes( 'item' ) ) {
                 try {
                     let item = await axios.get( ` https://pokeapi.co/api/v2/item/${ obj.item }/` );
-                    setItemSprite( item.data.sprites.default )
+                    setItemSprite( item.data.sprites.default );
                 }
                 catch ( e ) {
-                    console.log( e );
+                    setItemSprite( smallPokeball );
                 }
             }
         }
@@ -160,7 +161,7 @@ const IndividualMethods = ( { obj, id } ) => {
                                 evolutionInfo =
                                     <Card.Text key={ uuidv4() }>
                                         { `${ key.replaceAll( '_', ' ' ) }: ${ renamedObj[ key ] }` }
-                                        { itemSprite !== null ? <img src={ `${ itemSprite }` } alt="item" /> : null }
+                                        { itemSprite !== null ? <img src={ `${ itemSprite }` } alt='item' style={ { marginLeft: '5px' } } /> : null }
                                     </Card.Text>
 
 
