@@ -3,13 +3,13 @@ import axios from 'axios';
 import styles from './Sprites.module.css';
 
 const Sprites = ( { url, retrieveById } ) => {
-    const isMounted = useRef(false);
+    const isMounted = useRef( false );
     const [ sprite, setSprites ] = useState( null );
 
     useEffect( () => {
-         isMounted.current = true;
+        isMounted.current = true;
         const fetchData = async () => {
-            if ( isMounted ) {
+            if ( isMounted.current ) {
                 try {
                     let pokemon = await axios.get( url );
 
