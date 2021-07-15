@@ -10,13 +10,18 @@ const SelectedSearchOption = ( {
   pokedexByEggGroup,
 
 } ) => {
+  let style = styles.smallPokemonsContainer;
+  
+  if ( selectedPokedex.length > 10 ) {
+    style = styles.pokemonsContainer;
+  }
 
   return (
 
     <div className={ styles.container }>
 
       { selectedPokedex.length !== 0
-        ? <div className={ styles.pokemonsContainer } >
+        ? <div className={ style } >
 
           { selectedPokedex.map( pokemon =>
             <Pokedex
