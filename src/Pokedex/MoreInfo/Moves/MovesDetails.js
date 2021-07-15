@@ -3,26 +3,26 @@ import axios from 'axios';
 import styles from './MoveDetails.module.css';
 
 const MoveDetails = ( { name, level, learnMethod } ) => {
-    const isMounted = useRef(false);
+    const isMounted = useRef( false );
     const [ allMoveInfo, setAllMoveInfo ] = useState( {} );
     const [ tm, setTm ] = useState( {} );
-    //these tables are shortes so the appropriate container class will accommodate for it
+    const [ error, setError ] = useState( false );
+    //these tables are shorter so the appropriate container class will accommodate for it
     let tableSize = ( learnMethod === 'tutor' || learnMethod === 'egg' ) ? styles.container2 : styles.container;
 
     useEffect( () => {
-         isMounted.current = true;
+        isMounted.current = true;
         const fetchData = async () => {
-            if ( isMounted ) {
+            if ( isMounted.current ) {
                 try {
                     let pokemon = await axios.get(
                         `https://pokeapi.co/api/v2/move/${ name }/` );
 
-                    if ( pokemon.status === 200 ) {
-                        setAllMoveInfo( pokemon.data )
-                    }
+                    setAllMoveInfo( pokemon.data );
+
                 }
                 catch ( e ) {
-                    console.log( e )
+                    setError( true );
                 }
             }
         }
@@ -35,21 +35,21 @@ const MoveDetails = ( { name, level, learnMethod } ) => {
 
 
     useEffect( () => {
-         isMounted.current = true;
+        isMounted.current = true;
         const fetchData = async () => {
-            if ( isMounted && Object.keys( allMoveInfo ).length !== 0 && learnMethod === 'machine' ) {
+            if ( isMounted.current && Object.keys( allMoveInfo ).length !== 0 && learnMethod === 'machine' ) {
 
                 try {
                     let url = allMoveInfo.machines[ allMoveInfo.machines.length - 1 ].machine.url;
                     let pokemon = await axios.get( url );
 
                     if ( pokemon.status === 200 ) {
-                        setTm( pokemon.data )
+                        setTm( pokemon.data );
                     }
 
                 }
                 catch ( e ) {
-                    console.log( e )
+                    setError( true );
                 }
             }
         }
@@ -60,10 +60,15 @@ const MoveDetails = ( { name, level, learnMethod } ) => {
 
     }, [ allMoveInfo, learnMethod ] );
 
+    if ( error ) {
+        return <h6><span style={ { fontWeight: 'bold' } }>{ name }</span> data could not be loaded.</h6>
+    }
+
+
     let levelOrTm;
 
     if ( Object.keys( allMoveInfo ).length !== 0 && Object.keys( tm ).length !== 0 ) {
-        let tmNumber = tm.item.name.slice(2)
+        let tmNumber = tm.item.name.slice( 2 )
         levelOrTm = <p className={ styles.start }>{ tmNumber }</p>
     }
     //so the value 0 is not displayed in the pokemon level column it will be assinged null
