@@ -3,22 +3,30 @@ import styles from './Training.module.css';
 import axios from 'axios';
 
 const Training = ( { data } ) => {
-    const isMounted = useRef(false);
-    const [ maxExperience, setMaxExperience ] = useState( {} );
+    const isMounted = useRef( false );
+    const [ error, setError ] = useState( false );
+    const [ maxExperience, setMaxExperience ] = useState( {
+        experience: 0,
+        level: 0
+    } );
+
     let url = data.grouthRate.url;
     let experience;
 
     useEffect( () => {
         isMounted.current = true;
         const fetchData = async () => {
-            if ( isMounted ) {
+            if ( isMounted.current ) {
                 try {
                     let pokemon = await axios.get( url );
-                    setMaxExperience( pokemon.data.levels[ 99 ] );
+                    setMaxExperience( {
+                        experience: pokemon.data.levels[ 99 ].experience,
+                        level: pokemon.data.levels[ 99 ].level
+                    } );
                 }
 
                 catch ( e ) {
-                    console.log( e )
+                    setError( true );
                 }
             }
 
@@ -26,13 +34,17 @@ const Training = ( { data } ) => {
         fetchData();
         return () => {
             isMounted.current = false;
-          };
+        };
     }, [ url ] );
 
-    if ( maxExperience.experience ) {
+    if ( error ) {
+        experience = <h6>Error. Could not fetch info.</h6>
+    }
+
+    else if ( maxExperience.experience !== 0 ) {
         //found RegEx online -> adds commas to the value. 
         //in this case 1000000 -> 1,000,000
-        experience = maxExperience.experience.toString().replace( /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, "," );
+        experience = <span>{ maxExperience.experience.toString().replace( /\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, "," ) }</span>
     }
 
     return (
@@ -44,7 +56,7 @@ const Training = ( { data } ) => {
             <p>Growth Rate: </p>
             <span>{ data.grouthRate.name }</span>
             <p>Experience to reach Lv { maxExperience.level }: </p>
-            <span>{ experience }</span>
+            { experience }
 
         </div>
     )
