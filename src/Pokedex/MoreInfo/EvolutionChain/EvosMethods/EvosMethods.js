@@ -29,7 +29,7 @@ const EvosMethods = ( { methods, id } ) => {
         isMounted.current = true;
 
         const fetchData = async () => {
-            if ( isMounted ) {
+            if ( isMounted.current ) {
                 try {
                     let pokemon = await axios.get( ` https://pokeapi.co/api/v2/pokemon-form/${ methods[ 0 ].name }/` );
                     setSprite( {
