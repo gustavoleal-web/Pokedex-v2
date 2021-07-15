@@ -6,6 +6,7 @@ import axios from 'axios';
 const ResistanceWeakness = ( { type } ) => {
     const isMounted = useRef( false );
     const [ state, setState ] = useState( [] );
+    const [ error, setError ] = useState( false );
     let oneType;
     let twoTypes;
 
@@ -14,18 +15,18 @@ const ResistanceWeakness = ( { type } ) => {
 
         const fetchData = async () => {
 
-            if ( isMounted ) {
+            if ( isMounted.current ) {
                 if ( type.length === 1 ) {
                     try {
                         //the api can't fetched the url if it has a '/' at the end to it is removed
-                        const editedUrl = type[ 0 ].type.url.slice( 0, -1 )
-                        let pokemon = await axios.get( editedUrl )
-                        let arr = [ pokemon.data ]
+                        const editedUrl = type[ 0 ].type.url.slice( 0, -1 );
+                        let pokemon = await axios.get( editedUrl );
+                        let arr = [ pokemon.data ];
                         setState( arr )
 
                     }
                     catch ( e ) {
-                        console.log( e );
+                        setError( true );
                     }
                 }
                 else if ( type.length === 2 ) {
@@ -43,7 +44,7 @@ const ResistanceWeakness = ( { type } ) => {
                         setState( arr )
                     }
                     catch ( e ) {
-                        console.log( e );
+                        setError( true );
                     }
                 }
             }
@@ -56,28 +57,29 @@ const ResistanceWeakness = ( { type } ) => {
 
     }, [ type ] );
 
+
+    if ( error ) {
+        return <h6 style={ { textAlign: 'center' } }>Error. Could not load data. Try again later.</h6>
+    }
+
+
     if ( state.length === 1 ) {
         let damageRelations = state[ 0 ].damage_relations;
 
         oneType = (
             <div>
-
                 {
                     damageRelations.no_damage_from.length !== 0
                         ? <Damage damageList={ damageRelations.no_damage_from } timesDamage='0x' />
                         : null
                 }
-
                 <hr />
-
-
                 {
                     damageRelations.half_damage_from.length !== 0
                         ? <Damage damageList={ damageRelations.half_damage_from } timesDamage='1/2x' />
                         : null
                 }
                 <hr />
-
                 {
                     damageRelations.double_damage_from.length !== 0
                         ? <Damage damageList={ damageRelations.double_damage_from } timesDamage='2x' />
