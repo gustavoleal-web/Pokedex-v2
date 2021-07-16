@@ -15,7 +15,6 @@ import maleIcon from '../../img/icons/male-gender.png'
 import femaleIcon from '../../img/icons/female-gender.png'
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
-// import { Route, Link } from 'react-router-dom';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button'
 
