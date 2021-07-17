@@ -38,13 +38,10 @@ const Moves = ( { moves } ) => {
             //returns the one matching the method 
             else if ( version[ version.length - 1 ].move_learn_method.name === learnMethod ) {
                 testArr.push( { name: move.move.name, details: version[ version.length - 1 ] } )
-                //return version[ version.length - 1 ];
             }
             else if ( version[ version.length - 2 ].move_learn_method.name === learnMethod ) {
                 testArr.push( { name: move.move.name, details: version[ version.length - 2 ] } )
-                //return version[ version.length - 2 ];
             }
-            //else return false;
         } );
 
         return testArr;
