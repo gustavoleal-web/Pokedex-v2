@@ -60,12 +60,7 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
                 setIsDisabled( () => ( false ) );
             }
 
-            // setState( {
-            //     filteredOptions: onlyUserInputPokemos,
-            //     showOptions: true,
-            //     userInput: userInput,
-            // } );
-
+          
             setState( () => ( {
                 filteredOptions: onlyUserInputPokemos,
                 showOptions: true,
@@ -136,7 +131,7 @@ const Search = ( { nationalPokedex, searchPokemon } ) => {
     if ( state.showOptions && state.userInput.length > 2 ) {
         if ( state.filteredOptions.length ) {
             optionList = (
-                <ListGroup className={ styles.options } style={ { paddingLeft: '10px' } }>
+                <ListGroup className={ styles.options } style={ { paddingLeft: '10px', marginBottom: '12px' } }>
                     {
                         state.filteredOptions.map( pokemon => {
                             let text = highlightDifferences( pokemon.pokemon_species.name );
