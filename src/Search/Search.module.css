@@ -1,7 +1,8 @@
 .options {
     width       : 300px;
-    position    : absolute;
+    /* position    : absolute; */
     padding-left: 10px;
+    margin-bottom: 15px;
 }
 
 .listItem {
@@ -29,9 +30,6 @@
 }
 
 .noMatchingName {
-    color      : white;
-    font-size  : 30px;
+    font-size  : 23px;
     font-weight: bold;
-    text-shadow: black 0px 0px 10px;
 }
-
