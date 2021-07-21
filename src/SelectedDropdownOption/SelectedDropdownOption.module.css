@@ -1,15 +1,13 @@
 .container {
-    display: grid;
+    display: grid;  
+    background-color: rgba(52, 58, 64, 0.9);
    
 }
 
 .smallPokemonsContainer {
     max-width: 500px;
     margin: auto;
-}
-
-.pokemonsContainer {
-    background-color: rgba(52, 58, 64, 0.9);
+   
 }
 
 
