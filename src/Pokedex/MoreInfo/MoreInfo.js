@@ -42,6 +42,7 @@ const MoreInfo = ( {
     const [ error, setError ] = useState( false )
     const commonAbilities = [];
     const hiddenAbilities = [];
+   
 
     const [ disabled, setDissabled ] = useState( {
         varieties: false,
@@ -301,6 +302,12 @@ const MoreInfo = ( {
 
     if ( moves.length !== 0 ) {
         showMoves = <Moves moves={ moves } />
+    }
+
+    else {
+        showMoves = <h6 style={ { marginTop: '10px', textAlign: 'center' } }>
+            This Pokemon's moves will be added at a later time.
+        </h6>
     }
 
     const showSelectedHandler = ( component, name ) => {
