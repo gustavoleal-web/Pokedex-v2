@@ -18,11 +18,7 @@ const EvosMethods = ( { methods, id } ) => {
     let basePokemon = methods.length !== 0 ? <h5 >{ methods[ 0 ].name.toUpperCase() }</h5> : null;
 
     const onClickHandler = ( name ) => {
-        setClickedPokemon(
-            <div>
-                <Pokedex id={ name } />
-            </div>
-        )
+        setClickedPokemon( <Pokedex id={ name } /> )
     }
 
     useEffect( () => {
@@ -90,9 +86,10 @@ const EvosMethods = ( { methods, id } ) => {
                 <Card.Body className={ styles.basePokemonContainer }>
                     <Card.Title>{ basePokemon }</Card.Title>
                 </Card.Body>
-            </Card>
 
-            { clickedPokemon }
+                { clickedPokemon }
+
+            </Card>
 
             {
                 allWaysToEvolve.length === 0 ? null : allWaysToEvolve.map( ( object, i ) =>

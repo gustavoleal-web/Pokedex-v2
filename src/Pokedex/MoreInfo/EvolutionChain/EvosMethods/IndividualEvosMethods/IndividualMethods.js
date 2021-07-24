@@ -22,11 +22,7 @@ const IndividualMethods = ( { obj, id } ) => {
     let evolutionInfo;
 
     const onClickHandler = ( name ) => {
-        setClickedPokemon(
-            <div>
-                <Pokedex id={ name } />
-            </div>
-        )
+        setClickedPokemon( <Pokedex id={ name } /> )
     }
 
     function renameKeys( obj, newKeys ) {
@@ -173,9 +169,12 @@ const IndividualMethods = ( { obj, id } ) => {
 
                     <Card.Title>  { pokemonName }</Card.Title>
                 </Card.Body>
+
+                { clickedPokemon }
+
             </Card>
 
-            { clickedPokemon }
+
 
         </>
     )
