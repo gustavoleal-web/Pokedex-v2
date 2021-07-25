@@ -7,6 +7,7 @@ import SelectedDropdownOption from './SelectedDropdownOption/SelectedDropdownOpt
 import Navbar from 'react-bootstrap/NavBar'
 import Nav from 'react-bootstrap/Nav'
 import Dropdowns from './Dropdown/Dropdowns';
+import icon from '../src/img/icons/snorlax.png';
 
 const App = () => {
     const isMounted = useRef( false );
@@ -188,7 +189,7 @@ const App = () => {
         const fetchData = async () => {
             if ( isMounted.current && eggGroup !== null ) {
                 try {
-                   
+
                     let pokemon = await axios.get(
                         `https://pokeapi.co/api/v2/egg-group/${ eggGroup }/` );
 
@@ -216,7 +217,7 @@ const App = () => {
 
     const navigation = <div>
         <Navbar collapseOnSelect expand='lg' bg='dark' variant='dark'>
-            <Navbar.Brand >Pokemon Search</Navbar.Brand>
+            <Navbar.Brand ><img src={ icon } alt="" /> Pokemon Search</Navbar.Brand>
             <Navbar.Toggle aria-controls='responsive-navbar-nav' />
             <Navbar.Collapse id='responsive-navbar-nav'>
                 <Nav className='mr-auto'>
@@ -250,6 +251,14 @@ const App = () => {
                     nationalPokedex === null ? null : <Search nationalPokedex={ nationalPokedex } searchPokemon={ searchPokemon } />
                 }
             </div>
+
+            <div style={ { fontSize: '10px', textAlign: 'center' } }>Icons made by
+                <a href="https://www.flaticon.com/authors/roundicons-freebies" title="Roundicons Freebies">
+                    Roundicons Freebies</a> from
+                <a href="https://www.flaticon.com/" title="Flaticon">
+                    www.flaticon.com</a>
+            </div>
+
         </div>
 
     }
