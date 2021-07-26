@@ -1,7 +1,6 @@
 import React from 'react';
 import Pokedex from '../Pokedex/Pokedex';
 import styles from './SelectedDropdownOption.module.css';
-import { BrowserRouter } from 'react-router-dom';
 
 const SelectedSearchOption = ( {
   selectedPokedex,
