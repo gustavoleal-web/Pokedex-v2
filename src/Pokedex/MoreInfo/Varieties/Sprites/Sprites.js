@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import styles from './Sprites.module.css';
+import pokeballIcon from '../../../../img/icons/pokeball.png';
 
 const Sprites = ( { url, retrieveById } ) => {
     const isMounted = useRef( false );
     const [ sprite, setSprites ] = useState( null );
+    const [ error, setError ] = useState( false );
 
     useEffect( () => {
         isMounted.current = true;
@@ -18,7 +20,7 @@ const Sprites = ( { url, retrieveById } ) => {
                     }
                 }
                 catch ( e ) {
-                    console.log( e )
+                    setError( true );
                 }
             }
         }
@@ -38,6 +40,14 @@ const Sprites = ( { url, retrieveById } ) => {
             className={ styles.sprite }
         />
     }
+    else if ( error ) {
+        return <img
+            src={ pokeballIcon }
+            alt='pokemon'
+            className={ `${ styles.sprite } ${ styles.pokeball }` }
+        />
+    }
+
     else return null;
 }
 
